@@ -1,0 +1,306 @@
+.left_images{
+    position:absolute; left:0px; top:0px; width:30%; height:100%; overflow:hidden; background: #000000;
+    img{
+        position:absolute; left:0px; top:0px; right: 0px; bottom: 0px; margin: auto;
+    }
+}
+
+.right_part{
+    position:absolute;
+    left:30%;
+    top:0px;
+    width:70%;
+    height:100%;
+
+    align-items: center;               // Pozicionirajmo div u sredinu - vertikalno
+    display: flex;
+    justify-content: center;           // Horizontalno poravnanje u sredinu
+
+    font-family: "Nunito", sans-serif;
+
+    .inside_div{
+        display: flex;
+        /* align-self: center; */
+        width:80%;
+        flex-wrap:wrap;
+
+        // Naziv aplikacije
+        .name_of_app{
+            position:relative;
+            left:0px;
+            top:0px;
+            width:100%;
+            height:80px;
+            h1{
+                margin-left:20px;
+                font-size:36px;
+            }
+        }
+
+        // Dobrodošli nazad
+        .div_with_message{
+            position:relative;
+            width:100%;
+            height:120px;
+            border-bottom:1px solid  rgba(0,0,0,0.1);
+            h2{
+                margin-left:20px;
+                font-size:40px;
+                margin-bottom:0px;
+                font-weight: normal;
+            }
+            p{
+                margin-left:20px;
+                margin-top:0px;
+            }
+        }
+        .div_with_message-2{height: 100px;}
+        // Forme za input - dinamčki kreirane
+        .input_forms{
+            position:relative;
+            left:0px;
+            top:0px;
+            width:100%;
+            margin-top:30px;
+            justify-content: center;
+            padding-left:20px;
+
+            .single_input_col{
+                position:relative;
+                display:inline-flex;
+                width:calc(50% - 30px);
+                min-height:40px;
+                flex-wrap:wrap;
+
+                .single_input_label{
+                    position:relative;
+                    width:100%;
+                    height:40px;
+
+                    p{
+                        font-weight:bold;
+                        color:#000000;
+                        position:absolute;
+                        margin-top:8px;
+                    }
+                }
+
+                .single_input_input{
+                    position:relative;
+                    width:100%;
+                    height:36px;
+                    margin-top:0px;
+                    border-radius:3px;
+                    input{
+                        position:absolute;
+                        left:0px;
+                        top:0px;
+                        width:100%;
+                        height:100%;
+                        border:2px solid rgba(0,0,0,0.1);
+                        background:none;
+                        padding-left:20px;
+                        transition:all 0s;
+                    }
+                    input:focus{
+                        transition:all 0.2s;
+                        outline:0px;
+                        border:2px solid #000000;
+                    }
+                }
+            }
+            .single_input_col-2{
+                width: calc(100% - 20px);
+            }
+            .single_input_col2{
+                margin-left:36px;
+            }
+        }
+
+        .checkbox{
+            position:relative;
+            width:100%;
+            height:40px;
+            margin-top:10px;
+
+            display: inline-flex;
+            .stay-signed{
+                position: relative; left:0px; margin-left:20px; top:0px; height: 40px; display: inline-flex;
+                input{
+                    margin-top:12px;
+                }
+                p{
+                    margin-top:0px; padding-top:7px; margin-left:15px; color: #000000;
+                }
+            }
+            .register-form-w{
+                position: relative; left:0px;
+                p{
+                    margin-top:0px; padding-top:7px; margin-left:15px;
+                }
+            }
+            .register-form-r{
+                p{color:#000000;}
+            }
+
+            //input{
+            //    position:absolute;
+            //    left:18px;
+            //    top:12px;
+            //}
+            //
+            //p{
+            //    position:absolute;
+            //    left:50px;
+            //    margin-top:9px;
+            //    font-size:14px;
+            //}
+        }
+        .buttons{
+            position:relative;
+            left:0px;
+            top:0px;
+            width:calc(100% - 0px);
+            height:80px;
+            justify-content: flex-end;
+            border-bottom:1px solid rgba(0,0,0,0.1);
+            padding-bottom:20px;
+            .button{
+                float:right;
+                position:relative;
+                display:inline-flex;
+                width:250px;
+                height:40px;
+                top:10px;
+                margin-right:20px;
+                background:#000000;
+                justify-content: center;
+                border:none;
+                p{
+                    font-weight:bold;
+                    margin-top:8px;
+                    color:#fff;
+                }
+            }
+            .button:hover{
+                cursor:pointer;
+            }
+
+            .forgot_passw{
+                position:relative;
+                display:inline-flex;
+                top:10px;
+                width:calc(50% - 20px);
+                height:40px;
+                justify-content: flex-end;
+                float:right;
+                p{
+                    font-weight:bold;
+                    margin-top:10px;
+                    color:#000000;
+                    margin-right:50px;
+                }
+            }
+        }
+        .sign_link{
+            position:relative;
+            width:100%;
+            height:40px;
+            margin-top:10px;
+            padding-top:10px;
+            a{
+                margin-left:20px;
+                span{
+                    color:#A0522D;
+                    font-weight:bold;
+                }
+            }
+        }
+
+        // ** Register form ** //
+        .register-wrapper{
+            position: relative; top:0px; left:20px; width: calc(100% - 40px); margin-top:30px;
+            .register-btn{
+                width: 220px; background: #A0522D; border:none; height: 36px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .left_images{display: none;}
+    .right_part{
+        left:0px; width:100%;
+        .inside_div{
+            .name_of_app{
+                h1{margin-left:0px;}
+            }
+            // .div_with_message{display: none;}
+            .login-data{display: none;}
+            .input_forms{
+                padding-left:0px;
+                .single_input_col{
+                    width: 100%;
+                    margin-left:0px;
+                }
+            }
+            .buttons{
+                height: auto;
+                .button{
+                    width: 100%;
+                    margin-right:0px;
+                }
+                .forgot_passw{
+                    float: initial;
+                    width:100%;
+                    justify-content: initial;
+                    height: 50px;
+                    p{
+                        margin-top:15px;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 800px){
+    .right_part-r{
+        height: auto;
+    }
+    .right_part{
+        .inside_div{
+            left:20px; width: calc(100% - 40px);
+            .name_of_app{
+                span{display: none;}
+            }
+            .div_with_message{
+                p, h2{margin-left: 0px;}
+                p{text-align: justify;}
+            }
+            .div_with_message-2{
+                height: auto;
+                h2{margin-left:0px; margin-top:40px;}
+                p{margin-left:0px; margin-top:15px; margin-bottom:30px;}
+            }
+            .register-wrapper{
+                left:0px; width: 100%;
+                .register-btn{
+                    width: 100%; margin-top:30px; margin-bottom: 40px;
+                }
+            }
+            .checkbox{
+                height: auto; flex-wrap: wrap;
+                .stay-signed{
+                    width: 100%; margin-left:0px;
+                }
+                .register-form-n{display: none;}
+                .register-form-w{
+                    p{margin-left:0px;}
+                }
+            }
+        }
+    }
+}
+button{
+    border: 0;
+}

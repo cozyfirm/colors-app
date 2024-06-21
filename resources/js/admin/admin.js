@@ -1,0 +1,10 @@
+import '../bootstrap';
+
+/* Import submit, validator and notify ts in one script */
+import './layout/submit.js'
+
+/* Import filters */
+import './layout/filters.js';
+
+/* Import menu scripts */
+import './layout/menu.js';

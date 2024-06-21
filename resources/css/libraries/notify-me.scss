@@ -1,0 +1,47 @@
+.notifyMeWrapper{
+    position: fixed; right: 15px; top: 15px; max-width: 500px; z-index:10000; border-radius:3px; display:block;
+
+    -webkit-transition: .3s ease-in-out;
+    -moz-transition: .3s ease-in-out;
+    -o-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+
+
+    .notifyMe{
+        position: relative; left:0px; top:0px; margin-bottom: 15px; padding:5px 15px; border-radius: 8px;
+
+        .nt-inline{
+            display: inline-flex;
+            .nt-icon{
+                margin-right:10px; font-size:15px; padding-top:1px;
+            }
+            p{
+                margin:0px; font-weight: bold;
+            }
+        }
+    }
+    .nt-success{
+        background: #DFF0D8;
+        .nt-inline{
+            p, i{color:#508F51; }
+        }
+    }
+    .nt-warn{
+        background: #FCF8E3;
+        .nt-inline{
+            p, i{color:#C5A060; }
+        }
+    }
+    .nt-danger{
+        background: #F2DEDE;
+        .nt-inline{
+            p, i{color:#C84040; }
+        }
+    }
+}
+
+@media only screen and (max-width: 800px){
+    .notifyMeWrapper{
+        max-width: calc(100% - 30px);
+    }
+}

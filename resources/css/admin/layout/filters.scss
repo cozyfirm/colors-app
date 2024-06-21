@@ -1,0 +1,78 @@
+#filtering th:first-child,
+#filtering td:first-child{
+    text-align:center;
+    width:80px;
+}
+#filtering th:last-child {
+    display: table-cell !important;
+}
+#filtering th, #filtering td{
+    font-family: 'Nunito', sans-serif;
+    color:#333;
+    font-weight: bolder;
+}
+
+#filtering th:nth-child(n+5){
+    display: none;
+}
+#filtering tbody tr td:nth-child(n+5){
+    display: none;
+}
+#filtering th, #filtering tbody tr td{display:none;}
+
+#filtering tbody tr td:last-child {
+    display: table-cell !important;
+    width: 120px;
+}
+.pull-pagination-right .pagination {
+    float: right;
+}
+.btn-xs {
+    font-size: 11px;
+}
+
+
+#filtering tbody tr td{
+    font-size:14px;
+}
+
+#filtering .w-120{width: 120px;}
+
+#loading-bar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 100000;
+    display: none;
+
+}
+#loading-bar img{
+    position:absolute;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    margin:auto;
+}
+
+
+.filters-select{
+    height: 38px;
+}
+.remove-filter{
+    width: 38px; height: 38px; border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center;
+}
+.remove-filter:hover{cursor: pointer;}
+.page-item{
+    &.active{
+        background: #333333 !important;
+    }
+}
+
+#filtering tr .inline-img img {
+    height: 20px;
+    margin-right: 5px;
+}

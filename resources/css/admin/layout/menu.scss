@@ -1,0 +1,263 @@
+/**
+ *  Top menu Style
+ */
+
+.s-top-menu{
+    position: fixed; left: 0px; top:0px; width: 100%; height: 80px;
+
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04); background: #fff; z-index: 1000;
+
+    // ** Application name ** //
+    .app-name{
+        position: absolute; left: 0px; top:0px; width: 320px; height: 80px; display: flex; align-items: center;
+        h1{
+            font-size: 30px; margin-left:20px; color:$primaryColor; padding-top:4px;
+        }
+        img{
+            height: 30px; margin-left: 20px;
+        }
+        i{
+            position: absolute; right: 20px; font-size: 20px; top: 30px; display: none;
+        }
+        i:hover{ cursor: pointer; color: $primaryColor;}
+    }
+
+    .top-menu-links{
+        position: absolute; left: $left-menu-w; width: calc(100% - 321px); height: 40px; top:20px; border-left:1px solid #E5E5E5;
+
+        .left-icons{
+            position: absolute; left:30px; top:0px; min-width:200px; height: 100%;
+            .single-li{
+                position: relative; height: 40px; display: inline-flex; margin:0px 10px;
+                p{
+                    margin:0px; padding-top:10px; margin-right:10px; font-size:14px;
+                }
+                i{
+                    padding-top:12px; color:#333; font-size:14px;
+                }
+                .number-of{
+                    position: absolute; right:-6px; top:2px; height: 14px; background: $primaryColor; border-radius:2px;
+                    p{
+                        font-size:10px; margin:0px; color:#fff; padding-top:0px; padding-left:3px; padding-right:3px;
+                    }
+                }
+            }
+            .single-li:hover{
+                cursor: pointer;
+            }
+        }
+
+        .right-icons{
+            position: absolute; right:30px; top:0px; min-width:200px; height: 100%; display: inline-flex; justify-content: flex-end;
+            .single-li{
+                position: relative; height: 40px; display: inline-flex; margin:0px 10px;
+                p{
+                    margin:0px; padding-top:10px; margin-left:10px; font-size:14px;
+                }
+                i{
+                    padding-top:13px; color:#333; font-size:14px;
+                }
+                .number-of{
+                    position: absolute; right:-6px; top:2px; height: 14px; background: $primaryColor; border-radius:2px;
+                    p{
+                        font-size:10px; margin:0px; color:#fff; padding-top:0px; padding-left:3px; padding-right:3px;
+                    }
+                }
+
+                // ** Notifications wrapper ** //
+                // @import "menu-includes/notifications";
+
+                // ** Search ** //
+                // @import "menu-includes/search";
+            }
+            .single-li:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+    .s-top-menu{
+        .app-name{
+            i{display: block;}
+        }
+    }
+}
+@media only screen and (max-width: 800px) {
+    .s-top-menu{
+        .app-name{
+            width: 100%;
+            i{display: block; z-index:100;}
+        }
+        .top-menu-links{
+            border-left: 0px;
+            .left-icons{
+                display: none;
+            }
+            .right-icons{
+                right: 50px;
+                .user-name{display: none;}
+            }
+        }
+    }
+}
+
+/**
+ *  Left menu style
+ */
+.s-left-menu{
+    position: fixed;
+    left:0px;
+    top:80px;
+    width: $left-menu-w;
+    height: calc(100% - 80px);
+    -webkit-box-shadow: 0 3px 30px rgba(0, 0, 0, 0.1), 0 3px 20px rgba(0, 0, 0, 0.1);
+    z-index: 100; background: #fff;
+
+    // ** User short info ** //
+    .user-info{
+        position: relative; left:20px; top:0px; width:calc(100% - 40px); min-height: 30px; display: inline-flex; justify-content: space-between; margin-top:35px; padding-bottom: 13px;
+        .user-image{
+            position:relative; width: 60px; height: 60px; border: 1px solid rgba(0,0,0,0.1); overflow: hidden;
+            img{
+                position: absolute; left:0px; top:0px; right:0px; bottom:0px; max-width: 100%; max-height: 100%; margin:auto;
+            }
+        }
+        .user-desc{
+            position: relative; width: calc(100% - 80px);
+            h4{
+                margin:0px;
+            }
+            p{
+                font-size:12px; margin-top:5px; margin-bottom:0px; text-transform: capitalize;
+                i{
+                    font-size: 12px; color:mediumspringgreen; margin-top:0px; padding-top:2px; display: inline-flex; margin-right:3px;
+                }
+            }
+        }
+    }
+
+    // ** Left menu subsection ** //
+    .s-lm-subsection{
+        position: relative; left:10px; margin-top:0px; width:calc(100% - 20px); height: calc(100% - 200px); overflow-y: auto; overflow-x: hidden; border-radius: 3px;
+        .subtitle{
+            position: relative; left:0px; width: 100%; height: 40px; padding: 0px 10px;
+            h4{
+                margin:0px; padding-top:10px; font-size:14px; font-weight: bold; font-family: 'Nunito', sans-serif;
+            }
+            .subtitle-icon{
+                position: absolute; right:0px; width:30px; height: 30px; top:5px; text-align: right; padding-right: 10px;
+                i{
+                    padding-top:6px;
+                }
+            }
+        }
+        .s-lm-wrapper{
+            position: relative; left:0px; top:0px; width: calc(100% - 0px); padding: 0px 10px;
+            a{
+                padding:0px; margin:0px; display: flex;
+            }
+            .s-lm-s-elements{
+                position: relative; left:0px; top:0px; width: 100%; height: 50px; display: inline-flex; margin:0px; padding:0px;
+                .s-lms-e-img{
+                    position: relative; left:0px; top:8px; width: 34px; height: 34px; background: rgba(0,0,0,0.1); text-align: center;
+                    i{
+                        padding-top:10px; font-size:14px; transition: 0.2s all;
+                    }
+                }
+                a, p{
+                    margin-left:15px; margin-top:0px; padding-top:14px; color:grey; transition: 0.2s all; font-weight: bold; font-family: 'Nunito', sans-serif;
+                }
+                .extra-elements{
+                    position: absolute; right:0px; top:16px; height: 30px; display: inline-flex;
+                    .ee-t{
+                        position: relative; height: 18px; background: cyan; border-radius:2px;
+                        p{
+                            font-size:10px; margin:0px; padding:2px 8px; color:#fff; font-family: 'Nunito', sans-serif;
+                        }
+                    }
+                    .ee-t-g{background: mediumspringgreen;}
+                    .ee-t-grey{background: #636b6f;}
+                    .ee-t-b{background: $secondaryColor;}
+                    i{
+                        font-size:16px; padding-top:1px; transition: 0.3s all; transform-origin: center; margin-left:10px;
+                    }
+                }
+            }
+            .s-lm-s-elements:hover{
+                cursor: pointer;
+                .s-lms-e-img{
+                    i{color:$secondaryColor;}
+                }
+                a{color:#333;}
+                .extra-elements{
+                    i{
+                        // TODO - for all browsers -- transform: rotate(90deg);
+                    }
+                }
+            }
+
+            // ** Drop down menu ** //
+            .inside-links{
+                position: relative; left:0px; top:0px; width: 100%; height: 0px; overflow: hidden; transition: 0.2s all;
+                .inside-lm-link{
+                    position: relative; left:0px; width: 100%; height: 34px;
+                    .ilm-l{
+                        position: absolute; width:2px; left:16px; height: 100%; background: #E5E5E5;
+                    }
+                    .ilm-c{
+                        position: absolute; width:8px; height:8px; border-radius:50%; background: #E5E5E5; top:13px; left:13px;
+                    }
+                    p{
+                        margin-left:40px; margin-top:0px; font-size:14px; font-weight:bold; color:grey; padding-top:8px;
+                    }
+                    .additional-icon{
+                        // TODO - when we have more than one digit - create classes for it :: right : XYpx;
+                        position: absolute; right:0px; top:9px; width:16px; height: 16px; background: mediumspringgreen; text-align: center;
+                        i{
+                            position: absolute; left:3px; top:3px; font-size:10px;
+                        }
+                    }
+                    .ai-grey{
+                        background: grey;
+                        i{color:#fff; font-size:8px; left:4px; top:4px;}
+                    }
+                }
+            }
+        }
+        //.active{ padding-bottom: 10px; }
+        .s-lm-wrapper:hover{
+            background: #E0F3FF;
+        }
+    }
+    .s-lm-subsection::-webkit-scrollbar {
+        width: 0px;
+        height:0px;
+    }
+
+    // ** Bottom links at left menu ** //
+    .bottom-icons{
+        position: absolute; bottom: 0px; left:0px; width: calc(100% - 0px); height: 34px; -webkit-box-shadow: 0 3px 30px rgba(0, 0, 0, 0.1), 0 3px 20px rgba(0, 0, 0, 0.1); display: inline-flex; justify-content: space-between;
+        padding-left:20px; padding-right:20px;
+        .bottom-icon{
+            position: relative; width:34px; height: 34px; text-align: center;
+            i{
+                padding-top:10px; transition: 0.3s all;
+            }
+        }
+        .bottom-icon:hover{
+            cursor: pointer;
+            i{color:$primaryColor;}
+        }
+    }
+}
+
+// ***************************************** Mobile friendly container ********************************************** //
+
+@media only screen and (max-width: 1500px) {
+    .s-left-menu{
+        left: -$left-menu-w;
+    }
+}
+

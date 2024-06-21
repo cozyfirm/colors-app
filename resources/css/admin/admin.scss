@@ -1,0 +1,19 @@
+/**
+ *  Define colors
+ */
+
+$left-menu-w : 320px;
+$primaryColor : #3D1F5F;
+$secondaryColor : #F86624;
+
+body{
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.0px; padding: 0px; margin:0px;
+    a{
+        text-decoration: none; color: #333333;
+    }
+}
+
+
+@import "layout/menu";
+@import "layout/content";
+@import "layout/filters";

@@ -1,0 +1,96 @@
+.main-content{
+    position:relative; left:320px; width:calc(100% - 320px); min-height: calc(100% - 80px); top:80px; background: #F5F5F5;
+
+    .content-wrapper{
+        position: relative; top: 30px; left:30px; width: calc(100% - 60px); border:1px solid rgba(0,0,0,0.1); margin-bottom: 30px; margin-top: 30px;
+    }
+    .content-wrapper-bs{border:none;}
+    .content-wrapper-p-15{padding: 15px;}
+
+    /* Content menu */
+    .content-menu{
+        position: relative; left: 0px; top: 30px; width: calc(100% - 0px); height: 110px; display: inline-flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.1);
+
+        .page-menu-icon-w{
+            position: relative; left: 30px; top: 0px; width: 80px; height: 80px; background: #ffffff; display: inline-flex;
+            justify-content: center; align-items: center;
+            box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+
+            //noinspection SassScssResolvedByNameOnly
+            i{
+                font-size: 40px; color:$secondaryColor;
+            }
+            img{
+                height: 60%; width: 60%; position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; margin: auto;
+            }
+        }
+
+        .page-menu-content{
+            position: relative; width: calc(100% - 140px); height: 80px; display: inline-flex; justify-content: space-between;
+            .pmc-left{
+                position: relative; left: 0px; display: inline-flex; align-items: center;
+                .pmc-left-content{
+                    h1{
+                        font-size: 32px; margin: 0px; font-family: 'Nunito', sans-serif; margin-top: 10px;
+                    }
+                    .pmc-lc-breadcrumbs{
+                        margin-top: 5px; font-family: 'Nunito', sans-serif;
+                        a{
+                            font-size: 14px; font-family: 'Nunito', sans-serif; display: inline-flex; margin: 0px; padding: 0px;
+
+                            i{ margin-top: 2px; margin-right: 5px; }
+                            p{ margin-top: 0px; padding: 0px; }
+                        }
+                    }
+                }
+            }
+
+            .pmc-right{
+                position: relative; height: 100%; margin-right: 30px; min-width: 200px; display: inline-flex; align-items: center; justify-content: flex-end;
+                .pmc-right-content{
+                    .pm-btn{
+                        box-shadow: 0 0.125rem 0.625rem rgba(52, 58, 64, 0.4), 0 0.0625rem 0.125rem rgba(52, 58, 64, 0.5);
+                        margin-left: 10px; height: 34px; display: inline-flex;
+
+                        i{
+                            font-size: 14px; margin-top: 4px;
+                        }
+                        span{
+                            font-size: 14px; margin: 0px; padding: 0px; display: inline-flex; font-family: 'Nunito', sans-serif; font-weight:bold;
+                        }
+                    }
+                    .pm-btn-5{ margin-left: 5px; }
+                    .pm-btn-2{ margin-left: 2px; }
+                    .pm-btn-success{
+                        background: #3AC47D; color:#ffffff; box-shadow: 0 0.125rem 0.625rem rgba(58, 196, 125, 0.4), 0 0.0625rem 0.125rem rgba(58, 196, 125, 0.5);
+                        span{
+                            margin-left: 10px;
+                        }
+                    }
+                    .pm-btn-info{
+                        background: #2090DF; color:#ffffff; box-shadow: 0 0.125rem 0.625rem rgba(34, 149, 221, 0.4), 0 0.0625rem 0.125rem rgba(36, 174, 219, 0.5);
+                        span{
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ***************************************** Mobile friendly container ********************************************** //
+
+@media only screen and (max-width: 1500px) {
+    .main-content{
+        left: 0px; width: 100%;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .main-content{
+        padding-bottom: 10px;
+        .content-wrapper, #page-menu{
+            left: 20px; width: calc(100% - 40px);
+        }
+    }
+}
