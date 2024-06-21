@@ -1,16 +1,16 @@
 <!-- Extendamo layout za admin portal -->
 @extends('admin.layout.layout')
 
-@section('c-icon') <i class="fas fa-futbol"></i> @endsection
-@section('c-title') {{ __('Preview all clubs') }} @endsection
+@section('c-icon') <i class="fas fa-feather"></i> @endsection
+@section('c-title') {{ __('Preview all seasons') }} @endsection
 @section('c-breadcrumbs')
-    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.clubs') }}">{{ __('Clubs') }}</a>
+    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.seasons') }}">{{ __('Seasons') }}</a>
 @endsection
 @section('c-buttons')
-    <a href="{{ route('admin.core.clubs') }}">
+    <a href="{{ route('admin.core.seasons') }}">
         <button class="pm-btn btn btn-dark"> <i class="fas fa-star"></i> </button>
     </a>
-    <a href="{{ route('admin.core.clubs.create') }}">
+    <a href="{{ route('admin.core.seasons.create') }}">
         <button class="pm-btn btn pm-btn-success">
             <i class="fas fa-plus"></i>
             <span>{{ __('Add new') }}</span>
@@ -26,7 +26,7 @@
             </div>
         @endif
 
-        @include('admin.layout.snippets.filters.filter-header', ['var' => $clubs])
+        @include('admin.layout.snippets.filters.filter-header', ['var' => $seasons])
         <table class="table table-bordered" id="filtering">
             <thead>
             <tr>
@@ -37,20 +37,14 @@
             </thead>
             <tbody>
             @php $i=1; @endphp
-            @foreach($clubs as $club)
+            @foreach($seasons as $season)
                 <tr>
                     <td class="text-center">{{ $i++}}</td>
-                    <td class="inline-img">
-                        <img src="{{ asset('files/core/clubs/' . $club->flag ?? '') }}" alt="">
-                        {{ $club->name ?? ''}}
-                    </td>
-                    <td> {{ $club->code ?? ''}} </td>
-                    <td> {{ $club->countryRel->name_ba ?? ''}} </td>
-                    <td> {{ $club->founded ?? ''}} </td>
-                    <td> {{ $club->nationalRel->name ?? ''}} </td>
+                    <td> {{ $season->season ?? ''}} </td>
+                    <td> {{ $season->leagueRel->name ?? ''}} </td>
 
                     <td class="text-center">
-                        <a href="{{ route('admin.core.clubs.preview', ['id' => $club->id ]) }}" title="{{ __('More info') }}">
+                        <a href="{{ route('admin.core.seasons.preview', ['id' => $season->id ]) }}" title="{{ __('More info') }}">
                             <button class="btn btn-dark btn-xs">{{ __('Preview') }}</button>
                         </a>
                     </td>
@@ -58,7 +52,7 @@
             @endforeach
             </tbody>
         </table>
-        @include('admin.layout.snippets.filters.pagination', ['var' => $clubs])
+        @include('admin.layout.snippets.filters.pagination', ['var' => $seasons])
     </div>
 
 @endsection

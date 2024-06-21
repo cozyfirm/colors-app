@@ -32,7 +32,7 @@
             <tr>
                 <th scope="col" style="text-align:center;">#</th>
                 @include('admin.layout.snippets.filters.filters_header')
-                <th width="120p" class="akcije text-center">{{__('Akcije')}}</th>
+                <th width="120p" class="akcije text-center">{{__('Actions')}}</th>
             </tr>
             </thead>
             <tbody>

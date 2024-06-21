@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\SystemCore\ClubsController;
 use App\Http\Controllers\Admin\SystemCore\LeagueController;
+use App\Http\Controllers\Admin\SystemCore\SeasonsController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Public\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +76,34 @@ Route::prefix('/admin')->group(function () {
             Route::get ('/edit/{id}',                       [LeagueController::class, 'edit'])->name('admin.core.league.edit');
             Route::post('/update',                          [LeagueController::class, 'update'])->name('admin.core.league.update');
             Route::get ('/delete/{id}',                     [LeagueController::class, 'delete'])->name('admin.core.league.delete');
+        });
+
+        /**
+         *  Seasons
+         */
+        Route::prefix('/seasons')->group(function (){
+            Route::get ('/',                                [SeasonsController::class, 'index'])->name('admin.core.seasons');
+            Route::get ('/create',                          [SeasonsController::class, 'create'])->name('admin.core.seasons.create');
+            Route::post('/save',                            [SeasonsController::class, 'save'])->name('admin.core.seasons.save');
+            Route::get ('/preview/{id}',                    [SeasonsController::class, 'preview'])->name('admin.core.seasons.preview');
+            Route::get ('/edit/{id}',                       [SeasonsController::class, 'edit'])->name('admin.core.seasons.edit');
+            Route::post('/update',                          [SeasonsController::class, 'update'])->name('admin.core.seasons.update');
+            Route::get ('/delete/{id}',                     [SeasonsController::class, 'delete'])->name('admin.core.seasons.delete');
+
+            Route::get ('/lock-season/{id}',                [SeasonsController::class, 'lockSeason'])->name('admin.core.seasons.lock-season');
+
+            /*
+             *  Seasons teams
+             */
+            Route::post('/save-team',                               [SeasonsController::class, 'saveTeam'])->name('admin.core.seasons.save-team');
+            Route::get ('/delete-team/{season_id}/{team_id}',       [SeasonsController::class, 'deleteTeam'])->name('admin.core.seasons.delete-team');
+
+            /*
+             *  Match schedule
+             */
+            Route::get ('/match-schedule/{season_id}',              [SeasonsController::class, 'matchSchedule'])->name('admin.core.seasons.match-schedule');
+            Route::post('/save-match-schedule',                     [SeasonsController::class, 'saveMatchSchedule'])->name('admin.core.seasons.system.core.seasons.save-match-schedule');
+            Route::get ('/delete-match-schedule/{id}',              [SeasonsController::class, 'deleteMatchSchedule'])->name('admin.core.seasons.delete-match-schedule');
         });
     });
 });

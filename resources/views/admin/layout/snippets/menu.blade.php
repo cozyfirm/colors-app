@@ -286,7 +286,36 @@
                 </div>
             </div>
         </a>
-
+        <a href="#" class="menu-a-link">
+            <div class="s-lm-wrapper">
+                <div class="s-lm-s-elements">
+                    <div class="s-lms-e-img">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <p>{{__('Seasons')}}</p>
+                    <div class="extra-elements">
+                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+                <div class="inside-links active-links">
+                    <a href="{{ route('admin.core.seasons.create') }}">
+                        <div class="inside-lm-link">
+                            <div class="ilm-l"></div><div class="ilm-c"></div>
+                            <p>{{__('Add new')}}</p>
+                            <div class="additional-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{{ route('admin.core.seasons') }}">
+                        <div class="inside-lm-link">
+                            <div class="ilm-l"></div><div class="ilm-c"></div>
+                            <p>{{__('Preview all')}}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </a>
 {{--        <div class="subtitle">--}}
 {{--            <h4> {{__('Historija kupovanja')}} </h4>--}}
 {{--            <div class="subtitle-icon">--}}

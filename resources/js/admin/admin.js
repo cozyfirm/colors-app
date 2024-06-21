@@ -8,3 +8,9 @@ import './layout/filters.js';
 
 /* Import menu scripts */
 import './layout/menu.js';
+
+
+/**
+ *  System core scripts
+ */
+import './system-core/clubs/search-clubs.js';

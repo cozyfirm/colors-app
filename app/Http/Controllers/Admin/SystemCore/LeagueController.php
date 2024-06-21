@@ -19,9 +19,9 @@ class LeagueController extends Controller{
         $leagues = League::where('id', '>', 0);
         $leagues = Filters::filter($leagues);
         $filters = [
-            'name' => __('Naziv'),
-            'typeRel.name' => __('Vrsta'),
-            'countryRel.name_ba' => __('Država'),
+            'name' => __('Title'),
+            'typeRel.name' => __('Type'),
+            'countryRel.name_ba' => __('Country'),
         ];
 
         return view($this->_path.'index', [

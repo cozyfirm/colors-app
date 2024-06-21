@@ -13,7 +13,18 @@ body{
     }
 }
 
+@import "../libraries/bootstrap";
+@import "../libraries/notify-me";
+@import "/node_modules/select2/dist/css/select2.css";
+@import "../libraries/jquery-ui.min.css";
 
 @import "layout/menu";
 @import "layout/content";
 @import "layout/filters";
+
+
+/**
+ *  Redefined classes
+ */
+
+@import "snippets/classes";

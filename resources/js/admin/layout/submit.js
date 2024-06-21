@@ -67,7 +67,7 @@ $(document).ready(function (){
     /*
      *  All form with this feature should have ID of #js-form
      */
-    $("#js-form").submit(function (e){
+    $("#js-form, #second-js-form").submit(function (e){
         e.preventDefault(); // Prevent from default
 
         let data = {}, names = [], counter = 0, foundN = false, send = true, status = [];
