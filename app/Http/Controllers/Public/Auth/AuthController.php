@@ -39,7 +39,6 @@ class AuthController extends Controller{
                 return $this->jsonResponse('1105', __('You have entered wrong password'));
             }
         }catch (\Exception $e){
-            dd($e);
             return $this->jsonResponse('1101', __('Error while processing your request. Please contact an administrator'));
         }
     }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static pluck(string $string, string $string1)
+ * @method static where(string $string, mixed $code)
  */
 class Countries extends Model
 {
