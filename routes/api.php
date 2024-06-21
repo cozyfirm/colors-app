@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
+use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,14 @@ Route::prefix('/auth')->group(function (){
         Route::post('/verify-pin',                           [AuthController::class, 'verifyPIN'])->name('api.auth.restart-password.verify-pin');
         Route::post('/new-password',                         [AuthController::class, 'newPassword'])->name('api.auth.restart-password.new-password');
     });
+});
+
+/**
+ *  User routes: Fetch users; users data, etc:
+ */
+
+Route::prefix('/users')->group(function (){
+    Route::post('/get-data',                           [UsersController::class, 'getUserData'])->name('api.users.get-data');
 });
 
 /**
