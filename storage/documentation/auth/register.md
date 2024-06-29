@@ -12,23 +12,6 @@ POST /api/auth/register
 | `email`    | `string` | **Required**. User email (unique)         |
 | `password` | `string` | **Required**. User password (min 8 chars) |
 
-## Responses
-
-API endpoints return the JSON representation of the resource created. If code '0000' is returned, it represents "success", otherwise, you should check for other messages or errors.
-
-```javascript
-{
-  "code" : string,
-  "message" : bool,
-  "data"    : object
-}
-```
-
-The `code` attribute contains a code commonly used to indicate errors or success.
-
-The `message` attribute gives optional message.
-
-The `data` attribute contains any other metadata associated with the response. This will be an escaped string containing JSON data.
 
 ## Status Codes
 
@@ -45,3 +28,19 @@ API returns the following status codes in its API:
 | 1006        | **Error**: This username has already been used | 
 | 1007        | **Error**: Password not valid error            |
 | 1008        | **Error**: Password check: Global error.       |
+
+
+## Example of success response
+
+```json
+{
+    "code": "0000",
+    "message": "Your account has been created",
+    "data": {
+        "id": 1,
+        "username": "john-doe",
+        "email": "john@doe.com",
+        "api_token": "d13b2043e8b1726d0de5848f29017c7c9522dfa1764ad0e8e9b5085adbfb4165"
+    }
+}
+```

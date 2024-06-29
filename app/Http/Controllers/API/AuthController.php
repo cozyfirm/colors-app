@@ -7,6 +7,7 @@ use App\Mail\API\Auth\WelcomeTo;
 use App\Models\User;
 use App\Traits\Http\ResponseTrait;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,27 +16,28 @@ use Illuminate\Support\Facades\Mail;
 class AuthController extends Controller{
     use ResponseTrait;
 
-    public function auth(Request $request): bool|string {
+    public function auth(Request $request): JsonResponse {
         try{
-            if(!isset($request->username)) return $this->jsonResponse('1102', __('Please, enter your username'));
-            if(!isset($request->password)) return $this->jsonResponse('1103', __('Please, enter your password'));
+            if(!isset($request->email))    return $this->apiResponse('1102', __('Please, enter your email'));
+            if(!isset($request->password)) return $this->apiResponse('1103', __('Please, enter your password'));
 
-            $user = User::where('username', $request->username)->first();
-            if(!$user) return $this->jsonResponse('1104', __('Unknown username'));
+            $user = User::where('email', $request->email)->first();
+            if(!$user) return $this->apiResponse('1104', __('Unknown email'));
 
-            if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){
+            if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
                 $user = Auth::user();
 
-                return $this->jsonResponse('0000', __('Success'), [
+                return $this->apiResponse('0000', __('Success'), [
                     'username' => $user->username,
+                    'name' => $user->name,
                     'email' => $user->email,
                     'api_token' => $user->api_token,
                 ]);
             }else {
-                return $this->jsonResponse('1105', __('You have entered wrong password'));
+                return $this->apiResponse('1105', __('You have entered wrong password'));
             }
         }catch (\Exception $e){
-            return $this->jsonResponse('1101', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('1101', __('Error while processing your request. Please contact an administrator'));
         }
     }
 
@@ -53,28 +55,28 @@ class AuthController extends Controller{
         }
     }
 
-    public function register(Request $request): bool|string {
+    public function register(Request $request): JsonResponse {
         try{
             /* Empty data check */
-            if(!isset($request->email))    return $this->jsonResponse('1002', __('Please, enter your email'));
-            if(!isset($request->password)) return $this->jsonResponse('1003', __('Please, enter your password'));
-            if(!isset($request->username)) return $this->jsonResponse('1004', __('Please, enter your username'));
+            if(!isset($request->email))    return $this->apiResponse('1002', __('Please, enter your email'));
+            if(!isset($request->password)) return $this->apiResponse('1003', __('Please, enter your password'));
+            if(!isset($request->username)) return $this->apiResponse('1004', __('Please, enter your username'));
 
             /* Check for unique email and username */
             $user = User::where('email', $request->email)->first();
-            if($user) return $this->jsonResponse('1005', __('This email has already been used'));
+            if($user) return $this->apiResponse('1005', __('This email has already been used'));
 
             $user = User::where('username', $request->username)->first();
-            if($user) return $this->jsonResponse('1006', __('This username has already been used'));
+            if($user) return $this->apiResponse('1006', __('This username has already been used'));
 
             /* Password check */
             try{
                 $passwordCheck = $this->passwordCheck($request);
 
                 if($passwordCheck['code'] != '0000'){
-                    return $this->jsonResponse($passwordCheck['code'], $passwordCheck['message']);
+                    return $this->apiResponse($passwordCheck['code'], $passwordCheck['message']);
                 }
-            }catch (\Exception $e){ return $this->jsonResponse('1008', __('Error while processing your request. Please contact an administrator')); }
+            }catch (\Exception $e){ return $this->apiResponse('1008', __('Error while processing your request. Please contact an administrator')); }
 
             /* Create new user */
             $request['password'] = Hash::make($request->password);
@@ -87,14 +89,14 @@ class AuthController extends Controller{
             Mail::to($request->email)->send(new WelcomeTo($request->username, $request->email));
 
             /* Return user and user data */
-            return $this->jsonResponse('0000', __('Your account has been created'), [
+            return $this->apiResponse('0000', __('Your account has been created'), [
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
                 'api_token' => $user->api_token
             ]);
         }catch (\Exception $e){
-            return $this->jsonResponse('1001', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('1001', __('Error while processing your request. Please contact an administrator'));
         }
     }
 
