@@ -10,6 +10,7 @@ In case of data requests, request headers should contain
 
 ```http
 Content-Type: application/json
+Accept: application/json
 ```
 
 ## Responses

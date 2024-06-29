@@ -56,6 +56,7 @@ class ClubsController extends Controller{
                 'code' => $request->code,
                 'country_id' => $request->country_id,
                 'founded' => $request->founded,
+                'national' => $request->national,
                 'flag' => $fileName
             ]);
 
@@ -70,6 +71,7 @@ class ClubsController extends Controller{
                 'name' => $request->name,
                 'code' => $request->code,
                 'country_id' => $request->country_id,
+                'national' => $request->national,
                 'founded' => $request->founded
             ]);
 

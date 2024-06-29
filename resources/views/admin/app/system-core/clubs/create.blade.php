@@ -8,9 +8,10 @@
         <img src="{{ asset('files/core/clubs/' . $club->flag ?? '') }}" alt="">
     @endif
 @endsection
-@section('c-title') @isset($club) {{ $club->name }} @else {{ __('Add new club') }} @endif @endsection
+@section('c-title') @isset($club) {{ $club->name }} @else {{ __('Add new team') }} @endif @endsection
 @section('c-breadcrumbs')
-    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.clubs') }}">{{ __('Clubs') }}</a> / <a href="#}">{{ $club->name }}</a>
+    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.clubs') }}">{{ __('Teams') }}</a>
+    @isset($preview) / <a href="#}">{{ $club->name }}</a> @endisset
 @endsection
 @section('c-buttons')
     <a href="{{ route('admin.core.clubs') }}">

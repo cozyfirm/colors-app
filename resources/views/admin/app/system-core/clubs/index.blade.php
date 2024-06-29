@@ -2,9 +2,9 @@
 @extends('admin.layout.layout')
 
 @section('c-icon') <i class="fas fa-futbol"></i> @endsection
-@section('c-title') {{ __('Preview all clubs') }} @endsection
+@section('c-title') {{ __('Preview all teams') }} @endsection
 @section('c-breadcrumbs')
-    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.clubs') }}">{{ __('Clubs') }}</a>
+    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.clubs') }}">{{ __('Teams') }}</a>
 @endsection
 @section('c-buttons')
     <a href="{{ route('admin.core.clubs') }}">

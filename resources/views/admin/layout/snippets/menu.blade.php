@@ -225,7 +225,7 @@
                     <div class="s-lms-e-img">
                         <i class="fas fa-futbol"></i>
                     </div>
-                    <p>{{__('Clubs')}}</p>
+                    <p>{{__('Teams')}}</p>
                     <div class="extra-elements">
                         <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
                     </div>
