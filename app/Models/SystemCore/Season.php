@@ -18,8 +18,13 @@ class Season extends Model{
     protected $table = 'core__seasons';
     protected $guarded = ['id'];
 
+    /* Deprecated */
     public function leagueRel(): HasOne{ return $this->hasOne(League::class, 'id', 'league_id'); }
     public function clubRel(): HasOne{ return $this->hasOne(Club::class, 'id', 'club'); }
+
+    public function teamRel(): HasMany{
+        return $this->hasMany(SeasonTeam::class, 'season_id', 'id');
+    }
 
     /* Clubs playing for that season */
     public function clubsRel(): HasMany{

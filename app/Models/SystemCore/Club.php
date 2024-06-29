@@ -22,4 +22,9 @@ class Club extends Model{
     public function countryRel(): HasOne{ return $this->hasOne(Countries::class, 'id', 'country_id'); }
     public function nationalRel(): HasOne{ return $this->hasOne(Keyword::class, 'value', 'national')->where('type', 'da_ne'); }
     public function venueRel(): HasOne{ return $this->hasOne(Venue::class, 'id', 'venue_id'); }
+
+    /* Last season */
+    public function lastSeasonRel(): HasOne{
+        return $this->hasOne(SeasonTeam::class, 'team_id', 'id')->orderBy('season_id', 'DESC');
+    }
 }

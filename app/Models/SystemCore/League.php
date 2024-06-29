@@ -23,4 +23,7 @@ class League extends Model{
         return $this->hasOne(Keyword::class, 'value', 'type')->where('type', 'league_type');
     }
     public function countryRel(): HasOne{ return $this->hasOne(Countries::class, 'id', 'country_id'); }
+    public function seasonRel(): HasOne{
+        return $this->hasOne(Season::class, 'league_id', 'id')->orderBy('id', 'DESC');
+    }
 }

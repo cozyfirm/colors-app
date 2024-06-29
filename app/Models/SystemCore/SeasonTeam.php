@@ -20,4 +20,7 @@ class SeasonTeam extends Model{
     public function teamRel(): hasOne{
         return $this->hasOne(Club::class, 'id', 'team_id');
     }
+    public function seasonRel(): HasOne{
+        return $this->hasOne(Season::class, 'id', 'season_id');
+    }
 }
