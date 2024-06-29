@@ -19,7 +19,7 @@ Route::prefix('/auth')->group(function (){
     Route::post('/register',                           [AuthController::class, 'register'])->name('api.auth.register');
 
     /* Restart password */
-    Route::prefix('/auth')->group(function (){
+    Route::prefix('/restart-password')->group(function (){
         Route::post('/generate-pin',                         [AuthController::class, 'generatePIN'])->name('api.auth.restart-password.generate-pin');
         Route::post('/verify-pin',                           [AuthController::class, 'verifyPIN'])->name('api.auth.restart-password.verify-pin');
         Route::post('/new-password',                         [AuthController::class, 'newPassword'])->name('api.auth.restart-password.new-password');

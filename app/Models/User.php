@@ -25,7 +25,8 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'api_token'
+        'api_token',
+        'restart_pin'
     ];
 
     /**

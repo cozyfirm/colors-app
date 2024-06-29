@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('api_token', 64)->unique();
+            $table->string('restart_pin', 10)->nullable();
 
             /* Other user info */
             $table->string('city', 100)->nullable();
