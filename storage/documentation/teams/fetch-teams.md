@@ -25,6 +25,7 @@ API returns the following status codes in its API:
 ## Example of success response
 
 Note: API returns arrays of leagues, with seasons of relationship of array of teams
+
 Note: Flag for team is given also as `flag`, but path should be defined as
 
 ```http
