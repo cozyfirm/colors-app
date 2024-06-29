@@ -28,7 +28,7 @@ Note: Country_rel represents country, not national team. Flag is given as uri fr
 Note: Flag for national team is given also as `flag`, but path should be prepended as
 
 ```http
-HOST /files/core/clubs/$_FLAG_PARAM
+GET /files/core/clubs/$_FLAG_PARAM
 ```
 
 For input data given as:
