@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\API\Auth\WelcomeTo;
 use App\Models\User;
 use App\Traits\Http\ResponseTrait;
 use Carbon\Carbon;
@@ -73,7 +74,7 @@ class AuthController extends Controller{
                 if($passwordCheck['code'] != '0000'){
                     return $this->jsonResponse($passwordCheck['code'], $passwordCheck['message']);
                 }
-            }catch (\Exception $e){ return $this->jsonResponse('1001', __('Error while processing your request. Please contact an administrator')); }
+            }catch (\Exception $e){ return $this->jsonResponse('1008', __('Error while processing your request. Please contact an administrator')); }
 
             /* Create new user */
             $request['password'] = Hash::make($request->password);
@@ -83,7 +84,7 @@ class AuthController extends Controller{
             $user = User::create($request->all());
 
             /* Send an email for new user */
-            Mail::to($request->email)->send(new \App\Mail\Auth\WelcomeTo($request->username, $request->email));
+            Mail::to($request->email)->send(new WelcomeTo($request->username, $request->email));
 
             /* Return user and user data */
             return $this->jsonResponse('0000', __('Your account has been created'), [
