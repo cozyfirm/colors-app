@@ -28,7 +28,7 @@ Route::prefix('')->group(function () {
 /**
  *  Admin routes: Manage complete app
  */
-Route::prefix('/admin')->group(function () {
+Route::prefix('/admin')->middleware('auth')->group(function () {
     /**
      *  Users routes
      */

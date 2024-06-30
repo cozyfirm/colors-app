@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
+use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
@@ -41,6 +42,15 @@ Route::prefix('/teams')->middleware('api-auth')->group(function (){
      *  Save selected teams
      */
     Route::post('/save-teams',                               [APITeamsController::class, 'saveTeams'])->name('api.teams.save-teams');
+
+});
+
+/**
+ *  Posts - API Endpoint for posts
+ */
+Route::prefix('/posts')->middleware('api-auth')->group(function (){
+    Route::post('/save',                                      [ApiPostsController::class, 'save'])->name('api.posts.save');
+    Route::post('/delete',                                    [ApiPostsController::class, 'delete'])->name('api.posts.delete');
 
 });
 
