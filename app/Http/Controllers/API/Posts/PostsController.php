@@ -65,4 +65,28 @@ class PostsController extends Controller{
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    /** ------------------------------------------------------------------------------------------------------------ **/
+    /**
+     *  Fetch user posts:
+     *      1. Fetch my posts (by api token)
+     *      2. Fetch other users posts (check if posts can be fetched)
+     */
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function fetchMyPosts(Request $request): JsonResponse{
+        try{
+            /** @var UserAPIToken $request->api_token */
+            $user = User::where('api_token', $request->api_token)->first();
+
+            return $this->apiResponse('0000', __('Success'), [
+                'posts' => Post::where('user_id', '=', $user->id)->with('fileRel')->get()
+            ]);
+        }catch (\Exception $e){
+            return $this->apiResponse('2021', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
 }

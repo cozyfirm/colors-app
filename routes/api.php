@@ -52,6 +52,14 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
     Route::post('/save',                                      [ApiPostsController::class, 'save'])->name('api.posts.save');
     Route::post('/delete',                                    [ApiPostsController::class, 'delete'])->name('api.posts.delete');
 
+    /*
+     *  Fetch user posts:
+     *      1. Fetch my posts (by api token)
+     *      2. Fetch other users posts (check if posts can be fetched)
+     */
+    Route::post('/fetch-my-posts',                            [ApiPostsController::class, 'fetchMyPosts'])->name('api.posts.fetch-my-posts');
+    Route::post('/fetch-user-posts',                          [ApiPostsController::class, 'fetchUserPosts'])->name('api.posts.fetch-user-posts');
+
 });
 
 /**
