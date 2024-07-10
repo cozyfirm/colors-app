@@ -35,7 +35,7 @@ Route::prefix('/teams')->middleware('api-auth')->group(function (){
     /*
      *  Fetch all teams and national teams
      */
-    Route::post ('/fetch-national-teams',                     [APITeamsController::class, 'fetchNationalTeams'])->name('api.teams.fetch-national-teams');
+    Route::post ('/fetch-national-teams',                     [APITeamsController::class, 'nationalTeams'])->name('api.teams.fetch-national-teams');
     Route::post('/fetch-teams',                              [APITeamsController::class, 'fetchTeams'])->name('api.teams.fetch-teams');
 
     /*
