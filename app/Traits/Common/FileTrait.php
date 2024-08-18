@@ -36,10 +36,19 @@ trait FileTrait{
             }catch (\Exception $e){ return null; }
         }else return null;
     }
-    public function remove($id): void{
+
+    /**
+     * @param $id
+     * @return void
+     *
+     * Remove file from database and remove it from storage
+     */
+    public function removeFile($id): void{
         try{
             $file = MyFile::where('id', '=', $id)->first();
-            // unlink(public_path($file->getFile()));
+            try{
+                unlink(public_path($file->fullName()));
+            }catch (\Exception $e){ }
             $file->delete();
         }catch (\Exception $e){}
     }

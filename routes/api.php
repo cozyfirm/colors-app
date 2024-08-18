@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
+use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
@@ -70,6 +71,18 @@ Route::prefix('/users')->middleware('api-auth')->group(function (){
     Route::post('/get-data',                           [UsersController::class, 'getUserData'])->name('api.users.get-data');
 
     Route::post('/update',                             [UsersController::class, 'update'])->name('api.users.update');
+});
+
+/** ---------------------------------------------------------------------------------------------------------------- **/
+/**
+ *  Groups routes
+ */
+Route::prefix('/groups')->middleware('api-auth')->group(function (){
+    Route::post('/save',                               [GroupsController::class, 'save'])->name('api.groups.save');
+    Route::post('/update',                             [GroupsController::class, 'update'])->name('api.groups.update');
+    Route::post('/update-photo',                       [GroupsController::class, 'updatePhoto'])->name('api.groups.update-photo');
+
+    Route::post('/update',                             [GroupsController::class, 'update'])->name('api.users.update');
 });
 
 /**

@@ -14,4 +14,11 @@ class MyFile extends Model{
 
     protected $table = '__files';
     protected $guarded = ['id'];
+
+    /**
+     * @return string
+     *
+     * Get full file name with path (/files/...)
+     */
+    public function fullName(): string{ return $this->path . '/' . $this->name; }
 }
