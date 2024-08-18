@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\SystemCore\Users\UserTeams;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,7 +28,10 @@ class User extends Authenticatable
         'username',
         'password',
         'api_token',
-        'restart_pin'
+        'restart_pin',
+        'birth_date',
+        'city',
+        'country'
     ];
 
     /**
@@ -50,5 +55,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function teamsRel(): HasOne{
+        return $this->hasOne(UserTeams::class, 'user_id', 'id');
     }
 }

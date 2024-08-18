@@ -66,8 +66,10 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
  *  User routes: Fetch users; users data, etc:
  */
 
-Route::prefix('/users')->group(function (){
+Route::prefix('/users')->middleware('api-auth')->group(function (){
     Route::post('/get-data',                           [UsersController::class, 'getUserData'])->name('api.users.get-data');
+
+    Route::post('/update',                             [UsersController::class, 'update'])->name('api.users.update');
 });
 
 /**

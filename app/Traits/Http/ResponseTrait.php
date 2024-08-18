@@ -55,7 +55,10 @@ trait ResponseTrait{
      * Mixed response; Code in form of variable; Return type string
      */
     public function jsonResponse($code, $message, array $data = []): bool | string {
-        return json_encode([
+        return ($data === []) ? json_encode([
+            'code' => $code,
+            'message' => $message,
+        ]) : json_encode([
             'code' => $code,
             'message' => $message,
             'data' => $data

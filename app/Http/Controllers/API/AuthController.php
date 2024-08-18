@@ -34,6 +34,11 @@ class AuthController extends Controller{
                     'name' => $user->name,
                     'email' => $user->email,
                     'api_token' => $user->api_token,
+                    'teams' => [
+                        'status' => isset($user->teamsRel),
+                        'team' => $user->teamsRel->team ?? null,
+                        'national_team' => $user->teamsRel->national_team ?? null
+                    ]
                 ]);
             }else {
                 return $this->apiResponse('1105', __('You have entered wrong password'));
