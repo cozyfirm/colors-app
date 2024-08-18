@@ -31,7 +31,10 @@ class User extends Authenticatable
         'restart_pin',
         'birth_date',
         'city',
-        'country'
+        'country',
+        's_not',
+        's_loc',
+        's_b_date'
     ];
 
     /**

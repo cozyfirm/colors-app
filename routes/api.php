@@ -69,9 +69,20 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
  */
 
 Route::prefix('/users')->middleware('api-auth')->group(function (){
+    /** Basic user info; Get by owner */
     Route::post('/get-data',                           [UsersController::class, 'getUserData'])->name('api.users.get-data');
-
+    /** Update basic info */
     Route::post('/update',                             [UsersController::class, 'update'])->name('api.users.update');
+
+    /**
+     *  Settings APIs:
+     *      1. Language
+     *      2. Notifications
+     *      3. Show location
+     *      4. Show date of birth
+     */
+    Route::post('/set-language',                        [UsersController::class, 'setLanguage'])->name('api.users.set-language');
+    Route::post('/profile-settings',                    [UsersController::class, 'profileSettings'])->name('api.users.profile-settings');
 });
 
 /** ---------------------------------------------------------------------------------------------------------------- **/

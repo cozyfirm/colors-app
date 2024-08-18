@@ -21,14 +21,17 @@ class UsersController extends Controller{
      */
     public function getUserData(Request $request): JsonResponse{
         try{
-            return $this->apiResponse('0000', "Logged user", [
+            return $this->apiResponse('0000', "User data", [
                 'username' => Auth::guard()->user()->username,
                 'email' => Auth::guard()->user()->email,
                 'teams' => [
                     'status' => isset(Auth::guard()->user()->teamsRel),
                     'team' => Auth::guard()->user()->teamsRel->team ?? null,
                     'national_team' => Auth::guard()->user()->teamsRel->national_team ?? null
-                ]
+                ],
+                's_not' => Auth::guard()->user()->s_not,
+                's_loc' => Auth::guard()->user()->s_loc,
+                's_b_date' => Auth::guard()->user()->s_b_date,
             ]);
         }catch (\Exception $e){
             return $this->apiResponse('2001', __('Error while processing your request. Please contact an administrator'));
@@ -69,6 +72,48 @@ class UsersController extends Controller{
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    /** ------------------------------------------------------------------------------------------------------------ **/
+    /**
+     *  Settings APIs:
+     *      1. Language
+     *      2. Notifications
+     *      3. Show location
+     *      4. Show date of birth
+     */
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * Change language used on mobile APP
+     */
+    public function setLanguage(Request $request): JsonResponse{
+
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * Update profile settings
+     */
+    public function profileSettings(Request $request) : JsonResponse{
+        try{
+            /* Transform to integer */
+            $request['value'] = (int)($request->value);
+
+            if($request->key != 's_not' and $request->key != 's_loc' and $request->key != 's_b_date'){ return $this->apiResponse('2032', __('Unknown key')); }
+            if($request->value != 0 and $request->value != 1){ return $this->apiResponse('2033', __('Value not valid')); }
+
+            Auth::guard()->user()->update([$request->key => $request->value]);
+
+            return $this->getUserData($request);
+        }catch (\Exception $e){
+            return $this->apiResponse('2031', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
 
     /* ToDo - Update image */
 

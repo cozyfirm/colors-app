@@ -33,6 +33,11 @@ return new class extends Migration
             $table->string('role', 15)->default("user");
             $table->tinyInteger('active')->default(1);
 
+            /* User settings */
+            $table->tinyInteger('s_not')->default(1);       // Show notifications : true | false
+            $table->tinyInteger('s_loc')->default(1);       // Show location : true | false
+            $table->tinyInteger('s_b_date')->default(1);    // Show birth date : true | false
+
             $table->rememberToken();
             $table->timestamps();
         });
