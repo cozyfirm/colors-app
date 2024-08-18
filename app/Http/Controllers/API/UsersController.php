@@ -24,6 +24,9 @@ class UsersController extends Controller{
             return $this->apiResponse('0000', "User data", [
                 'username' => Auth::guard()->user()->username,
                 'email' => Auth::guard()->user()->email,
+                'birth_date' => Auth::guard()->user()->birth_date,
+                'birth_date_f' => Carbon::parse(Auth::guard()->user()->birth_date)->format('d.m.Y'),
+                'city' => Auth::guard()->user()->city,
                 'teams' => [
                     'status' => isset(Auth::guard()->user()->teamsRel),
                     'team' => Auth::guard()->user()->teamsRel->team ?? null,
@@ -61,13 +64,7 @@ class UsersController extends Controller{
                 'city' => $request->city
             ]);
 
-            return $this->apiResponse('0000', "Success", [
-                'username' => Auth::guard()->user()->username,
-                'email' => Auth::guard()->user()->email,
-                'birth_date' => Auth::guard()->user()->birth_date,
-                'birth_date_f' => Carbon::parse(Auth::guard()->user()->birth_date)->format('d.m.Y'),
-                'city' => Auth::guard()->user()->city,
-            ]);
+            return $this->getUserData($request);
         }catch (\Exception $e){
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
         }

@@ -1,32 +1,15 @@
-# Update profile settings
+# Get user data
 
-This endpoint is used to update profile settings, using route
+This endpoint is used to fetch user data, using route
 
 ```http
-POST /api/users/profile-settings
+POST /api/users/get-data
 ```
 
 | Parameter   | Type     | Description                                            |
 |:------------|:---------|:-------------------------------------------------------|
 | `api_token` | `string` | **Required**. User auth token                          |
-| `key`       | `string` | **Required**. Selected key: s_not or s_loc or s_b_date |
-| `value`     | `int`    | **Required**. 0 or 1                                   |
 
-
-List of keys:
-
-| Key      | Description        |
-|:---------|:-------------------|
-| s_not    | Show notifications |
-| s_loc    | Show location      |
-| s_b_date | Show birth date    |
-
-List of values:
-
-| Value | Description     |
-|:------|:----------------|
-| 0     | Disabled        |
-| 1     | Enabled         |
 
 ## Status Codes
 
@@ -35,9 +18,7 @@ API returns the following status codes in its API:
 | Status Code | Description                        |
 |:------------|:-----------------------------------|
 | 0000        | **OK**                             |
-| 2031        | **Error**: Global error.           |
-| 2032        | **Error**: Error: Unknown key      |
-| 2033        | **Error**: Error: Value not valid  |
+| 2001        | **Error**: Global error.           |
 
 ## Example of success response
 
@@ -46,8 +27,6 @@ For input data given as:
 | Key         | value       |
 |:------------|:------------|
 | `api_token` | SHA256-HASH |
-| `key`       | s_b_date    |
-| `value`     | 0           |
 
 ```json
 {
