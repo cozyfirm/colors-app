@@ -69,4 +69,8 @@ class UsersController extends Controller{
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    /* ToDo - Update image */
+
+    /* ToDo - Select country */
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
+use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
@@ -82,7 +83,19 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
     Route::post('/update',                             [GroupsController::class, 'update'])->name('api.groups.update');
     Route::post('/update-photo',                       [GroupsController::class, 'updatePhoto'])->name('api.groups.update-photo');
 
-    Route::post('/update',                             [GroupsController::class, 'update'])->name('api.users.update');
+    /** Search groups by name */
+    Route::post('/search',                             [GroupsController::class, 'search'])->name('api.groups.search');
+
+    /** Membership */
+    Route::prefix('/membership')->group(function (){
+        /** Get all members */
+        Route::post('/all-members',                              [GroupsMembershipController::class, 'allMembers'])->name('api.groups.membership.all-members');
+
+        /** Create new request */
+        Route::post('/send-request',                             [GroupsMembershipController::class, 'sendRequest'])->name('api.groups.membership.send-request');
+        /** Allow or deny request: Performed by admins */
+        Route::post('/allow-deny-request',                       [GroupsMembershipController::class, 'allowDenyRequest'])->name('api.groups.membership.allow-deny-request');
+    });
 });
 
 /**

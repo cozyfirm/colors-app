@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static create(array $array)
+ * @method static where(string $string, string $string1, string $string2)
  */
 class Group extends Model{
     use HasFactory, SoftDeletes;

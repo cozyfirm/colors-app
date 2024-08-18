@@ -12,7 +12,6 @@ use App\Traits\Common\FileTrait;
 use App\Traits\Http\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class GroupsController extends Controller{
     use FileTrait, ResponseTrait, CommonTrait;
@@ -87,7 +86,6 @@ class GroupsController extends Controller{
             if(!isset($group->adminsRel)) return $this->apiResponse('3008', __('Admin not found'));
             if(!$group->isAdmin($user->id)) return $this->apiResponse('3009', __('No permission to edit group found'));
 
-
             /** @var PostContent $request->content */
             $group->update([
                 'name' => $request->name,
@@ -121,7 +119,6 @@ class GroupsController extends Controller{
             if(!isset($group->adminsRel)) return $this->apiResponse('3012', __('Admin not found'));
             if(!$group->isAdmin($user->id)) return $this->apiResponse('3013', __('No permission to edit group found'));
 
-
             $request['path'] = $this->_file_path;
             $file = $this->saveFile($request, 'photo');
 
@@ -139,6 +136,23 @@ class GroupsController extends Controller{
             return $this->apiResponse('0000', __('Success'), [
                 'group' => $group
             ]);
+        }catch (\Exception $e){
+            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /** ------------------------------------------------------------------------------------------------------------ **/
+    /**
+     *  Search groups by name
+     */
+
+    public function search(Request $request) : JsonResponse{
+        try{
+            if(empty($request->name)) return $this->apiResponse('3020', __('Empty group name'));
+
+            return $this->apiResponse('0000', __('Success'),
+                Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members'])->toArray()
+            );
         }catch (\Exception $e){
             return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
         }

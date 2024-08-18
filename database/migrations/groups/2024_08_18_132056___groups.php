@@ -29,6 +29,9 @@ return new class extends Migration
             /* Short description of group purpose */
             $table->text('description');
 
+            $table->bigInteger('reactions')->default(0);
+            $table->bigInteger('members')->default(1);
+
             $table->timestamps();
             $table->softDeletes();
         });
