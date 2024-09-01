@@ -22,6 +22,18 @@ Route::prefix('/auth')->group(function (){
     Route::post('/',                                   [AuthController::class, 'auth'])->name('api.auth');
     Route::post('/register',                           [AuthController::class, 'register'])->name('api.auth.register');
 
+    /**
+     *  Check for:
+     *      1. Email
+     *      2. Username
+     *      3. Password
+     */
+    Route::prefix('/check')->group(function (){
+        Route::post('/email',                              [AuthController::class, 'checkEmail'])->name('api.auth.check.email');
+        Route::post('/username',                           [AuthController::class, 'checkUsername'])->name('api.auth.check.username');
+        Route::post('/password',                           [AuthController::class, 'checkPassword'])->name('api.auth.check.password');
+    });
+
     /* Restart password */
     Route::prefix('/restart-password')->group(function (){
         Route::post('/generate-pin',                         [AuthController::class, 'generatePIN'])->name('api.auth.restart-password.generate-pin');

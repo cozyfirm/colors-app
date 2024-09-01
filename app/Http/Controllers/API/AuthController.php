@@ -109,6 +109,55 @@ class AuthController extends Controller{
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /*
+     *  When creating account, offer live check for:
+     *      1. Email
+     *      2. Username
+     *      3. Password
+     */
+    public function checkEmail(Request $request): JsonResponse{
+        try{
+            if(!isset($request->email)) return $this->apiResponse('1011', __('Please, enter your email'));
+            if(strlen($request->email) > 50) return $this->apiResponse('1012', __('Email too long'));
+
+            $user = User::where('email', $request->email)->first();
+            if($user) return $this->apiResponse('1013', __('This email has already been used'));
+            else return $this->apiResponse('0000', __('Email is available to use'));
+        }catch (\Exception $e){
+            return $this->apiResponse('1010', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+    public function checkUsername(Request $request): JsonResponse{
+        try{
+            if(!isset($request->username)) return $this->apiResponse('1015', __('Please, enter your username'));
+            if(strlen($request->username) > 20) return $this->apiResponse('1016', __('Username too long'));
+
+            $user = User::where('username', $request->username)->first();
+            if($user) return $this->apiResponse('1017', __('This username has already been used'));
+            else return $this->apiResponse('0000', __('Username is available to use'));
+        }catch (\Exception $e){
+            return $this->apiResponse('1014', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+    public function checkPassword(Request $request): JsonResponse{
+        try{
+            if(!isset($request->password)) return $this->apiResponse('1019', __('Please, enter your password'));
+
+            try{
+                $passwordCheck = $this->passwordCheck($request, '1021');
+
+                if($passwordCheck['code'] != '0000'){
+                    return $this->apiResponse($passwordCheck['code'], $passwordCheck['message']);
+                }
+            }catch (\Exception $e){ return $this->apiResponse('1020', __('Error while processing your request. Please contact an administrator')); }
+
+            return $this->apiResponse('0000', __('Good password'));
+        }catch (\Exception $e){
+            return $this->apiResponse('1018', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*
      *  Restart password
      *      - Generate pin
      *      - Confirm PIN
