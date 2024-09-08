@@ -20,6 +20,7 @@ class AuthController extends Controller{
 
     public function auth(Request $request): JsonResponse {
         try{
+            /* ToDo - Check if email was verified */
             if(!isset($request->email))    return $this->apiResponse('1102', __('Please, enter your email'));
             if(!isset($request->password)) return $this->apiResponse('1103', __('Please, enter your password'));
 

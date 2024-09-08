@@ -1,0 +1,926 @@
+{
+	"info": {
+		"_postman_id": "5690250e-d911-4044-9fa9-15df5c0a63ad",
+		"name": "Colors App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "8091351"
+	},
+	"item": [
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Fetch My Posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/fetch-my-posts?api_token=ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								"fetch-my-posts"
+							],
+							"query": [
+								{
+									"key": "api_token",
+									"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/delete?api_token=ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8&post_id=9",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "api_token",
+									"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8"
+								},
+								{
+									"key": "post_id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Social",
+			"item": [
+				{
+					"name": "Groups",
+					"item": [
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/C:/Users/kaapi/Documents/webApps/colors-app/public/files/images/colors.png"
+										},
+										{
+											"key": "name",
+											"value": "Željo for Life",
+											"type": "text"
+										},
+										{
+											"key": "public",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Grupa navijača FK Sarajevo Bosna i Hercegovina!",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/save"
+							},
+							"response": []
+						},
+						{
+							"name": "Search",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "želj",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/search"
+							},
+							"response": []
+						},
+						{
+							"name": "Membership - send request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "13",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/membership/send-request"
+							},
+							"response": []
+						},
+						{
+							"name": "Membership - Allow deny request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "8",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "accept",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/membership/allow-deny-request"
+							},
+							"response": []
+						},
+						{
+							"name": "Membership - All members",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "13",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/membership/all-members"
+							},
+							"response": []
+						},
+						{
+							"name": "UpdatePhoto",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "hash",
+											"value": "$2y$12$T5.F99pFbmPbrHFAMYnBzOiVB.MlyLQj4meZ8ultqmoRQoemqDtEK",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": [
+												"/C:/Users/kaapi/Documents/webApps/colors-app/public/files/images/colors.png",
+												"/C:/Users/kaapi/Documents/webApps/colors-app/public/files/images/icon.png"
+											]
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/update-photo"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "api_token",
+											"value": "6a3f778af7cdd7e3beee12884d6b8dabd33dad476dc8bb9e1f1fd9574dd895c0",
+											"type": "text"
+										},
+										{
+											"key": "hash",
+											"value": "$2y$12$T5.F99pFbmPbrHFAMYnBzOiVB.MlyLQj4meZ8ultqmoRQoemqDtEK",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "FK Sarajevo BiH",
+											"type": "text"
+										},
+										{
+											"key": "public",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Grupa navijača FK Sarajevo Bosna i Hercegovina!",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/groups/update"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetData",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/get-data?api_token=ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"get-data"
+							],
+							"query": [
+								{
+									"key": "api_token",
+									"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/get-data?api_token=ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"get-data"
+							],
+							"query": [
+								{
+									"key": "api_token",
+									"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profileSettings",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "api_token",
+									"value": "ccd8e0240fb69b612a882d90b3d23898e3ffe9998661374c04e3f09f355781e8",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"value": "s_loc",
+									"type": "text"
+								},
+								{
+									"key": "value",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/users/profile-settings"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "check",
+					"item": [
+						{
+							"name": "Check Email",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "edin@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/check/email"
+							},
+							"response": []
+						},
+						{
+							"name": "Check Username",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "aladeen-kapic",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/check/username"
+							},
+							"response": []
+						},
+						{
+							"name": "Check Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "password",
+											"value": "#sifrajesifra2",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/check/password"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Restart password",
+					"item": [
+						{
+							"name": "Generate PIN",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "kaapiic@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/restart-password/generate-pin"
+							},
+							"response": []
+						},
+						{
+							"name": "Verify PIN",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "kaapiic@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "pin",
+											"value": "7648",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/restart-password/verify-pin"
+							},
+							"response": []
+						},
+						{
+							"name": "New password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "kaapiic@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "pin",
+											"value": "7648",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "#fuckYouBitch23",
+											"type": "text"
+										}
+									]
+								},
+								"url": "http://127.0.0.1:8000/api/auth/restart-password/new-password"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "aladeen",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "kaapiic@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "#ovoJeSifra23",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "aladeen",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "kaapiic@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "#ovoJeSifra23",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify an email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "aladeen",
+									"type": "text"
+								},
+								{
+									"key": "api_token",
+									"value": "672d089fd45b2a773e7cbd612f3a55e5692b762cf0fb576b3e77ee2fd02efaaf",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/auth/verify-an-email"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OpenAPI",
+			"item": [
+				{
+					"name": "Config",
+					"item": [
+						{
+							"name": "Splash Screen",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/open-api/config/splash-screen"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "info",
+					"item": [
+						{
+							"name": "Terms and conditions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/open-api/config/info/terms-and-conditions"
+							},
+							"response": []
+						},
+						{
+							"name": "Privacy policy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/open-api/config/info/privacy-policy"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
