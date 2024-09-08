@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Config\SplashController;
 use App\Http\Controllers\Admin\SystemCore\ClubsController;
 use App\Http\Controllers\Admin\SystemCore\LeagueController;
 use App\Http\Controllers\Admin\SystemCore\SeasonsController;
@@ -104,6 +105,24 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
             Route::get ('/match-schedule/{season_id}',              [SeasonsController::class, 'matchSchedule'])->name('admin.core.seasons.match-schedule');
             Route::post('/save-match-schedule',                     [SeasonsController::class, 'saveMatchSchedule'])->name('admin.core.seasons.system.core.seasons.save-match-schedule');
             Route::get ('/delete-match-schedule/{id}',              [SeasonsController::class, 'deleteMatchSchedule'])->name('admin.core.seasons.delete-match-schedule');
+        });
+    });
+
+    /**
+     *  Configuration
+     */
+
+    Route::prefix('/config')->middleware('auth')->group(function () {
+        /*
+         *  Splash pages
+         */
+        Route::prefix('/splash')->group(function (){
+            Route::get ('/',                                [SplashController::class, 'index'])->name('admin.config.splash');
+            Route::get ('/create',                          [SplashController::class, 'create'])->name('admin.config.splash.create');
+            Route::post('/save',                            [SplashController::class, 'save'])->name('admin.config.splash.save');
+            Route::get ('/edit/{id}',                       [SplashController::class, 'edit'])->name('admin.config.splash.edit');
+            Route::post('/update',                          [SplashController::class, 'update'])->name('admin.config.splash.update');
+            Route::get ('/delete/{id}',                     [SplashController::class, 'delete'])->name('admin.config.splash.delete');
         });
     });
 });

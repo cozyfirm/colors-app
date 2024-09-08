@@ -352,7 +352,7 @@
 {{--        </a>--}}
 
         <div class="subtitle">
-            <h4> {{__('Postavke')}} </h4>
+            <h4> {{__('Settings')}} </h4>
             <div class="subtitle-icon">
                 <i class="fas fa-cogs"></i>
             </div>
@@ -363,7 +363,7 @@
                     <div class="s-lms-e-img">
                         <i class="fas fa-key"></i>
                     </div>
-                    <p>{{__('Šifarnici')}}</p>
+                    <p>{{__('Keywords')}}</p>
                 </div>
             </div>
         </a>
@@ -403,25 +403,25 @@
                     <div class="s-lms-e-img">
                         <i class="fas fa-address-card"></i>
                     </div>
-                    <p>{{__('Stranice')}}</p>
+                    <p>{{__('Config pages')}}</p>
                     <div class="extra-elements">
                         <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>
                 <div class="inside-links active-links">
-                    <a href="#">
+                    <a href="{{ route('admin.config.splash') }}">
                         <div class="inside-lm-link">
                             <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Pregled svih stranica')}}</p>
+                            <p>{{__('Splash screens')}}</p>
                         </div>
                     </a>
 
-                    <a href="#">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p> {{__('Unos novog sadržaja')}} </p>
-                        </div>
-                    </a>
+{{--                    <a href="#">--}}
+{{--                        <div class="inside-lm-link">--}}
+{{--                            <div class="ilm-l"></div><div class="ilm-c"></div>--}}
+{{--                            <p> {{__('Unos novog sadržaja')}} </p>--}}
+{{--                        </div>--}}
+{{--                    </a>--}}
                 </div>
             </div>
         </a>

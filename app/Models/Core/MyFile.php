@@ -21,4 +21,6 @@ class MyFile extends Model{
      * Get full file name with path (/files/...)
      */
     public function fullName(): string{ return $this->path . '/' . $this->name; }
+    public function fullFrontName(): string{ return '/' . $this->path . '/' . $this->name; }
+
 }

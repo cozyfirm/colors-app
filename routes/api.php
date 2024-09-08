@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
+use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
@@ -138,5 +139,17 @@ Route::prefix('/open-api')->group(function (){
      */
     Route::prefix('/teams')->group(function (){
         Route::post('/by-name',                            [OpenApiClubsController::class, 'searchByName'])->name('api.open-api.teams.by-name');
+    });
+
+    /**
+     *  Config data
+     */
+    Route::prefix('/config')->group(function (){
+        /**
+         *  Splash screens
+         */
+        Route::prefix('/splash-screen')->group(function (){
+            Route::post('/',                                [OpenApiSplashController::class, 'get'])->name('api.open-api.config.splash-screen');
+        });
     });
 });
