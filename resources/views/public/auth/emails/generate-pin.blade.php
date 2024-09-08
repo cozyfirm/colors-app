@@ -13,6 +13,6 @@ In case you did not requested this action, please contact our admins for further
 
 Thank you for using our system.
 Have a nice rest of the day, <br><br>
-<a href="https://colors.ba"> Colors BA </a>
+<a href="{{ env('APP_DOMAIN') }}"> {{ env('APP_NAME') }} </a>
 @endcomponent
 

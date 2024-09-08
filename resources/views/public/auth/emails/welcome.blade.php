@@ -9,6 +9,6 @@ To verify your email, please use <a href="{{ route('api.auth.verify-an-email', [
 
 Thank you for using our system.
 Have a nice rest of the day, <br><br>
-<a href="{{ env('APP_DOMAIN') }}"> Colors BA </a>
+<a href="{{ env('APP_DOMAIN') }}"> {{ env('APP_NAME') }} </a>
 @endcomponent
 

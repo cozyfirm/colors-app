@@ -13,7 +13,11 @@ class SplashController extends Controller{
 
     public function get(Request $request): JsonResponse{
         try{
-            $screen = OtherData::where('type', 'splash')->inRandomOrder()->with('fileRel:id,name,ext,type,path')->first(['id', 'title', 'file_id']);
+            $screen = OtherData::where('type', 'splash')->inRandomOrder()->with('fileRel:id,name,ext,type,path')->first(['id', 'title', 'file_id', 'views']);
+
+            /* Increase number of views */
+            if($screen) $screen->update(['views' => ($screen->views + 1)]);
+
             return $this->apiResponse('0000' ,'Success', [
                 'default' => !isset($screen),
                 'screen' => $screen
