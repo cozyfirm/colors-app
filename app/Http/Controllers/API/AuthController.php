@@ -7,6 +7,7 @@ use App\Mail\API\Auth\GeneratePIN;
 use App\Mail\API\Auth\WelcomeTo;
 use App\Models\User;
 use App\Traits\Http\ResponseTrait;
+use App\Traits\Users\UserTrait;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller{
-    use ResponseTrait;
+    use ResponseTrait, UserTrait;
 
     public function auth(Request $request): JsonResponse {
         try{
@@ -62,6 +63,9 @@ class AuthController extends Controller{
         }
     }
 
+    /*
+     *  Create new use account
+     */
     public function register(Request $request): JsonResponse {
         try{
             /* Empty data check */
@@ -90,13 +94,15 @@ class AuthController extends Controller{
 
             /* Create new user */
             $request['password'] = Hash::make($request->password);
-            $request->request->add(['api_token' => hash('sha256', $request->email. '+'. time())]);
-            $request['email_verified_at'] = Carbon::now();
+            $request->request->add(['api_token' => $this->generateHash($request->email) ]);
+            // $request['email_verified_at'] = Carbon::now();
 
             $user = User::create($request->all());
 
             /* Send an email for new user */
-            Mail::to($request->email)->send(new WelcomeTo($request->username, $request->email));
+            try{
+                Mail::to($request->email)->send(new WelcomeTo($request->username, $request->email, $user->api_token));
+            }catch (\Exception $e){}
 
             /* Return user and user data */
             return $this->apiResponse('0000', __('Your account has been created'), [
@@ -110,6 +116,37 @@ class AuthController extends Controller{
         }
     }
 
+    /*
+     *  Verify an email after registration:
+     *      - post method
+     *      - get method
+     */
+    public function verifyAnEmail(Request $request): JsonResponse{
+        try{
+            $user = User::where('username', $request->username)->where('api_token', $request->api_token)->first();
+
+            if($user){
+                $user->update(['email_verified_at' => Carbon::now()]);
+
+                return $this->apiResponse('0000', __('Email verification successful'));
+            }else return $this->apiResponse('1016', __('Email verification failed'));
+        }catch (\Exception $e){
+            return $this->apiResponse('1015', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+    public function verifyAnEmailGET($username, $api_token): JsonResponse{
+        try{
+            $user = User::where('username', $username)->where('api_token', $api_token)->first();
+
+            if($user){
+                $user->update(['email_verified_at' => Carbon::now()]);
+
+                return $this->apiResponse('0000', __('Email verification successful'));
+            }else return $this->apiResponse('1018', __('Email verification falied'));
+        }catch (\Exception $e){
+            return $this->apiResponse('1017', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
     /* -------------------------------------------------------------------------------------------------------------- */
     /*
      *  When creating account, offer live check for:
@@ -119,46 +156,46 @@ class AuthController extends Controller{
      */
     public function checkEmail(Request $request): JsonResponse{
         try{
-            if(!isset($request->email)) return $this->apiResponse('1011', __('Please, enter your email'));
-            if(strlen($request->email) > 50) return $this->apiResponse('1012', __('Email too long'));
+            if(!isset($request->email)) return $this->apiResponse('1021', __('Please, enter your email'));
+            if(strlen($request->email) > 50) return $this->apiResponse('1022', __('Email too long'));
 
             /* Check for email format */
-            if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) return $this->apiResponse('1013', __('Email invalid'));
+            if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) return $this->apiResponse('1023', __('Email invalid'));
 
             $user = User::where('email', $request->email)->first();
-            if($user) return $this->apiResponse('1014', __('This email has already been used'));
+            if($user) return $this->apiResponse('1024', __('This email has already been used'));
             else return $this->apiResponse('0000', __('Email is available to use'));
         }catch (\Exception $e){
-            return $this->apiResponse('1010', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('1020', __('Error while processing your request. Please contact an administrator'));
         }
     }
     public function checkUsername(Request $request): JsonResponse{
         try{
-            if(!isset($request->username)) return $this->apiResponse('1015', __('Please, enter your username'));
-            if(strlen($request->username) > 20) return $this->apiResponse('1016', __('Username too long'));
+            if(!isset($request->username)) return $this->apiResponse('1025', __('Please, enter your username'));
+            if(strlen($request->username) > 20) return $this->apiResponse('1026', __('Username too long'));
 
             $user = User::where('username', $request->username)->first();
-            if($user) return $this->apiResponse('1017', __('This username has already been used'));
+            if($user) return $this->apiResponse('1027', __('This username has already been used'));
             else return $this->apiResponse('0000', __('Username is available to use'));
         }catch (\Exception $e){
-            return $this->apiResponse('1014', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('1024', __('Error while processing your request. Please contact an administrator'));
         }
     }
     public function checkPassword(Request $request): JsonResponse{
         try{
-            if(!isset($request->password)) return $this->apiResponse('1019', __('Please, enter your password'));
+            if(!isset($request->password)) return $this->apiResponse('1029', __('Please, enter your password'));
 
             try{
-                $passwordCheck = $this->passwordCheck($request, '1021');
+                $passwordCheck = $this->passwordCheck($request, '1031');
 
                 if($passwordCheck['code'] != '0000'){
                     return $this->apiResponse($passwordCheck['code'], $passwordCheck['message']);
                 }
-            }catch (\Exception $e){ return $this->apiResponse('1020', __('Error while processing your request. Please contact an administrator')); }
+            }catch (\Exception $e){ return $this->apiResponse('1030', __('Error while processing your request. Please contact an administrator')); }
 
             return $this->apiResponse('0000', __('Good password'));
         }catch (\Exception $e){
-            return $this->apiResponse('1018', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('1028', __('Error while processing your request. Please contact an administrator'));
         }
     }
 

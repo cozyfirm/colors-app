@@ -25,6 +25,12 @@ Route::prefix('/auth')->group(function (){
     Route::post('/register',                           [AuthController::class, 'register'])->name('api.auth.register');
 
     /**
+     *  Verify email using token
+     */
+    Route::post('/verify-an-email',                             [AuthController::class, 'verifyAnEmail'])->name('api.auth.verify-an-email');
+    Route::get ('/verify-an-email/{username}/{api_token}',      [AuthController::class, 'verifyAnEmailGET'])->name('api.auth.verify-an-email');
+
+    /**
      *  Check for:
      *      1. Email
      *      2. Username

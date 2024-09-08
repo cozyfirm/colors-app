@@ -12,14 +12,15 @@ use Illuminate\Queue\SerializesModels;
 
 class WelcomeTo extends Mailable{
     use Queueable, SerializesModels;
-    public string $_username, $_mail;
+    public string $_username, $_mail, $_api_token;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($username, $mail){
+    public function __construct($username, $mail, $apiToken){
         $this->_username = $username;
         $this->_mail = $mail;
+        $this->_api_token = $apiToken;
     }
 
     /**

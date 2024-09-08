@@ -26,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'username',
+        'email_verified_at',
         'password',
         'api_token',
         'restart_pin',
