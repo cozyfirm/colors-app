@@ -111,7 +111,6 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     /**
      *  Configuration
      */
-
     Route::prefix('/config')->middleware('auth')->group(function () {
         /*
          *  Splash pages

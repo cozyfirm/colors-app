@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
+use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
 use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
@@ -150,6 +151,17 @@ Route::prefix('/open-api')->group(function (){
          */
         Route::prefix('/splash-screen')->group(function (){
             Route::post('/',                                [OpenApiSplashController::class, 'get'])->name('api.open-api.config.splash-screen');
+        });
+
+        /**
+         *  Open links:
+         *
+         *  - Terms and conditions
+         *  - Privacy policy
+         */
+        Route::prefix('/info')->group(function () {
+            Route::post('/terms-and-conditions',            [OpenApiInfoController::class, 'termsAndConditions'])->name('api.open-api.config.info.terms-and-conditions');
+            Route::post('/privacy-policy',                  [OpenApiInfoController::class, 'privacyPolicy'])->name('api.open-api.config.info.privacyPolicy');
         });
     });
 });
