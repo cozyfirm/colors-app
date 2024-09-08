@@ -21,13 +21,14 @@ POST /api/auth/check/email
 
 API returns the following status codes in its API:
 
-| Status Code | Description                                  |
-|:------------|:---------------------------------------------|
-| 0000        | **OK**                                       |
-| 1010        | **Error**: Global error.                     |
-| 1011        | **Error**: Please, enter your email          |
-| 1012        | **Error**: Email too long                    |
-| 1013        | **Error**: This email has already been used  |
+| Status Code | Description                                 |
+|:------------|:--------------------------------------------|
+| 0000        | **OK**                                      |
+| 1010        | **Error**: Global error.                    |
+| 1011        | **Error**: Please, enter your email         |
+| 1012        | **Error**: Email too long                   |
+| 1013        | **Error**: Email invalid                    |
+| 1014        | **Error**: This email has already been used |
 
 ## Example of success response
 

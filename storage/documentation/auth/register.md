@@ -24,11 +24,11 @@ API returns the following status codes in its API:
 | 1002        | **Error**: Please, enter your email            |
 | 1003        | **Error**: Please, enter your password         |
 | 1004        | **Error**: Please, enter your username         |
-| 1005        | **Error**: This email has already been used    |
+| 1005        | **Error**: Email invalid                       |
 | 1006        | **Error**: This username has already been used | 
-| 1007        | **Error**: Password not valid error            |
-| 1008        | **Error**: Password check: Global error.       |
-
+| 1007        | **Error**: This username has already been used |
+| 1008        | **Error**: Password not valid error            |
+| 1009        | **Error**: Password check: Global error.       |
 
 ## Example of success response
 

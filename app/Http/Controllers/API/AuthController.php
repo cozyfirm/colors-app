@@ -69,21 +69,24 @@ class AuthController extends Controller{
             if(!isset($request->password)) return $this->apiResponse('1003', __('Please, enter your password'));
             if(!isset($request->username)) return $this->apiResponse('1004', __('Please, enter your username'));
 
+            /* Check for email format */
+            if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) return $this->apiResponse('1005', __('Email invalid'));
+
             /* Check for unique email and username */
             $user = User::where('email', $request->email)->first();
-            if($user) return $this->apiResponse('1005', __('This email has already been used'));
+            if($user) return $this->apiResponse('1006', __('This email has already been used'));
 
             $user = User::where('username', $request->username)->first();
-            if($user) return $this->apiResponse('1006', __('This username has already been used'));
+            if($user) return $this->apiResponse('1007', __('This username has already been used'));
 
             /* Password check */
             try{
-                $passwordCheck = $this->passwordCheck($request);
+                $passwordCheck = $this->passwordCheck($request, '1008');
 
                 if($passwordCheck['code'] != '0000'){
                     return $this->apiResponse($passwordCheck['code'], $passwordCheck['message']);
                 }
-            }catch (\Exception $e){ return $this->apiResponse('1008', __('Error while processing your request. Please contact an administrator')); }
+            }catch (\Exception $e){ return $this->apiResponse('1009', __('Error while processing your request. Please contact an administrator')); }
 
             /* Create new user */
             $request['password'] = Hash::make($request->password);
@@ -119,8 +122,11 @@ class AuthController extends Controller{
             if(!isset($request->email)) return $this->apiResponse('1011', __('Please, enter your email'));
             if(strlen($request->email) > 50) return $this->apiResponse('1012', __('Email too long'));
 
+            /* Check for email format */
+            if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) return $this->apiResponse('1013', __('Email invalid'));
+
             $user = User::where('email', $request->email)->first();
-            if($user) return $this->apiResponse('1013', __('This email has already been used'));
+            if($user) return $this->apiResponse('1014', __('This email has already been used'));
             else return $this->apiResponse('0000', __('Email is available to use'));
         }catch (\Exception $e){
             return $this->apiResponse('1010', __('Error while processing your request. Please contact an administrator'));
