@@ -15,7 +15,7 @@ class LeagueController extends Controller{
 
     protected string $_destination_path = "files/core/leagues";
 
-    public function index(){
+    public function index(): View{
         $leagues = League::where('id', '>', 0);
         $leagues = Filters::filter($leagues);
         $filters = [

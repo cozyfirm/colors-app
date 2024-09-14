@@ -36,9 +36,11 @@
                     <td class="text-center">{{ $i++}}</td>
                     <td> {{ $user->name ?? ''}} </td>
                     <td> {{ $user->email ?? ''}} </td>
-                    <td> {{ $user->phone ?? ''}} </td>
+                    <td> {{ $user->prefixRel->phone_code ?? '' }} {{ $user->phone ?? ''}} </td>
                     <td> {{ $user->city ?? ''}} </td>
                     <td> {{ $user->countryRel->name_ba ?? ''}} </td>
+                    <td> {{ $user->teamsRel->teamRel->name ?? '' }} </td>
+                    <td> {{ $user->teamsRel->nationalTeamRel->name ?? '' }} </td>
 
                     <td class="text-center">
                         <a href="{{ route('admin.users.preview', ['username' => $user->username ]) }}" title="{{ __('More info') }}">

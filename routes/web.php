@@ -37,16 +37,16 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         /*
          *  Admin role routes
          */
-        Route::get('/',                                [UsersController::class, 'index'])->name('admin.users.index');
-        Route::get('/preview/{username}',              [UsersController::class, 'preview'])->name('admin.users.preview');
-        Route::get('/edit/{username}',                 [UsersController::class, 'edit'])->name('admin.users.edit');
-        Route::get('/update',                          [UsersController::class, 'update'])->name('admin.users.update');
+        Route::get ('/',                                [UsersController::class, 'index'])->name('admin.users.index');
+        Route::get ('/preview/{username}',              [UsersController::class, 'preview'])->name('admin.users.preview');
+        Route::get ('/edit/{username}',                 [UsersController::class, 'edit'])->name('admin.users.edit');
+        Route::post('/update',                          [UsersController::class, 'update'])->name('admin.users.update');
 
         /*
          *  User routes
          */
-        Route::get('/my-profile',                      [UsersController::class, 'myProfile'])->name('admin.users.my-profile');
-        Route::get('/update-profile',                  [UsersController::class, 'updateProfile'])->name('admin.users.update-profile');
+        Route::get ('/my-profile',                      [UsersController::class, 'myProfile'])->name('admin.users.my-profile');
+        Route::get ('/update-profile',                  [UsersController::class, 'updateProfile'])->name('admin.users.update-profile');
     });
 
     /**
