@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, int $seasonID)
+ * @method static create(array $array)
  */
 class SeasonTeam extends Model{
     use HasFactory;

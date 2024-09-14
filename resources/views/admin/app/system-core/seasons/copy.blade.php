@@ -39,27 +39,24 @@
 @section('content')
     <div class="content-wrapper content-wrapper-p-15">
         <div class="row">
-            <div class="@if(isset($preview)) col-md-9 @else col-md-12 @endif">
-                @if(isset($create))
-                    <form action="{{ route('admin.core.seasons.save') }}" method="POST" id="js-form">
-                @else
-                    <form action="{{ route('admin.core.seasons.update') }}" method="POST" id="js-form">
-                    {{ html()->hidden('id')->class('form-control')->value($season->id) }}
-                @endif
+            <div class="col-md-12">
+
+                <form action="{{ route('admin.core.seasons.copy-season') }}" method="POST" id="js-form">
+                    {{ html()->hidden('season_id')->class('form-control')->value($season->id) }}
                     @csrf
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <b>{{ html()->label(__('Season start'))->for('start_y') }}</b>
-                                {{ html()->number('start_y', '', (date('Y') - 4), (date('Y') + 4), 1)->class('form-control form-control-sm mt-1')->required()->value((isset($season) ? $season->start_y : date('Y')))->isReadonly(isset($preview)) }}
+                                {{ html()->number('start_y', '', (date('Y') - 4), (date('Y') + 4), 1)->class('form-control form-control-sm mt-1')->required()->value(date('Y')) }}
                                 <small id="start_yHelp" class="form-text text-muted"> {{ __('Season starting year, e.g. ') . date('Y') }} </small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <b>{{ html()->label(__('Season start'))->for('end_y') }}</b>
-                                {{ html()->number('end_y', '', (date('Y') - 4), (date('Y') + 4), 1)->class('form-control form-control-sm mt-1')->required()->value((isset($season) ? $season->end_y : (date('Y') + 1)))->isReadonly(isset($preview)) }}
+                                {{ html()->number('end_y', '', (date('Y') - 4), (date('Y') + 4), 1)->class('form-control form-control-sm mt-1')->required()->value(date('Y') + 1) }}
                                 <small id="end_yHelp" class="form-text text-muted"> {{ __('Season ending year, e.g. ') . date('Y') }} </small>
                             </div>
                         </div>
@@ -69,19 +66,17 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <b>{{ html()->label(__('League'))->for('league_id') }}</b>
-                                {{ html()->select('league_id', $leagues)->class('form-control form-control-sm mt-1 select-2')->required()->value(isset($season) ? $season->league_id : '')->disabled(isset($preview)) }}
+                                {{ html()->select('league_id', $leagues)->class('form-control form-control-sm mt-1 select-2')->required()->value(isset($season) ? $season->league_id : '')->disabled(true) }}
                                 <small id="league_idHelp" class="form-text text-muted">{{ __('Select league') }}</small>
                             </div>
                         </div>
                     </div>
 
-                    @if(!isset($preview))
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-dark btn-sm"> {{ __('Update') }} </button>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-dark btn-sm"> {{ __('Copy season') }} </button>
                         </div>
-                    @endif
+                    </div>
                 </form>
 
                 <div class="row mt-3">
@@ -91,16 +86,16 @@
                         @if(isset($season) and !$season->locked)
                             <br>
                             <form action="{{ route('admin.core.seasons.save-team') }}" method="POST">
-                            {{ html()->hidden('id')->class('form-control')->value($season->id) }}
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-10">
-                                    {{ html()->select('team_id', ['' => 'Select club'])->class('form-control form-control-sm mt-1 s2-search-clubs')->required() }}
+                                {{ html()->hidden('id')->class('form-control')->value($season->id) }}
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        {{ html()->select('team_id', ['' => 'Select club'])->class('form-control form-control-sm mt-1 s2-search-clubs')->required() }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-sm btn-secondary w-100 h-100"> <b>{{__('Save')}}</b> </button>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-sm btn-secondary w-100 h-100"> <b>{{__('Save')}}</b> </button>
-                                </div>
-                            </div>
                             </form>
                         @endif
 

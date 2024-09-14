@@ -94,6 +94,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
             Route::get ('/lock-season/{id}',                [SeasonsController::class, 'lockSeason'])->name('admin.core.seasons.lock-season');
 
             /*
+             *  Copy previous season and teams
+             */
+            Route::get ('/copy/{id}',                       [SeasonsController::class, 'copy'])->name('admin.core.seasons.copy');
+            Route::post('/copy-season',                     [SeasonsController::class, 'copySeason'])->name('admin.core.seasons.copy-season');
+
+            /*
              *  Seasons teams
              */
             Route::post('/save-team',                               [SeasonsController::class, 'saveTeam'])->name('admin.core.seasons.save-team');

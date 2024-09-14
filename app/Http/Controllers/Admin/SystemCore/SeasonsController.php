@@ -12,6 +12,7 @@ use App\Models\SystemCore\SeasonMatch;
 use App\Models\SystemCore\SeasonTeam;
 use App\Traits\Http\ResponseTrait;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,12 +35,12 @@ class SeasonsController extends Controller{
             'filters' => $filters
         ]);
     }
-    public function getData($action, $id = null): View{
+    public function getData($action, $id = null, $view = 'create'): View{
         $leagues = League::get();
         $cLeagues = [];
         foreach ($leagues as $league) $cLeagues[$league->id] = $league->name . " (" . $league->countryRel->name_ba . ")";
 
-        return view($this->_path. 'create', [
+        return view($this->_path. $view, [
             $action => true,
             'leagues' =>$cLeagues,
             // 'clubs' => Club::pluck('name', 'id'),
@@ -79,6 +80,33 @@ class SeasonsController extends Controller{
 
             return back()->with('success', __('Uspješno! Sada možete vršiti unos utakmica!'));
         }catch (\Exception $e){ return back()->with('error', __('Desila se greška, molimo pokušajte ponovo!')); }
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*
+     *  Copy previous season and teams
+     */
+    public function copy($id): View{
+        return $this->getData('copy', $id, 'copy');
+    }
+    public function copySeason(Request $request): JsonResponse{
+        try{
+            $season = Season::where('id', $request->season_id)->first();
+
+            $newSeason = Season::create([
+                'start_y' => $request->start_y,
+                'end_y' => $request->end_y,
+                'season' => $request->start_y . ' / ' . $request->end_y,
+                'league_id' => $request->league_id
+            ]);
+
+            $teams = SeasonTeam::where('season_id', $season->id)->get();
+            foreach ($teams as $team){
+                SeasonTeam::create(['season_id' => $newSeason->id, 'team_id' => $team->team_id, 'created_by' => Auth::user()->id]);
+            }
+
+            return $this->jsonSuccess(__('Sezona uspješno kopirana'), route('admin.core.seasons.preview', ['id' => $newSeason->id ]));
+        }catch (\Exception $e){ return $this->jsonError( '17100', $e->getMessage()) ;}
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
