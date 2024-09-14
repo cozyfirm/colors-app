@@ -7,16 +7,32 @@ use App\Http\Controllers\Controller;
 use App\Models\Core\Countries;
 use App\Models\Core\Keyword;
 use App\Models\SystemCore\League;
+use App\Models\SystemCore\LeagueModerator;
+use App\Models\User;
+use App\Traits\Http\ResponseTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class LeagueController extends Controller{
+    use ResponseTrait;
+
     protected string $_path = 'admin.app.system-core.league.';
 
     protected string $_destination_path = "files/core/leagues";
 
     public function index(): View{
-        $leagues = League::where('id', '>', 0);
+        if(Auth()->user()->checkRole('sys-mod')){
+            $leagues = League::where('id', '>', 0);
+        }else if(Auth()->user()->checkRole('league-mod')){
+            /*
+             *  Select only leagues that user has access to it
+             */
+            $leagueIDs = Auth::user()->getModeratorLeagues();
+            $leagues = League::whereIn('id', $leagueIDs);
+        }
         $leagues = Filters::filter($leagues);
         $filters = [
             'name' => __('Title'),
@@ -80,6 +96,34 @@ class LeagueController extends Controller{
             }
 
             return redirect()->route('admin.core.league.preview', ['id' => $request->id]);
-        }catch (\Exception $e){ dd($e); return back()->with('error', $e->getMessage()); }
+        }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*
+     *  League moderators
+     */
+    public function addModerator($id): View{
+        return view($this->_path. 'add-moderator', [
+            'create' => true,
+            'league' => League::where('id', $id)->first(),
+            'users' => User::where('role', 'league-mod')->pluck('name', 'id')
+        ]);
+    }
+    public function saveModerator(Request $request): JsonResponse{
+        try{
+            $moderator = LeagueModerator::where('user_id', $request->user_id)->where('league_id', $request->league_id)->first();
+            if(!$moderator){
+                $moderator = LeagueModerator::create(['user_id' => $request->user_id, 'league_id' => $request->league_id]);
+            }
+
+            return $this->jsonSuccess(__('Informacije uspješno ažurirane'), route('admin.core.league.preview', ['id' => $request->league_id ]));
+        }catch (\Exception $e){ }
+    }
+    public function removeModerator($league_id, $id): RedirectResponse{
+        try{
+            LeagueModerator::where('league_id', $league_id)->where('user_id', $id)->delete();
+            return redirect()->route('admin.core.league.preview', ['id' => $league_id]);
+        }catch (\Exception $e){}
     }
 }

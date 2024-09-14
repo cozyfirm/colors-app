@@ -123,7 +123,6 @@
 
     <!-- Menu subsection -->
     <div class="s-lm-subsection">
-
         <div class="subtitle">
             <h4>{{__('Graphical User Interface')}}</h4>
             <div class="subtitle-icon">
@@ -152,7 +151,7 @@
                     <a href="#">
                         <div class="inside-lm-link">
                             <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p> {{__('Kalendar')}} </p>
+                            <p> {{__('Calendar')}} </p>
                         </div>
                     </a>
                 </div>
@@ -180,37 +179,38 @@
             </div>
         </a>
 
-        <!-- Only for admins -->
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-users"></i>
+        @if(Auth()->user()->checkRole('administrator'))
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p>{{__('Users')}}</p>
+                        <div class="extra-elements">
+                            <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </div>
                     </div>
-                    <p>{{__('Users')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-                <div class="inside-links active-links">
-                    <a href="#">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Add new')}}</p>
-                            <div class="additional-icon">
-                                <i class="fas fa-plus"></i>
+                    <div class="inside-links active-links">
+                        <a href="#">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Add new')}}</p>
+                                <div class="additional-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.users.index') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Preview all')}}</p>
-                        </div>
-                    </a>
+                        </a>
+                        <a href="{{ route('admin.users.index') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Preview all')}}</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        @endif
 
         <div class="subtitle">
             <h4>{{__('System core')}}</h4>
@@ -219,103 +219,113 @@
             </div>
         </div>
 
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-futbol"></i>
+        @if(Auth()->user()->checkRole('sys-mod'))
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <p>{{__('Teams')}}</p>
+                        <div class="extra-elements">
+                            <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </div>
                     </div>
-                    <p>{{__('Teams')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-                <div class="inside-links active-links">
-                    <a href="{{ route('admin.core.clubs.create') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Add new')}}</p>
-                            <div class="additional-icon">
-                                <i class="fas fa-plus"></i>
+                    <div class="inside-links active-links">
+                        <a href="{{ route('admin.core.clubs.create') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Add new')}}</p>
+                                <div class="additional-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.core.clubs') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Preview all')}}</p>
-                        </div>
-                    </a>
+                        </a>
+                        <a href="{{ route('admin.core.clubs') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Preview all')}}</p>
+                            </div>
+                        </a>
 
-                    <a href="#">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Venues')}}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-feather"></i>
-                    </div>
-                    <p>{{__('Leagues')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-                <div class="inside-links active-links">
-                    <a href="{{ route('admin.core.league.create') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Add new')}}</p>
-                            <div class="additional-icon">
-                                <i class="fas fa-plus"></i>
+                        <a href="#">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Venues')}}</p>
                             </div>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.core.league') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Preview all')}}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-wind"></i>
-                    </div>
-                    <p>{{__('Seasons')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </a>
                     </div>
                 </div>
-                <div class="inside-links active-links">
-                    <a href="{{ route('admin.core.seasons.create') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Add new')}}</p>
-                            <div class="additional-icon">
-                                <i class="fas fa-plus"></i>
+            </a>
+        @endif
+        @if(Auth()->user()->checkRole('league-mod'))
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-feather"></i>
+                        </div>
+                        <p>{{__('Leagues')}}</p>
+                        <div class="extra-elements">
+                            <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                    <div class="inside-links active-links">
+                        @if(Auth()->user()->checkRole('sys-mod'))
+                            <a href="{{ route('admin.core.league.create') }}">
+                                <div class="inside-lm-link">
+                                    <div class="ilm-l"></div><div class="ilm-c"></div>
+                                    <p>{{__('Add new')}}</p>
+                                    <div class="additional-icon">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        @endif
+                        <a href="{{ route('admin.core.league') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Preview all')}}</p>
                             </div>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.core.seasons') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Preview all')}}</p>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        @endif
+
+        @if(Auth()->user()->checkRole('league-mod'))
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <p>{{__('Seasons')}}</p>
+                        <div class="extra-elements">
+                            <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                    <div class="inside-links active-links">
+                        <a href="{{ route('admin.core.seasons.create') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Add new')}}</p>
+                                <div class="additional-icon">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.core.seasons') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Preview all')}}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </a>
+        @endif
+
 {{--        <div class="subtitle">--}}
 {{--            <h4> {{__('Historija kupovanja')}} </h4>--}}
 {{--            <div class="subtitle-icon">--}}
@@ -351,80 +361,77 @@
 {{--            </div>--}}
 {{--        </a>--}}
 
-        <div class="subtitle">
-            <h4> {{__('Settings')}} </h4>
-            <div class="subtitle-icon">
-                <i class="fas fa-cogs"></i>
-            </div>
-        </div>
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <p>{{__('Keywords')}}</p>
+        @if(Auth()->user()->checkRole('administrator'))
+            <div class="subtitle">
+                <h4> {{__('Settings')}} </h4>
+                <div class="subtitle-icon">
+                    <i class="fas fa-cogs"></i>
                 </div>
             </div>
-        </a>
-
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-question"></i>
-                    </div>
-                    <p>{{__('FAQ')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <p>{{__('Keywords')}}</p>
                     </div>
                 </div>
-                <div class="inside-links active-links">
-                    <a href="#">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Pregled svih pitanja')}}</p>
-                        </div>
-                    </a>
+            </a>
 
-                    <a href="#">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p> {{__('Unos novih pitanja')}} </p>
+            <a href="#" class="menu-a-link">
+                <div class="s-lm-wrapper">
+                    <div class="s-lm-s-elements">
+                        <div class="s-lms-e-img">
+                            <i class="fas fa-address-card"></i>
                         </div>
-                    </a>
-                </div>
-            </div>
-        </a>
-
-        <a href="#" class="menu-a-link">
-            <div class="s-lm-wrapper">
-                <div class="s-lm-s-elements">
-                    <div class="s-lms-e-img">
-                        <i class="fas fa-address-card"></i>
+                        <p>{{__('Config pages')}}</p>
+                        <div class="extra-elements">
+                            <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                        </div>
                     </div>
-                    <p>{{__('Config pages')}}</p>
-                    <div class="extra-elements">
-                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>
+                    <div class="inside-links active-links">
+                        <a href="{{ route('admin.config.splash') }}">
+                            <div class="inside-lm-link">
+                                <div class="ilm-l"></div><div class="ilm-c"></div>
+                                <p>{{__('Splash screens')}}</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
-                <div class="inside-links active-links">
-                    <a href="{{ route('admin.config.splash') }}">
-                        <div class="inside-lm-link">
-                            <div class="ilm-l"></div><div class="ilm-c"></div>
-                            <p>{{__('Splash screens')}}</p>
-                        </div>
-                    </a>
+            </a>
+        @endif
+
+{{--        <a href="#" class="menu-a-link">--}}
+{{--            <div class="s-lm-wrapper">--}}
+{{--                <div class="s-lm-s-elements">--}}
+{{--                    <div class="s-lms-e-img">--}}
+{{--                        <i class="fas fa-question"></i>--}}
+{{--                    </div>--}}
+{{--                    <p>{{__('FAQ')}}</p>--}}
+{{--                    <div class="extra-elements">--}}
+{{--                        <div class="rotate-element"><i class="fas fa-angle-right"></i></div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="inside-links active-links">--}}
+{{--                    <a href="#">--}}
+{{--                        <div class="inside-lm-link">--}}
+{{--                            <div class="ilm-l"></div><div class="ilm-c"></div>--}}
+{{--                            <p>{{__('Pregled svih pitanja')}}</p>--}}
+{{--                        </div>--}}
+{{--                    </a>--}}
 
 {{--                    <a href="#">--}}
 {{--                        <div class="inside-lm-link">--}}
 {{--                            <div class="ilm-l"></div><div class="ilm-c"></div>--}}
-{{--                            <p> {{__('Unos novog sadržaja')}} </p>--}}
+{{--                            <p> {{__('Unos novih pitanja')}} </p>--}}
 {{--                        </div>--}}
 {{--                    </a>--}}
-                </div>
-            </div>
-        </a>
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </a>--}}
+
+
     </div>
 
 {{--    @include('system.template.menu.menu-includes.bottom-icons')--}}

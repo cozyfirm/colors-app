@@ -24,7 +24,9 @@ class UsersController extends Controller{
         return view($this->_path. 'my-profile', [
             'codes' => Countries::pluck('phone_code', 'id'),
             'countries' => Countries::pluck('name_ba', 'id'),
-            'user' => Auth::user()
+            'prefixes' => Countries::pluck('phone_code', 'id'),
+            'user' => Auth::user(),
+            'preview' => true
         ]);
     }
 

@@ -2,9 +2,9 @@
 @extends('admin.layout.layout')
 
 @section('c-icon') <i class="fas fa-users"></i> @endsection
-@section('c-title') {{ Auth()->user()->name }} @endsection
+@section('c-title') {{ $user->name }} @endsection
 @section('c-breadcrumbs')
-    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.users.index') }}">{{ __('Users') }}</a> / <a href="#">{{ Auth()->user()->name }}</a>
+    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.users.index') }}">{{ __('Users') }}</a> / <a href="#">{{ $user->name }}</a>
 @endsection
 @section('c-buttons')
     <a href="{{ route('admin.users.index') }}">

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Core\Countries;
+use App\Models\SystemCore\LeagueModerator;
 use App\Models\SystemCore\Users\UserTeams;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,6 +83,19 @@ class User extends Authenticatable{
         return Carbon::parse($this->birth_date)->format('d.m.Y');
     }
     public static function getRoles(): array{ return self::$_roles; }
+
+    public function checkRole($role) : bool{
+        if($role === 'administrator'){
+            return $this->role === 'administrator';
+        }else if($role === 'sys-mod'){
+            return ($this->role === 'administrator' or $this->role === 'sys-mod');
+        }else if($role === 'league-mod'){
+            return ($this->role === 'administrator' or $this->role === 'sys-mod' or $this->role === 'league-mod');
+        }
+    }
+    public function getModeratorLeagues(){
+        return LeagueModerator::where('user_id', $this->id)->get(['league_id']);
+    }
 
     /**
      * Model relationships

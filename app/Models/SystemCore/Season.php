@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, mixed $id)
+ * @method static whereIn(string $string, $leagueIDs)
  */
 class Season extends Model{
     use HasFactory;

@@ -10,12 +10,14 @@
     <a href="{{ route('admin.core.league') }}">
         <button class="pm-btn btn btn-dark"> <i class="fas fa-star"></i> </button>
     </a>
-    <a href="{{ route('admin.core.league.create') }}">
-        <button class="pm-btn btn pm-btn-success">
-            <i class="fas fa-plus"></i>
-            <span>{{ __('Add new') }}</span>
-        </button>
-    </a>
+    @if(Auth()->user()->checkRole('sys-mod'))
+        <a href="{{ route('admin.core.league.create') }}">
+            <button class="pm-btn btn pm-btn-success">
+                <i class="fas fa-plus"></i>
+                <span>{{ __('Add new') }}</span>
+            </button>
+        </a>
+    @endif
 @endsection
 
 @section('content')

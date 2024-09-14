@@ -37,10 +37,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         /*
          *  Admin role routes
          */
-        Route::get ('/',                                [UsersController::class, 'index'])->name('admin.users.index');
-        Route::get ('/preview/{username}',              [UsersController::class, 'preview'])->name('admin.users.preview');
-        Route::get ('/edit/{username}',                 [UsersController::class, 'edit'])->name('admin.users.edit');
-        Route::post('/update',                          [UsersController::class, 'update'])->name('admin.users.update');
+        Route::middleware('is-admin')->group(function (){
+            Route::get ('/',                                [UsersController::class, 'index'])->name('admin.users.index');
+            Route::get ('/preview/{username}',              [UsersController::class, 'preview'])->name('admin.users.preview');
+            Route::get ('/edit/{username}',                 [UsersController::class, 'edit'])->name('admin.users.edit');
+            Route::post('/update',                          [UsersController::class, 'update'])->name('admin.users.update');
+        });
 
         /*
          *  User routes
@@ -56,7 +58,7 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         /**
          *  Clubs
          */
-        Route::prefix('/clubs')->group(function (){
+        Route::prefix('/clubs')->middleware('is-admin')->group(function (){
             Route::get ('/',                                [ClubsController::class, 'index'])->name('admin.core.clubs');
             Route::get ('/create',                          [ClubsController::class, 'create'])->name('admin.core.clubs.create');
             Route::post('/save',                            [ClubsController::class, 'save'])->name('admin.core.clubs.save');
@@ -69,20 +71,33 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         /**
          *  Leagues
          */
-        Route::prefix('/leagues')->group(function (){
+        Route::prefix('/leagues')->middleware('is-league-moderator')->group(function (){
             Route::get ('/',                                [LeagueController::class, 'index'])->name('admin.core.league');
-            Route::get ('/create',                          [LeagueController::class, 'create'])->name('admin.core.league.create');
-            Route::post('/save',                            [LeagueController::class, 'save'])->name('admin.core.league.save');
+            Route::middleware('is-sys-moderator')->group(function (){
+                Route::get ('/create',                          [LeagueController::class, 'create'])->name('admin.core.league.create');
+                Route::post('/save',                            [LeagueController::class, 'save'])->name('admin.core.league.save');
+                Route::get ('/delete/{id}',                     [LeagueController::class, 'delete'])->name('admin.core.league.delete');
+            });
             Route::get ('/preview/{id}',                    [LeagueController::class, 'preview'])->name('admin.core.league.preview');
             Route::get ('/edit/{id}',                       [LeagueController::class, 'edit'])->name('admin.core.league.edit');
             Route::post('/update',                          [LeagueController::class, 'update'])->name('admin.core.league.update');
-            Route::get ('/delete/{id}',                     [LeagueController::class, 'delete'])->name('admin.core.league.delete');
+
+            Route::middleware('is-sys-moderator')->group(function (){
+                /**
+                 *  Add and remove moderators
+                 */
+                Route::prefix('/moderators')->middleware('is-sys-moderator')->group(function (){
+                    Route::get ('/add/{id}',                    [LeagueController::class, 'addModerator'])->name('admin.core.league.moderators.add');
+                    Route::post('/save',                        [LeagueController::class, 'saveModerator'])->name('admin.core.league.moderators.save');
+                    Route::get ('/remove/{league_id}/{id}',     [LeagueController::class, 'removeModerator'])->name('admin.core.league.moderators.remove');
+                });
+            });
         });
 
         /**
          *  Seasons
          */
-        Route::prefix('/seasons')->group(function (){
+        Route::prefix('/seasons')->middleware('is-league-moderator')->group(function (){
             Route::get ('/',                                [SeasonsController::class, 'index'])->name('admin.core.seasons');
             Route::get ('/create',                          [SeasonsController::class, 'create'])->name('admin.core.seasons.create');
             Route::post('/save',                            [SeasonsController::class, 'save'])->name('admin.core.seasons.save');
@@ -117,7 +132,7 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     /**
      *  Configuration
      */
-    Route::prefix('/config')->middleware('auth')->group(function () {
+    Route::prefix('/config')->middleware('is-sys-moderator')->group(function () {
         /*
          *  Splash pages
          */

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, mixed $id)
+ * @method static whereIn(string $string, $leagueIDs)
+ * @method static get()
  */
 class League extends Model{
     use HasFactory;
@@ -29,5 +31,8 @@ class League extends Model{
     }
     public function seasonsRel(): HasMany{
         return $this->hasMany(Season::class, 'league_id', 'id')->orderBy('id', 'DESC');
+    }
+    public function moderatorsRel(): HasMany{
+        return $this->hasMany(LeagueModerator::class, 'league_id', 'id');
     }
 }

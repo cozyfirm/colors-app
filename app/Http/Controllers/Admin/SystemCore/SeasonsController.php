@@ -23,7 +23,16 @@ class SeasonsController extends Controller{
     protected string $_path = 'admin.app.system-core.seasons.';
 
     public function index(): View{
-        $seasons = Season::where('id', '>', 0);
+        if(Auth()->user()->checkRole('sys-mod')){
+            $seasons = Season::where('id', '>', 0);
+        }else if(Auth()->user()->checkRole('league-mod')){
+            /*
+             *  Select only leagues that user has access to it
+             */
+            $leagueIDs = Auth::user()->getModeratorLeagues();
+            $seasons = Season::whereIn('league_id', $leagueIDs);
+        }
+
         $seasons = Filters::filter($seasons);
         $filters = [
             'season' => __('Year'),
@@ -36,7 +45,17 @@ class SeasonsController extends Controller{
         ]);
     }
     public function getData($action, $id = null, $view = 'create'): View{
-        $leagues = League::get();
+        if(Auth()->user()->checkRole('sys-mod')){
+            $leagues = League::get();
+        }else if(Auth()->user()->checkRole('league-mod')){
+            /*
+             *  Select only leagues that user has access to it
+             */
+            $leagueIDs = Auth::user()->getModeratorLeagues();
+            $leagues = League::whereIn('id', $leagueIDs)->get();
+        }
+
+
         $cLeagues = [];
         foreach ($leagues as $league) $cLeagues[$league->id] = $league->name . " (" . $league->countryRel->name_ba . ")";
 
