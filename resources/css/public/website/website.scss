@@ -1,0 +1,78 @@
+/**
+ *  Import fonts, given as:
+    1. font-family: InterTight, sans-serif;
+    2. font-family: Bahnschrift, sans-serif;
+    3. font-family: RighteousRegular, sans-serif;
+ */
+
+@font-face {
+    font-family: "InterTight";
+    src: url("~font/InterTight-VariableFont_wght.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Bahnschrift";
+    src: url("~font/BAHNSCHRIFT.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: "RighteousRegular";
+    src: url("~font/Righteous-Regular.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+
+/**
+ *  Default style
+ */
+
+html{
+    height: 100%;
+    ::-webkit-scrollbar {
+        //width: 0px;
+        //height:0px;
+        //background: gray;
+    }
+
+    ::-webkit-scrollbar-track {
+        //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.7);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #000000;
+        border-radius: 3px;
+    }
+}
+
+body{
+    a{
+        text-decoration: none; color: #333333;
+    }
+
+    ol li::marker, ul li::marker{
+        // color: $white;
+    }
+
+    .main-content{
+        position: relative; width: 100%;
+    }
+}
+
+/**
+ *  Import default values, such as colors, styles, etc ..
+ */
+@import "snippets/default";
+
+/**
+ *  Import layout stylesheets
+ */
+@import "layout/menu";
+@import "layout/footer";
+
+/**
+ *  Import pages stylesheets
+ */
+@import "pages/homepage";

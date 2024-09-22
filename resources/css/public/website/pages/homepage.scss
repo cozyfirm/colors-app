@@ -1,0 +1,139 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+h1{
+    color: $lightBlue;
+
+    /** Me love you <3 **/
+}
+.main {
+    position: relative;
+    display: flex; flex-wrap: wrap;
+    width: 100%;
+
+    .section-one {
+        position: relative;
+        top:0;
+        left:0;
+        width:100%;
+        height: 90vh;
+        //z-index: -1;
+
+        .section-one-image{
+            position: absolute; width: 100%; height: 100%; overflow: hidden;
+            filter: blur(2.5px); z-index: -1;
+            img{
+                position: relative; width: 100%; transform: scaleX(-1); /* Flips the image horizontally */
+            }
+        }
+
+        .section-one-shadow-wrapper {
+            position: relative; left: 0px; top: 0px; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); padding: 120px 0px;
+
+            .section-one-inner-wrapper{
+                position: relative; width: 1400px; left: calc(50% - 700px);
+                height: calc(100% - 0px);
+                //background: red;
+
+                .section-one-upper-info {
+                    display: flex;
+                    justify-content: space-between;
+                    //background: #9ca3af;
+                    .section-one-upper-info-1 {
+                        img{
+                            width: 200px; height: 100%;
+                        }
+                    }
+                    .section-one-upper-info-2 {
+                        i{
+                            color: #FFFFFF; font-size: 32px;
+                        }
+                    }
+                }
+                .section-one-middle-info {
+                    display: block;
+                    //background: yellow;
+                    min-height: 100px;
+                    gap: 45px;
+                    .section-one-middle-info1 {
+                        margin-top: 100px;
+                        h4 {
+                            font-family: "RighteousRegular";
+                            background-color: white;
+                            color: black;
+                            padding: 2 10px;
+                            width: fit-content;
+                        }
+                    }
+                    .section-one-middle-info2 {
+                        margin-top: 32px;
+                        h1 {
+                            font-family: "Arial Black";
+                        }
+                    }
+                    .section-one-middle-info3 {
+                        margin-top: 32px;
+                        h3 {
+                            color: white;
+                            font-family: "RighteousRegular";
+                        }
+                    }
+                    .section-one-middle-info4 {
+                        margin-top: 45px;
+                        gap: 32px;
+                        button {
+                            border-radius: 10px;
+                            margin-right: 32px;
+                            cursor: pointer;
+                            img {
+                                width: 180px;
+                                height: fit-content;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .section-two {
+        position: relative;
+        background: #1A1A1A;
+        width: 100%;
+        .section-two-countries {
+            background: #1A1A1A;
+            position: relative;
+            width: 1400px;
+            left: calc(50% - 700px);
+            height: calc(100% + -0px);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap;
+
+            .section-two-text {
+                width: 100%;
+                //background: grey;
+                margin-top: 32px;
+                margin-bottom: 22px;
+                text-align: center;
+                h3 {
+                    color: white;
+                    font-family: "RighteousRegular";
+                }
+            }
+            .section-two-img {
+                //background: grey;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 22px;
+                height: 80px;
+                img {
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+}
+
