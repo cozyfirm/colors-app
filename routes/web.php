@@ -6,12 +6,12 @@ use App\Http\Controllers\Admin\SystemCore\LeagueController;
 use App\Http\Controllers\Admin\SystemCore\SeasonsController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Public\Auth\AuthController;
+use App\Http\Controllers\Public\Website\HomepageController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::prefix('')->group(function () {
     /**
@@ -145,4 +145,14 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
             Route::get ('/delete/{id}',                     [SplashController::class, 'delete'])->name('admin.config.splash.delete');
         });
     });
+});
+
+/**
+ *  Website routes:
+ *
+ *  1. Homepage
+ *  2. Contact us
+ */
+Route::prefix('')->group(function () {
+    Route::get('/',                                     [HomepageController::class, 'homepage'])->name('public.website.homepage');
 });
