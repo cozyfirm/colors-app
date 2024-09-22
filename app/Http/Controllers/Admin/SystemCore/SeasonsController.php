@@ -55,7 +55,6 @@ class SeasonsController extends Controller{
             $leagues = League::whereIn('id', $leagueIDs)->get();
         }
 
-
         $cLeagues = [];
         foreach ($leagues as $league) $cLeagues[$league->id] = $league->name . " (" . $league->countryRel->name_ba . ")";
 
