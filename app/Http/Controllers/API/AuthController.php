@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\API\Auth\GeneratePIN;
 use App\Mail\API\Auth\WelcomeTo;
 use App\Models\User;
+use App\Traits\Common\LogTrait;
 use App\Traits\Http\ResponseTrait;
 use App\Traits\Users\UserTrait;
 use Carbon\Carbon;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller{
-    use ResponseTrait, UserTrait;
+    use ResponseTrait, UserTrait, LogTrait;
 
     public function auth(Request $request): JsonResponse {
         try{
@@ -46,6 +47,7 @@ class AuthController extends Controller{
                 return $this->apiResponse('1105', __('You have entered wrong password'));
             }
         }catch (\Exception $e){
+            $this->write('API: AuthController::auth()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1101', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -60,6 +62,7 @@ class AuthController extends Controller{
 
             return ["code" => "0000", "message" => "OK!"];
         }catch (\Exception $e){
+            $this->write('API: AuthController::passwordCheck()', $e->getCode(), $e->getMessage(), $request);
             return ["code" => $e->getCode(), "message" => $e->getMessage()];
         }
     }
@@ -113,6 +116,7 @@ class AuthController extends Controller{
                 'api_token' => $user->api_token
             ]);
         }catch (\Exception $e){
+            $this->write('API: AuthController::register()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1001', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -132,6 +136,7 @@ class AuthController extends Controller{
                 return $this->apiResponse('0000', __('Email verification successful'));
             }else return $this->apiResponse('1016', __('Email verification failed'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::verifyAnEmail()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1015', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -167,6 +172,7 @@ class AuthController extends Controller{
             if($user) return $this->apiResponse('1024', __('This email has already been used'));
             else return $this->apiResponse('0000', __('Email is available to use'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::checkEmail()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1020', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -179,6 +185,7 @@ class AuthController extends Controller{
             if($user) return $this->apiResponse('1027', __('This username has already been used'));
             else return $this->apiResponse('0000', __('Username is available to use'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::checkUsername()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1024', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -196,6 +203,7 @@ class AuthController extends Controller{
 
             return $this->apiResponse('0000', __('Good password'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::checkPassword()', $e->getCode(), $e->getMessage());
             return $this->apiResponse('1028', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -222,6 +230,7 @@ class AuthController extends Controller{
 
             return $this->apiResponse('0000', __('Email sent successfully. Follow instructions'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::generatePIN()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1201', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -235,6 +244,7 @@ class AuthController extends Controller{
 
             return $this->apiResponse('0000', __('Pin code is correct. Proceed to continue'));
         }catch (\Exception $e){
+            $this->write('API: AuthController::verifyPIN()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1201', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -264,6 +274,7 @@ class AuthController extends Controller{
                 'api_token' => $user->api_token,
             ]);
         }catch (\Exception $e){
+            $this->write('API: AuthController::newPassword()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('1201', __('Error while processing your request. Please contact an administrator'));
         }
     }
