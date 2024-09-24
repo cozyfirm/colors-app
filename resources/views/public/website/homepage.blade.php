@@ -36,9 +36,9 @@
                         </div>
                         <div class="section-one-middle-info4">
                             <button>
-                                <img src="{{ asset('files/images/Google play.png') }}" alt="">
+                                <img src="{{ asset('files/images/google-play.png') }}" alt="">
                             </button>
-                            <button><img src="{{ asset('files/images/App Store.png') }}" alt="">
+                            <button><img src="{{ asset('files/images/app-store.png') }}" alt="">
                             </button>
                         </div>
                     </div>
@@ -56,7 +56,49 @@
                 </div>
             </div>
         </div>
+
+        <!-- Two phones -->
+        <div class="section-three">
+            <div class="st__inner_w">
+                <div class="st__left st__inner">
+                    <div class="st__left__text_w">
+                        <h2>{{ __('KOJE SU TVOJE BOJE?') }}</h2>
+                        <h3>
+                            {{ __('IZABERI JEDNU NACIONALNU') }}
+                            <span>{{ __('REPREZENTACIJU') }}</span>
+                            {{ __('I JEDAN') }}
+                            <span>{{ __('LIGAŠKI TIM') }}</span>
+                            {{ __('ČIME ĆEŠ ODREDITI SVOJE BUDUĆE ISKUSTVO U APLIKACIJI') }}
+                        </h3>
+                    </div>
+                    <div class="st__left__text_w st__lt__ar">
+                        <h3>{{ __('Jezici aplikacije') }}</h3>
+                        <h4>{{ __('albanski') }}</h4>
+                        <h4>{{ __('bosanski') }}</h4>
+                        <h4>{{ __('crnogorski') }}</h4>
+                        <h4>{{ __('engleski') }}</h4>
+                        <h4>{{ __('hrvatski') }}</h4>
+                        <h4>{{ __('makedonski') }}</h4>
+                        <h4>{{ __('slovenački') }}</h4>
+                        <h4>{{ __('srpski') }}</h4>
+                    </div>
+
+                    <div class="st__left__text_w st__lt__btns">
+                        <a href="#">
+                            <button>
+                                <img src="{{ asset('files/images/google-play.png') }}" alt="">
+                            </button>
+                        </a>
+                        <a href="#">
+                            <button><img src="{{ asset('files/images/app-store.png') }}" alt="">
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="st__right st__inner">
+                    <img src="{{ asset('files/images/website/phones.png') }}" alt="">
+                </div>
+            </div>
+        </div>
     </div>
-
-
 @endsection
