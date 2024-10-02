@@ -42,6 +42,8 @@
                     <td class="text-center">{{ $i++}}</td>
                     <td> {{ $season->season ?? ''}} </td>
                     <td> {{ $season->leagueRel->name ?? ''}} </td>
+                    <td> {{ $season->leagueRel->countryRel->name_ba ?? ''}} </td>
+                    <td> {{ $season->leagueRel->genderRel->name ?? ''}} </td>
 
                     <td class="text-center">
                         <a href="{{ route('admin.core.seasons.preview', ['id' => $season->id ]) }}" title="{{ __('More info') }}">

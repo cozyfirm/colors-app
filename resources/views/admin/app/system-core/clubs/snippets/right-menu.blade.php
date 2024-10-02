@@ -3,7 +3,7 @@
         <div class="card-header">
             <small class="d-flex justify-content-between">
                 <b> {{ __('Stadion') }} </b>
-                <a href="#">
+                <a href="{{ route('admin.core.clubs.edit-venue', ['club_id' => $club->id ]) }}">
                     <i class="fas fa-edit pt-1"></i>
                 </a>
             </small>
@@ -29,9 +29,13 @@
         </div>
         <div class="card-body">
             <ul>
-                <li>Premier liga (2023) </li>
-                <li>Liga šampiona (2023) </li>
-                <li>Premier liga (2022) </li>
+                @foreach($club->allSeasons as $season)
+                    <li>
+                        <a href="{{ route('admin.core.league.preview', ['id' => $season->season_id ?? '0']) }}" target="_blank">
+                            {{ $season->seasonRel->leagueRel->name ?? '' }} ({{ $season->seasonRel->start_y ?? '' }} - {{ $season->seasonRel->end_y ?? '' }})
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>

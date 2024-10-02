@@ -10,7 +10,12 @@
 @endsection
 @section('c-title') @isset($league) {{ $league->name }} @else {{ __('Add new league') }} @endif @endsection
 @section('c-breadcrumbs')
-    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.league') }}">{{ __('Leagues') }}</a> / <a href="#}">{{ $league->name }}</a>
+    <a href="#"> <i class="fas fa-home"></i> <p>{{ __('Dashboard') }}</p> </a> / <a href="{{ route('admin.core.league') }}">{{ __('Leagues') }}</a> /
+    @isset($league)
+        <a href="#">{{ $league->name }}</a>
+    @else
+        <a href="#">{{ __('Add new league') }}</a>
+    @endisset
 @endsection
 @section('c-buttons')
     <a href="{{ route('admin.core.league') }}">
@@ -53,15 +58,13 @@
                     <div class="row">
                         <div class="@isset($preview) col-md-9 @else col-md-12 @endisset ">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <b>{{ html()->label(__('Title'))->for('name') }}</b>
                                         {{ html()->text('name')->class('form-control form-control-sm mt-1')->required()->maxlength(100)->value((isset($league) ? $league->name : ''))->isReadonly(isset($preview)) }}
                                         <small id="nameHelp" class="form-text text-muted">{{ __('Full title of League') }}</small>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <b>{{ html()->label(__('Type'))->for('type') }}</b>
@@ -69,11 +72,21 @@
                                         <small id="typeHelp" class="form-text text-muted">{{ __('Select league type') }}</small>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row mt-2">
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <b>{{ html()->label(__('Country'))->for('country_id') }}</b>
                                         {{ html()->select('country_id', $countries)->class('form-control form-control-sm mt-1')->required()->value(isset($league) ? $league->country_id : '')->disabled(isset($preview)) }}
                                         <small id="country_idHelp" class="form-text text-muted">{{ __('Select country') }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <b>{{ html()->label(__('Gender'))->for('gender') }}</b>
+                                        {{ html()->select('gender', $gender)->class('form-control form-control-sm mt-1')->required()->value(isset($league) ? $league->gender : '')->disabled(isset($preview)) }}
+                                        <small id="genderHelp" class="form-text text-muted">{{ __('Select club gender') }}</small>
                                     </div>
                                 </div>
                             </div>

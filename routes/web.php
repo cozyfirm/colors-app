@@ -66,6 +66,11 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
             Route::get ('/edit/{id}',                       [ClubsController::class, 'edit'])->name('admin.core.clubs.edit');
             Route::post('/update',                          [ClubsController::class, 'update'])->name('admin.core.clubs.update');
             Route::get ('/delete/{id}',                     [ClubsController::class, 'delete'])->name('admin.core.clubs.delete');
+
+            Route::prefix('/venues')->middleware('is-admin')->group(function (){
+                Route::get ('/edit/{club_id}',              [ClubsController::class, 'editVenue'])->name('admin.core.clubs.edit-venue');
+                Route::post('/update',                      [ClubsController::class, 'updateVenue'])->name('admin.core.clubs.update-venue');
+            });
         });
 
         /**

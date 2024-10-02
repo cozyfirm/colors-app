@@ -45,6 +45,7 @@
                     <td> {{ $league->name ?? ''}} </td>
                     <td> {{ $league->typeRel->name ?? ''}} </td>
                     <td> {{ $league->countryRel->name_ba ?? ''}} </td>
+                    <td> {{ $league->genderRel->name ?? ''}} </td>
 
                     <td class="text-center">
                         <a href="{{ route('admin.core.league.preview', ['id' => $league->id ]) }}" title="{{ __('More info') }}">

@@ -45,20 +45,27 @@
                     @csrf
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <b>{{ html()->label(__('Club title'))->for('name') }}</b>
                                 {{ html()->text('name')->class('form-control form-control-sm mt-1')->required()->maxlength(100)->value((isset($club) ? $club->name : ''))->isReadonly(isset($preview)) }}
                                 <small id="nameHelp" class="form-text text-muted">{{ __('Full title of Club') }}</small>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <b>{{ html()->label(__('Short title'))->for('code') }}</b>
                                 {{ html()->text('code')->class('form-control form-control-sm mt-1')->required()->maxlength(100)->value((isset($club) ? $club->code : ''))->isReadonly(isset($preview)) }}
                                 <small id="codeHelp" class="form-text text-muted">{{ __('Željeni email') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <b>{{ html()->label(__('Gender'))->for('gender') }}</b>
+                                {{ html()->select('gender', $gender)->class('form-control form-control-sm mt-1')->required()->value(isset($club) ? $club->gender : '')->disabled(isset($preview)) }}
+                                <small id="genderHelp" class="form-text text-muted">{{ __('Select club gender') }}</small>
                             </div>
                         </div>
                         <div class="col-md-6">

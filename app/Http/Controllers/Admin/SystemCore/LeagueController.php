@@ -38,6 +38,7 @@ class LeagueController extends Controller{
             'name' => __('Title'),
             'typeRel.name' => __('Type'),
             'countryRel.name_ba' => __('Country'),
+            'genderRel.name' => __('Gender')
         ];
 
         return view($this->_path.'index', [
@@ -49,6 +50,7 @@ class LeagueController extends Controller{
         return view($this->_path. 'create', [
             $action => true,
             'type' => Keyword::where('type', 'league_type')->pluck('name', 'value'),
+            'gender' => Keyword::where('type', 'gender')->pluck('name', 'value'),
             'league' => isset($id) ? League::where('id', $id)->first() : null,
             'countries' => Countries::where('used', 1)->pluck('name_ba', 'id'),
         ]);
@@ -68,7 +70,8 @@ class LeagueController extends Controller{
                 'name' => $request->name,
                 'type' => $request->type,
                 'logo' => $fileName,
-                'country_id' => $request->country_id
+                'country_id' => $request->country_id,
+                'gender' => $request->gender
             ]);
 
             return redirect()->route('system.core.leagues.preview', ['id' => $league->id]);
@@ -81,6 +84,8 @@ class LeagueController extends Controller{
             League::where('id', $request->id)->update([
                 'name' => $request->name,
                 'type' => $request->type,
+                'country_id' => $request->country_id,
+                'gender' => $request->gender
             ]);
 
             if(isset($request->logo)){

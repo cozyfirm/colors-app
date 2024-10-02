@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Core\Countries;
 use App\Models\Core\Keyword;
 use App\Models\SystemCore\Club;
+use App\Models\SystemCore\Venue;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -22,7 +24,8 @@ class ClubsController extends Controller{
             'code' => __('Short title'),
             'countryRel.name_ba' => __('Country'),
             'founded' => __('Founded'),
-            'nationalRel.name' => __('National team')
+            'nationalRel.name' => __('National team'),
+            'genderRel.name' => __('Gender')
         ];
 
         return view($this->_path.'index', [
@@ -35,6 +38,7 @@ class ClubsController extends Controller{
             $action => true,
             'yesNo' => Keyword::where('type', 'da_ne')->pluck('name', 'value'),
             'countries' => Countries::where('used', 1)->pluck('name_ba', 'id'),
+            'gender' => Keyword::where('type', 'gender')->pluck('name', 'value'),
             'club' => isset($id) ? Club::where('id', $id)->first() : null
         ]);
     }
@@ -57,10 +61,11 @@ class ClubsController extends Controller{
                 'country_id' => $request->country_id,
                 'founded' => $request->founded,
                 'national' => $request->national,
-                'flag' => $fileName
+                'flag' => $fileName,
+                'gender' => $request->gender
             ]);
 
-            return redirect()->route('system.core.clubs.preview', ['id' => $club->id]);
+            return redirect()->route('admin.core.clubs.preview', ['id' => $club->id]);
         }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
     }
     public function preview($id):View{ return $this->getData('preview', $id); }
@@ -72,7 +77,8 @@ class ClubsController extends Controller{
                 'code' => $request->code,
                 'country_id' => $request->country_id,
                 'national' => $request->national,
-                'founded' => $request->founded
+                'founded' => $request->founded,
+                'gender' => $request->gender
             ]);
 
             if(isset($request->flag)){
@@ -89,6 +95,36 @@ class ClubsController extends Controller{
             }
 
             return redirect()->route('admin.core.clubs.preview', ['id' => $request->id]);
-        }catch (\Exception $e){ dd($e); return back()->with('error', $e->getMessage()); }
+        }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*
+     * Venues
+     */
+    public function editVenue($club_id): View{
+        $club = Club::where('id', '=', $club_id)->first();
+        $venue = Venue::where('id', '=', $club->venue_id)->first();
+        if(!$venue){
+            $venue = Venue::create();
+            $club->update(['venue_id' => $venue->id]);
+        }
+
+        return view($this->_path. 'edit-venue', [
+            'club' => $club,
+            'venue' => $venue
+        ]);
+    }
+    public function updateVenue(Request $request): RedirectResponse{
+        try{
+            Venue::where('id', '=', $request->id)->update([
+                'name' => $request->name,
+                'address' => $request->address,
+                'city' => $request->city,
+                'capacity' => $request->capacity
+            ]);
+
+            return redirect()->route('admin.core.clubs.preview', ['id' => $request->club_id]);
+        }catch (\Exception $e){ return back()->with('error', __('There has been error while processing your request!!')); }
     }
 }

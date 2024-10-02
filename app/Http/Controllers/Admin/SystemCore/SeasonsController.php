@@ -36,7 +36,9 @@ class SeasonsController extends Controller{
         $seasons = Filters::filter($seasons);
         $filters = [
             'season' => __('Year'),
-            'leagueRel.name' => __('League')
+            'leagueRel.name' => __('League'),
+            'leagueRel.countryRel.name_ba' => __('Country'),
+            'leagueRel.genderRel.name' => __('Gender')
         ];
 
         return view($this->_path.'index', [

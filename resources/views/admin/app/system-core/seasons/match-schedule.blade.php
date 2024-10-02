@@ -15,19 +15,12 @@
     <a href="{{ route('admin.core.seasons') }}">
         <button class="pm-btn btn btn-dark"> <i class="fas fa-star"></i> </button>
     </a>
-    @isset($preview)
-        <a href="{{ route('admin.core.seasons.edit', ['id' => $season->id ]) }}">
-            <button class="pm-btn btn pm-btn-info">
-                <i class="fas fa-edit"></i>
-                <span>{{ __('Edit') }}</span>
-            </button>
-        </a>
-        <a href="{{ route('admin.core.seasons.delete', ['id' => $season->id ]) }}">
-            <button class="pm-btn btn pm-btn-trash">
-                <i class="fas fa-trash"></i>
-            </button>
-        </a>
-    @endisset
+    <a href="{{ route('admin.core.seasons.preview', ['id' => $season->id ]) }}">
+        <button class="pm-btn btn pm-btn-info">
+            <i class="fas fa-chevron-left "></i>
+            <span>{{ __('Back') }}</span>
+        </button>
+    </a>
 @endsection
 
 @section('content')

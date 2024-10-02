@@ -48,6 +48,7 @@
                     <td> {{ $club->countryRel->name_ba ?? ''}} </td>
                     <td> {{ $club->founded ?? ''}} </td>
                     <td> {{ $club->nationalRel->name ?? ''}} </td>
+                    <td> {{ $club->genderRel->name ?? ''}} </td>
 
                     <td class="text-center">
                         <a href="{{ route('admin.core.clubs.preview', ['id' => $club->id ]) }}" title="{{ __('More info') }}">

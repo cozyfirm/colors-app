@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static where(string $string, string $string1, $venue_id)
+ * @method static create()
+ */
 class Venue extends Model{
     use HasFactory;
     use SoftDeletes;

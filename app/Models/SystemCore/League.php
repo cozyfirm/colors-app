@@ -35,4 +35,5 @@ class League extends Model{
     public function moderatorsRel(): HasMany{
         return $this->hasMany(LeagueModerator::class, 'league_id', 'id');
     }
+    public function genderRel(): HasOne{ return $this->hasOne(Keyword::class, 'value', 'gender')->where('type', 'gender'); }
 }
