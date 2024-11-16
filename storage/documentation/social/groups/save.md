@@ -1,4 +1,4 @@
-# Save teams
+# Save group
 
 This endpoint is used to save groups, using route
 

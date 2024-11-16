@@ -1,4 +1,4 @@
-# Save teams
+# Fetch my groups
 
 This endpoint is used to fetch all my groups (in order), using route
 

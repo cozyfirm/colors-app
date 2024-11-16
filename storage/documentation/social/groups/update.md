@@ -1,4 +1,4 @@
-# Save teams
+# Update group
 
 This endpoint is used to update groups (only text fields; Image is updated from another route), using route
 

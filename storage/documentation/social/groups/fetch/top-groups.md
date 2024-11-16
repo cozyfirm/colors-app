@@ -1,4 +1,4 @@
-# Save teams
+# Fetch top groups
 
 This endpoint is used to fetch top groups (in order by number of members), using route
 
