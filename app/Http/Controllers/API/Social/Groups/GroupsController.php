@@ -178,7 +178,7 @@ class GroupsController extends Controller{
         try{
             if(isset($request->number)) $this->_number_of_groups = $request->number;
 
-            $groups = Group::with('fileRel:id,file,name,ext,path');
+            $groups = Group::with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);;
             $groups = Filters::filter($groups, $this->_number_of_groups);
 
             return $this->apiResponse('0000', __('Success'),
@@ -200,7 +200,7 @@ class GroupsController extends Controller{
 
             $groups = Group::whereHas('allMembersRel', function ($q){
                 $q->where('user_id', Auth::user()->id);
-            })->with('fileRel:id,file,name,ext,path');
+            })->with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);;
 
             $groups = Filters::filter($groups, $this->_number_of_groups);
 
@@ -221,7 +221,7 @@ class GroupsController extends Controller{
         try{
             if(isset($request->number)) $this->_number_of_groups = $request->number;
 
-            $groups = Group::orderBy('members', 'DESC')->with('fileRel:id,file,name,ext,path');
+            $groups = Group::orderBy('members', 'DESC')->with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             $groups = Filters::filter($groups, $this->_number_of_groups);
 
             return $this->apiResponse('0000', __('Success'),
