@@ -19,7 +19,7 @@ class GroupsMembershipController extends Controller{
             /** @var UserAPIToken $request->api_token */
             $user = User::where('api_token', $request->api_token)->first();
 
-            $group = Group::where('id', $request->id)->first();
+            $group = Group::where('id', '=', $request->id)->first();
             if(!$group) return $this->apiResponse('3052', __('Unknown group'));
             if(!isset($group->adminsRel)) return $this->apiResponse('3053', __('Admin not found'));
             if(!$group->isAdmin($user->id)) return $this->apiResponse('3054', __('No permission found'));
@@ -100,6 +100,33 @@ class GroupsMembershipController extends Controller{
             }
 
             return $this->apiResponse('0000', __('Success'));
+        }catch (\Exception $e){
+            return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    public function join(Request $request) : JsonResponse{
+        try{
+            /** @var UserAPIToken $request->api_token */
+            $user = User::where('api_token', $request->api_token)->first();
+
+            $group = Group::where('id', '=', $request->id)->first();
+            if(!$group) return $this->apiResponse('3065', __('Unknown group'));
+            if($group->public == 0) return $this->apiResponse('3066', __('You cant join private groups'));
+
+            $membership = GroupMember::where('user_id', $user->id)->where('group_id', $group->id)->first();
+            if($membership) {
+                if($membership->status == 'accepted') return $this->apiResponse('3067', __('Request already sent'));
+            }
+
+            GroupMember::create([
+                'group_id' => $group->id,
+                'user_id' => $user->id,
+                'role' => 'member',
+                'status' => 'accepted'
+            ]);
+
+            return $this->apiResponse('0000', __('Request successfully sent'));
         }catch (\Exception $e){
             return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
         }

@@ -138,6 +138,8 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
         Route::post('/send-request',                             [GroupsMembershipController::class, 'sendRequest'])->name('api.groups.membership.send-request');
         /** Allow or deny request: Performed by admins */
         Route::post('/allow-deny-request',                       [GroupsMembershipController::class, 'allowDenyRequest'])->name('api.groups.membership.allow-deny-request');
+        /** Join if group is public */
+        Route::post('/join',                                     [GroupsMembershipController::class, 'join'])->name('api.groups.membership.join');
     });
 });
 
