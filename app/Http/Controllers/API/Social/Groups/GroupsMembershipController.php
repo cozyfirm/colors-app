@@ -110,13 +110,13 @@ class GroupsMembershipController extends Controller{
             /** @var UserAPIToken $request->api_token */
             $user = User::where('api_token', $request->api_token)->first();
 
-            $group = Group::where('id', '=', $request->id)->first();
+            $group = Group::where('id', '=', $request->id)->with('fileRel:id,file,name,ext,path')->first(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             if(!$group) return $this->apiResponse('3065', __('Unknown group'));
             if($group->public == 0) return $this->apiResponse('3066', __('You cant join private groups'));
 
             $membership = GroupMember::where('user_id', $user->id)->where('group_id', $group->id)->first();
             if($membership) {
-                if($membership->status == 'accepted') return $this->apiResponse('3067', __('Request already sent'));
+                if($membership->status == 'accepted') return $this->apiResponse('3067', __('Already a member'));
             }
 
             GroupMember::create([
@@ -126,7 +126,9 @@ class GroupsMembershipController extends Controller{
                 'status' => 'accepted'
             ]);
 
-            return $this->apiResponse('0000', __('Request successfully sent'));
+            return $this->apiResponse('0000', __('Successfully joined'), [
+                'group' => $group
+            ]);
         }catch (\Exception $e){
             return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
         }
