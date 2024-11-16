@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Social\Groups;
 
+use App\Http\Controllers\Admin\Core\Filters;
 use App\Http\Controllers\Controller;
 use App\Models\Core\MyFile;
 use App\Models\Social\Groups\Group;
@@ -12,11 +13,13 @@ use App\Traits\Common\FileTrait;
 use App\Traits\Http\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupsController extends Controller{
     use FileTrait, ResponseTrait, CommonTrait;
 
     protected string $_file_path = 'files/social/groups';
+    protected int $_number_of_groups = 10;
 
     /**
      * @param Request $request
@@ -152,6 +155,77 @@ class GroupsController extends Controller{
 
             return $this->apiResponse('0000', __('Success'),
                 Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members'])->toArray()
+            );
+        }catch (\Exception $e){
+            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /** ------------------------------------------------------------------------------------------------------------ **/
+    /**
+     *  Fetch groups as:
+     *      1. All groups
+     *      2. My groups
+     *      3. Top groups
+     */
+
+    /**
+     * Fetch All groups;
+     * @param Request $request [api_token, number (default: 10), page]
+     * @return JsonResponse
+     */
+    public function fetchAllGroups(Request $request): JsonResponse{
+        try{
+            if(isset($request->number)) $this->_number_of_groups = $request->number;
+
+            $groups = Group::with('fileRel:id,file,name,ext,path');
+            $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            return $this->apiResponse('0000', __('Success'),
+                $groups->toArray()
+            );
+        }catch (\Exception $e){
+            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
+     * Fetch My Groups
+     * @param Request $request [api_token, number (default: 10), page]
+     * @return JsonResponse
+     */
+    public function fetchMyGroups(Request $request): JsonResponse{
+        try{
+            if(isset($request->number)) $this->_number_of_groups = $request->number;
+
+            $groups = Group::whereHas('allMembersRel', function ($q){
+                $q->where('user_id', Auth::user()->id);
+            })->with('fileRel:id,file,name,ext,path');
+
+            $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            return $this->apiResponse('0000', __('Success'),
+                $groups->toArray()
+            );
+        }catch (\Exception $e){
+            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
+     * Fetch Top groups;
+     * @param Request $request [api_token, number (default: 10), page]
+     * @return JsonResponse
+     */
+    public function fetchTopGroups(Request $request): JsonResponse{
+        try{
+            if(isset($request->number)) $this->_number_of_groups = $request->number;
+
+            $groups = Group::orderBy('members', 'DESC')->with('fileRel:id,file,name,ext,path');
+            $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            return $this->apiResponse('0000', __('Success'),
+                $groups->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));

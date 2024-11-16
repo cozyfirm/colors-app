@@ -117,6 +117,18 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
     /** Search groups by name */
     Route::post('/search',                             [GroupsController::class, 'search'])->name('api.groups.search');
 
+    /**
+     *  Fetch groups as:
+     *      1. All groups
+     *      2. My groups
+     *      3. Top groups
+     */
+    Route::prefix('/fetch')->middleware('api-auth')->group(function (){
+        Route::post('/all',                            [GroupsController::class, 'fetchAllGroups'])->name('api.groups.fetch.all');
+        Route::post('/my-groups',                      [GroupsController::class, 'fetchMyGroups'])->name('api.groups.fetch.my-groups');
+        Route::post('/top-groups',                     [GroupsController::class, 'fetchTopGroups'])->name('api.groups.fetch.top-groups');
+    });
+
     /** Membership */
     Route::prefix('/membership')->group(function (){
         /** Get all members */

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @method static create(array $array)
  * @method static where(string $string, string $string1, string $string2)
+ * @method static orderBy(string $string, string $string1)
+ * @method static whereHas(string $string, \Closure $param)
  */
 class Group extends Model{
     use HasFactory, SoftDeletes;
@@ -25,7 +27,12 @@ class Group extends Model{
     public function adminsRel(): HasMany{
         return $this->hasMany(GroupMember::class, 'group_id', 'id')->where('role', 'admin');
     }
-
+    public function membersRel(): HasMany{
+        return $this->hasMany(GroupMember::class, 'group_id', 'id')->where('role', 'member');
+    }
+    public function allMembersRel(): HasMany{
+        return $this->hasMany(GroupMember::class, 'group_id', 'id');
+    }
     /** Helper methods */
 
     /**
