@@ -66,7 +66,8 @@ class GroupsController extends Controller{
                 'group' => $group
             ]);
         }catch (\Exception $e){
-            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('3001', $e->getCode() . ": " . $e->getMessage());
+            // return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
         }
     }
 

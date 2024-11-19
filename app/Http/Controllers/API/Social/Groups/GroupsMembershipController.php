@@ -14,6 +14,12 @@ use Illuminate\Http\Request;
 class GroupsMembershipController extends Controller{
     use ResponseTrait, CommonTrait;
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * Fetch all members: Only for admins
+     */
     public function allMembers(Request $request): JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
@@ -105,6 +111,12 @@ class GroupsMembershipController extends Controller{
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * Join to public group
+     */
     public function join(Request $request) : JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
