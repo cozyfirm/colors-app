@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Social\Fans;
 
 use App\Http\Controllers\Controller;
+use App\Models\Social\Fans\Fan;
 use App\Models\Social\Fans\FanRequest;
 use App\Traits\Common\CommonTrait;
 use App\Traits\Common\FileTrait;
@@ -24,7 +25,7 @@ class FansRequestsController extends Controller{
     public function create(Request $request): JsonResponse{
         try{
             if(!isset($request->to)){
-                return $this->apiResponse('2062', __('Invalid request'));
+                return $this->apiResponse('2062', __('Invalid http request'));
             }else{
                 if($request->to == Auth::guard()->user()->id) return $this->apiResponse('2063', __('Cannot add yourself'));
 
@@ -49,17 +50,58 @@ class FansRequestsController extends Controller{
     }
 
     /**
+     * Update request status
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request): JsonResponse{
+        try{
+            if(!isset($request->from) or !isset($request->status)){
+                return $this->apiResponse('2063', __('Invalid http request'));
+            }else{
+                $fanRequest = FanRequest::where('from', '=', $request->from)->where('to', '=', Auth::guard()->user()->id)->first();
+
+                if(!$fanRequest){
+                    return $this->apiResponse('2064', __('Invalid request. Cannot find fan request'));
+                }else{
+                    if($request->status == 'accept'){
+                        /* Search does object exists */
+                        $fanObject = Fan::where('user_id', '=', Auth::guard()->user()->id)->where('fan_id', '=', $request->from)->first();
+
+                        if(!$fanObject){
+                            Fan::create([
+                                'user_id' => Auth::guard()->user()->id,
+                                'fan_id' => $request->from
+                            ]);
+                        }
+                    }else{
+                        /* ToDo: Maybe remove it or do nothing ?? */
+                    }
+
+                    FanRequest::where('from', '=', $request->from)->where('to', '=', Auth::guard()->user()->id)->update(['status' => $request->status]);
+                }
+
+                return $this->apiResponse('0000', __('Status updated'));
+            }
+        }catch (\Exception $e){
+            $this->write('API: FansRequestsController::create()', $e->getCode(), $e->getMessage(), $request);
+            return $this->apiResponse('2061', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
      * Fetch requests: Query function
      *
      * @param Request $request
      * @param $type
+     * @param $status
      * @return array
      */
-    public function fetchData(Request $request, $type): array{
+    public function fetchData(Request $request, $type, $status): array{
         try{
             if($type == 'my-requests'){
                 return FanRequest::where('to', '=', Auth::guard()->user()->id)
-                    ->where('status', '=', 'pending')
+                    ->where('status', '=', $status)
                     ->with('fromRel.photoRel:id,file,name,ext,path')
                     ->with('fromRel.teamsRel.teamRel:id,name')
                     ->with('fromRel.teamsRel.nationalTeamRel:id,name')
@@ -69,7 +111,7 @@ class FansRequestsController extends Controller{
                     ->toArray();
             }else{
                 return FanRequest::where('from', '=', Auth::guard()->user()->id)
-                    ->where('status', '=', 'pending')
+                    ->where('status', '=', $status)
                     ->with('toRel.photoRel:id,file,name,ext,path')
                     ->with('toRel.teamsRel.teamRel:id,name')
                     ->with('toRel.teamsRel.nationalTeamRel:id,name')
@@ -91,7 +133,7 @@ class FansRequestsController extends Controller{
      */
     public function fetchRequests(Request $request): JsonResponse{
         try{
-            return $this->apiResponse('0000', __('Success'), $this->fetchData($request, "my-requests"));
+            return $this->apiResponse('0000', __('Success'), $this->fetchData($request, "my-requests", "pending"));
         }catch (\Exception $e){
             $this->write('API: FansRequestsController::fetchRequests()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2061', __('Error while processing your request. Please contact an administrator'));
@@ -105,7 +147,7 @@ class FansRequestsController extends Controller{
      */
     public function fetchSentRequests(Request $request): JsonResponse{
         try{
-            return $this->apiResponse('0000', __('Success'), $this->fetchData($request, "sent"));
+            return $this->apiResponse('0000', __('Success'), $this->fetchData($request, "sent", "pending"));
         }catch (\Exception $e){
             $this->write('API: FansRequestsController::fetchSentRequests()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2061', __('Error while processing your request. Please contact an administrator'));

@@ -119,6 +119,7 @@ Route::prefix('/fans')->middleware('api-auth')->group(function (){
 
     Route::prefix('/requests')->middleware('api-auth')->group(function (){
         Route::post('/create',                         [FansRequestsController::class, 'create'])->name('api.fans.requests.create');
+        Route::post('/update',                         [FansRequestsController::class, 'update'])->name('api.fans.requests.action');
 
         Route::prefix('/fetch')->middleware('api-auth')->group(function (){
             Route::post('/',                           [FansRequestsController::class, 'fetchRequests'])->name('api.fans.requests.fetch');
