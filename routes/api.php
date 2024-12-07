@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
 use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
 use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
+use App\Http\Controllers\API\Social\Fans\FansRequestsController;
+use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
@@ -115,6 +116,15 @@ Route::prefix('/users')->middleware('api-auth')->group(function (){
 Route::prefix('/fans')->middleware('api-auth')->group(function (){
     /** Search fans by name */
     Route::post('/search',                             [FansSearchController::class, 'search'])->name('api.fans.search');
+
+    Route::prefix('/requests')->middleware('api-auth')->group(function (){
+        Route::post('/create',                         [FansRequestsController::class, 'create'])->name('api.fans.requests.create');
+
+        Route::prefix('/fetch')->middleware('api-auth')->group(function (){
+            Route::post('/',                           [FansRequestsController::class, 'fetchRequests'])->name('api.fans.requests.fetch');
+            Route::post('/sent',                       [FansRequestsController::class, 'fetchSentRequests'])->name('api.fans.requests.fetch.sent');
+        });
+    });
 });
 
 /** ---------------------------------------------------------------------------------------------------------------- **/

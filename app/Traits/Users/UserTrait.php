@@ -48,6 +48,7 @@ trait UserTrait{
     public function getUserData($code = '2001', $message = 'User data'): JsonResponse{
         try{
             return $this->apiResponse('0000', $message, [
+                'name' => Auth::guard()->user()->name,
                 'username' => Auth::guard()->user()->username,
                 'email' => Auth::guard()->user()->email,
                 'birth_date' => Auth::guard()->user()->birth_date,

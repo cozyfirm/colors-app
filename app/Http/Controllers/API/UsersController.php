@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\Common\FileTrait;
+use App\Traits\Common\LogTrait;
 use App\Traits\Http\ResponseTrait;
 use App\Traits\Users\UserTrait;
 use Carbon\Carbon;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller{
-    use ResponseTrait, UserTrait, FileTrait;
+    use ResponseTrait, UserTrait, FileTrait, LogTrait;
 
     protected string $_file_path = 'files/users/profile-photo';
 
@@ -42,6 +43,7 @@ class UsersController extends Controller{
 
             return $this->getUserData($request);
         }catch (\Exception $e){
+            $this->write('API: UsersController::update()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -63,6 +65,7 @@ class UsersController extends Controller{
 
             return $this->getUserData($request);
         }catch (\Exception $e){
+            $this->write('API: UsersController::updateImage()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2015', __('Error while processing your request. Please contact an administrator'));
         }
     }
@@ -104,6 +107,7 @@ class UsersController extends Controller{
 
             return $this->getUserData($request);
         }catch (\Exception $e){
+            $this->write('API: UsersController::profileSettings()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2031', __('Error while processing your request. Please contact an administrator'));
         }
     }

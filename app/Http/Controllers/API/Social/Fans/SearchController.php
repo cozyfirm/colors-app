@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API\Fans;
+namespace App\Http\Controllers\API\Social\Fans;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Traits\Common\CommonTrait;
 use App\Traits\Common\FileTrait;
 use App\Traits\Http\ResponseTrait;
@@ -17,7 +18,15 @@ class SearchController extends Controller{
             if(empty($request->search)) return $this->apiResponse('2052', __('Empty user name'));
 
             return $this->apiResponse('0000', __('Success'),
-                Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members'])->toArray()
+                User::where('name', 'LIKE', '%' . $request->search . '%')
+                    ->with('photoRel:id,file,name,ext,path')
+                    ->with('teamsRel.teamRel:id,name')
+                    ->with('teamsRel.nationalTeamRel:id,name')
+                    ->with('teamsRel:id,user_id,team,national_team')
+                    ->orderBy('id', 'ASC')
+                    ->take(10)
+                    ->get(['id', 'name', 'username', 'photo'])
+                    ->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('2051', __('Error while processing your request. Please contact an administrator'));
