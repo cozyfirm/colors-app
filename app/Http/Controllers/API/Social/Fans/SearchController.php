@@ -14,6 +14,11 @@ class SearchController extends Controller{
     use FileTrait, ResponseTrait, CommonTrait;
     protected int $_number_of_results = 10;
 
+    /**
+     * Search fans by name - Input param search
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function search(Request $request): JsonResponse{
         try{
             if(empty($request->search)) return $this->apiResponse('2052', __('Empty user name'));
@@ -35,6 +40,11 @@ class SearchController extends Controller{
         }
     }
 
+    /**
+     * Recommended fans for specific user; ToDo:: Change this random order behavior
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function recommended(Request $request): JsonResponse{
         try{
             return $this->apiResponse('0000', __('Success'),
