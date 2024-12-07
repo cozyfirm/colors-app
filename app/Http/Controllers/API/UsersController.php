@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\Common\FileTrait;
 use App\Traits\Http\ResponseTrait;
 use App\Traits\Users\UserTrait;
 use Carbon\Carbon;
@@ -12,7 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller{
-    use ResponseTrait, UserTrait;
+    use ResponseTrait, UserTrait, FileTrait;
+
+    protected string $_file_path = 'files/users/profile-photo';
 
     /**
      * @param Request $request
@@ -24,7 +27,7 @@ class UsersController extends Controller{
         try{
             /* Check for username */
             if(!isset($request->username)) return $this->apiResponse('2012', __('Please, enter your username'));
-            $user = User::where('username', $request->username)->first();
+            $user = User::where('username', '=', $request->username)->first();
 
             if($user and ($user->username !== Auth::guard()->user()->username)) return $this->apiResponse('2013', __('This username has already been used'));
 
@@ -40,6 +43,27 @@ class UsersController extends Controller{
             return $this->getUserData($request);
         }catch (\Exception $e){
             return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    public function updateImage(Request $request): JsonResponse{
+        try{
+            if(!isset($request->photo)) return $this->apiResponse('2016', __('Please choose a photo'));
+
+            $request['path'] = $this->_file_path;
+            $file = $this->saveFile($request, 'photo');
+
+            /* If user do not have image, skip it */
+            if(!empty(Auth::guard()->user()->photo)) $this->removeFile(Auth::guard()->user()->photo);
+
+            /* Update user photo ID */
+            Auth::guard()->user()->update([
+                'photo' => $file?->id,
+            ]);
+
+            return $this->getUserData($request);
+        }catch (\Exception $e){
+            return $this->apiResponse('2015', __('Error while processing your request. Please contact an administrator'));
         }
     }
 
@@ -83,9 +107,6 @@ class UsersController extends Controller{
             return $this->apiResponse('2031', __('Error while processing your request. Please contact an administrator'));
         }
     }
-
-
-    /* ToDo - Update image */
 
     /* ToDo - Select country */
 }

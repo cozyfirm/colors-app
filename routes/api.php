@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
 use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
@@ -93,6 +94,8 @@ Route::prefix('/users')->middleware('api-auth')->group(function (){
     Route::post('/get-data',                           [UsersController::class, 'getUserData'])->name('api.users.get-data');
     /** Update basic info */
     Route::post('/update',                             [UsersController::class, 'update'])->name('api.users.update');
+    /** Update profile image */
+    Route::post('/update-image',                       [UsersController::class, 'updateImage'])->name('api.users.update-image');
 
     /**
      *  Settings APIs:
@@ -103,6 +106,15 @@ Route::prefix('/users')->middleware('api-auth')->group(function (){
      */
     Route::post('/set-language',                        [UsersController::class, 'setLanguage'])->name('api.users.set-language');
     Route::post('/profile-settings',                    [UsersController::class, 'profileSettings'])->name('api.users.profile-settings');
+});
+
+/** ---------------------------------------------------------------------------------------------------------------- **/
+/**
+ *  Fans section
+ */
+Route::prefix('/fans')->middleware('api-auth')->group(function (){
+    /** Search fans by name */
+    Route::post('/search',                             [FansSearchController::class, 'search'])->name('api.fans.search');
 });
 
 /** ---------------------------------------------------------------------------------------------------------------- **/

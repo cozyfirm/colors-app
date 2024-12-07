@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Core\Countries;
+use App\Models\Core\MyFile;
 use App\Models\SystemCore\LeagueModerator;
 use App\Models\SystemCore\Users\UserTeams;
 use Carbon\Carbon;
@@ -13,8 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * @method static where(string $string, mixed $username)
  * @method static create(array $all)
+ * @method static where(string $string, string $string1, $api_token)
  */
 class User extends Authenticatable{
     use HasFactory, Notifiable;
@@ -42,6 +43,7 @@ class User extends Authenticatable{
         'password',
         'api_token',
         'restart_pin',
+        'photo',
         'birth_date',
         'city',
         'country',
@@ -108,5 +110,8 @@ class User extends Authenticatable{
     }
     public function prefixRel(): HasOne{
         return $this->hasOne(Countries::class, 'id', 'prefix');
+    }
+    public function photoRel(): HasOne{
+        return $this->hasOne(MyFile::class, 'id', 'photo');
     }
 }

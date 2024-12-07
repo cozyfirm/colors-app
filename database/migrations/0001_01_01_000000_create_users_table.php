@@ -21,13 +21,15 @@ return new class extends Migration
             $table->string('api_token', 64)->unique();
             $table->string('restart_pin', 10)->nullable();
 
+            /* Profile image */
+            $table->integer('photo')->nullable();
+
             /* Other user info */
             $table->string('city', 100)->nullable();
             $table->integer('country')->nullable();
             $table->date('birth_date')->nullable();
             $table->integer('prefix')->default(21)->nullable();
             $table->string('phone', 30)->nullable();
-
 
             /* Active or banned */
             $table->string('role', 15)->default("user");

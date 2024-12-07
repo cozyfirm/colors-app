@@ -2,6 +2,7 @@
 
 namespace App\Traits\Users;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -57,12 +58,17 @@ trait UserTrait{
                     'team' => Auth::guard()->user()->teamsRel->team ?? null,
                     'national_team' => Auth::guard()->user()->teamsRel->national_team ?? null
                 ],
+                'photoRel' => [
+                    'file' => Auth::guard()->user()->photoRel->file ?? '',
+                    'name' => Auth::guard()->user()->photoRel->name ?? '',
+                    'ext' => Auth::guard()->user()->photoRel->ext ?? '',
+                    'path' => Auth::guard()->user()->photoRel->path ?? '',
+                ],
                 's_not' => Auth::guard()->user()->s_not,
                 's_loc' => Auth::guard()->user()->s_loc,
                 's_b_date' => Auth::guard()->user()->s_b_date,
             ]);
         }catch (\Exception $e){
-            dd($e);
             return $this->apiResponse($code, __('Error while processing your request. Please contact an administrator'));
         }
     }
