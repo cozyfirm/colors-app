@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller{
     use FileTrait, ResponseTrait, CommonTrait;
+    protected int $_number_of_results = 10;
 
     public function search(Request $request): JsonResponse{
         try{
@@ -19,12 +20,32 @@ class SearchController extends Controller{
 
             return $this->apiResponse('0000', __('Success'),
                 User::where('name', 'LIKE', '%' . $request->search . '%')
+                    ->where('role', '=', 'user')
                     ->with('photoRel:id,file,name,ext,path')
                     ->with('teamsRel.teamRel:id,name')
                     ->with('teamsRel.nationalTeamRel:id,name')
                     ->with('teamsRel:id,user_id,team,national_team')
                     ->orderBy('id', 'ASC')
-                    ->take(10)
+                    ->take($this->_number_of_results)
+                    ->get(['id', 'name', 'username', 'photo'])
+                    ->toArray()
+            );
+        }catch (\Exception $e){
+            return $this->apiResponse('2051', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    public function recommended(Request $request): JsonResponse{
+        try{
+            return $this->apiResponse('0000', __('Success'),
+                User::inRandomOrder()
+                    ->where('role', '=', 'user')
+                    ->with('photoRel:id,file,name,ext,path')
+                    ->with('teamsRel.teamRel:id,name')
+                    ->with('teamsRel.nationalTeamRel:id,name')
+                    ->with('teamsRel:id,user_id,team,national_team')
+                    ->orderBy('id', 'ASC')
+                    ->take($this->_number_of_results)
                     ->get(['id', 'name', 'username', 'photo'])
                     ->toArray()
             );

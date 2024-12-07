@@ -6,6 +6,7 @@ use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryControll
 use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
 use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
+use App\Http\Controllers\API\Social\Fans\FansController;
 use App\Http\Controllers\API\Social\Fans\FansRequestsController;
 use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
@@ -116,6 +117,14 @@ Route::prefix('/users')->middleware('api-auth')->group(function (){
 Route::prefix('/fans')->middleware('api-auth')->group(function (){
     /** Search fans by name */
     Route::post('/search',                             [FansSearchController::class, 'search'])->name('api.fans.search');
+    Route::post('/recommended',                        [FansSearchController::class, 'recommended'])->name('api.fans.recommended');
+
+    Route::prefix('/my-fans')->middleware('api-auth')->group(function (){
+        Route::post('/fetch',                          [FansController::class, 'fetch'])->name('api.fans.my-fans');
+        Route::post('/search',                         [FansController::class, 'search'])->name('api.fans.my-fans.search');
+
+        Route::post('/delete',                         [FansController::class, 'delete'])->name('api.fans.my-fans.delete');
+    });
 
     Route::prefix('/requests')->middleware('api-auth')->group(function (){
         Route::post('/create',                         [FansRequestsController::class, 'create'])->name('api.fans.requests.create');

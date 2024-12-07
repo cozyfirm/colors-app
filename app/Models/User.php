@@ -5,10 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Core\Countries;
 use App\Models\Core\MyFile;
+use App\Models\Social\Fans\Fan;
 use App\Models\SystemCore\LeagueModerator;
 use App\Models\SystemCore\Users\UserTeams;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,6 +19,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @method static create(array $all)
  * @method static where(string $string, string $string1, $api_token)
+ * @method static inRandomOrder()
  */
 class User extends Authenticatable{
     use HasFactory, Notifiable;
@@ -113,5 +117,15 @@ class User extends Authenticatable{
     }
     public function photoRel(): HasOne{
         return $this->hasOne(MyFile::class, 'id', 'photo');
+    }
+
+    /**
+     *  Fans relationships
+     */
+    public function myFans(): HasMany{
+        return $this->hasMany(Fan::class, 'user_id', 'id');
+    }
+    public function fansRel(): HasManyThrough{
+        return $this->hasManyThrough(User::class, Fan::class, 'fan_id', 'id', 'id', 'user_id');
     }
 }

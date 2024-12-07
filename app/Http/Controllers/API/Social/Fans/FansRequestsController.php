@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 class FansRequestsController extends Controller{
     use FileTrait, ResponseTrait, CommonTrait, LogTrait;
 
+    protected int $_number_of_results = 10;
+
     /**
      * Create fan | friend request
      *
@@ -99,6 +101,8 @@ class FansRequestsController extends Controller{
      */
     public function fetchData(Request $request, $type, $status): array{
         try{
+            if(isset($request->number)) $this->_number_of_results = $request->number;
+
             if($type == 'my-requests'){
                 return FanRequest::where('to', '=', Auth::guard()->user()->id)
                     ->where('status', '=', $status)

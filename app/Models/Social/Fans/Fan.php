@@ -2,8 +2,10 @@
 
 namespace App\Models\Social\Fans;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -16,5 +18,10 @@ class Fan extends Model{
     protected $table = 'users__fans';
     protected $guarded = [];
 
-
+    public function userRel(): HasOne{
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    public function fanRel(): HasOne{
+        return $this->hasOne(User::class, 'id', 'fan_id');
+    }
 }
