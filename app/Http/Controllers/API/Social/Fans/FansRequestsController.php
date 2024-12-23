@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\Social\Fans;
 use App\Http\Controllers\Controller;
 use App\Models\Social\Fans\Fan;
 use App\Models\Social\Fans\FanRequest;
+use App\Models\SystemCore\Notifications\Notification;
+use App\Models\SystemCore\Notifications\NotificationFanRequest;
 use App\Traits\Common\CommonTrait;
 use App\Traits\Common\FileTrait;
 use App\Traits\Common\LogTrait;
@@ -37,6 +39,27 @@ class FansRequestsController extends Controller{
                         'from' => Auth::guard()->user()->id,
                         'to' => $request->to
                     ]);
+
+                    /**
+                     *  Create notification
+                     */
+                    try{
+                        /**
+                         *  ToDo - Add to notifications__fan_requests status field, which would sync with status field
+                         *  or FK to users__fans__requests
+                         */
+
+                        $notification = Notification::create([
+                            'user_id' => $request->to,
+                            'type' => 'fan_request'
+                        ]);
+
+                        NotificationFanRequest::create([
+                            'notification_id' => $notification->id,
+                            'from' => Auth::guard()->user()->id,
+                            'content' => 'sent you a fan request'
+                        ]);
+                    }catch (\Exception $exception){}
 
                     return $this->apiResponse('0000', __('Request sent successfully'));
                 }else{
