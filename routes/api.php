@@ -146,6 +146,11 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
     Route::post('/update',                             [GroupsController::class, 'update'])->name('api.groups.update');
     Route::post('/update-photo',                       [GroupsController::class, 'updatePhoto'])->name('api.groups.update-photo');
 
+    /**
+     *  Get group info and posts
+     */
+    Route::post('/get-info',                           [GroupsController::class, 'getInfo'])->name('api.groups.get-info');
+
     /** Search groups by name */
     Route::post('/search',                             [GroupsController::class, 'search'])->name('api.groups.search');
 
