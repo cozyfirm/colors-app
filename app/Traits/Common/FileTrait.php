@@ -33,7 +33,7 @@ trait FileTrait{
                     'type' => $type,
                     'path' => $request->path
                 ]);
-            }catch (\Exception $e){ dd($e); return null; }
+            }catch (\Exception $e){ return null; }
         }else return null;
     }
 

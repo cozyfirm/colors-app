@@ -210,9 +210,16 @@ class GroupsController extends Controller{
     public function search(Request $request) : JsonResponse{
         try{
             if(empty($request->name)) return $this->apiResponse('3020', __('Empty group name'));
+            $groups = Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
+
+            /* Get group access info */
+            foreach ($groups as $group) {
+                $this->groupAccess($group);
+                $group->access = $this->_access;
+            }
 
             return $this->apiResponse('0000', __('Success'),
-                Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members'])->toArray()
+                $groups->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
@@ -239,6 +246,7 @@ class GroupsController extends Controller{
             $groups = Group::with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             $groups = Filters::filter($groups, $this->_number_of_groups);
 
+            /* Get group access info */
             foreach ($groups as $group) {
                 $this->groupAccess($group);
                 $group->access = $this->_access;
