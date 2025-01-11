@@ -20,6 +20,11 @@ class GroupsController extends Controller{
 
     protected string $_file_path = 'files/social/groups';
     protected int $_number_of_groups = 10;
+    protected array $_access = [
+        'hasAccess' => false,
+        'role' => 'non-member',
+        'status' => 'default',
+    ];
 
     /**
      * @param Request $request
@@ -144,6 +149,58 @@ class GroupsController extends Controller{
             return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
         }
     }
+    public function groupAccess($group): void{
+        /* Reset all values */
+        $this->_access['hasAccess'] = true;
+        $this->_access['role'] = 'non-member';
+        $this->_access['status'] = 'default';
+
+        $membership = GroupMember::where('group_id', '=', $group->id)->where('user_id', '=', Auth::user()->id)->first();
+
+        /* If there is no membership object, user do not have access */
+        if(!$membership) return;
+
+        if($group->public == 0){
+            /* Private groups */
+            if($membership->role == 'admin'){
+                $this->_access['hasAccess'] = true;
+                $this->_access['role'] = 'admin';
+            }else{
+                if($membership->role == 'member'){
+                    $this->_access['role'] = 'member';
+
+                    if($membership->status == 'accepted'){
+                        $this->_access['hasAccess'] = true;
+                    }else{
+                        $this->_access['status'] = $membership->status;
+                    }
+                }
+            }
+        }else{
+            /* Public groups */
+            $this->_access['hasAccess'] = true;
+
+            if($membership->role == 'admin'){
+                $this->_access['role'] = 'admin';
+            }else $this->_access['role'] = 'member';
+        }
+    }
+    public function getInfo(Request $request): JsonResponse{
+        try{
+            if(!isset($request->group_id)) return $this->apiResponse('3013', __('Unknown group'));
+            $group = Group::where('id', '=', $request->group_id)->with('fileRel:id,file,name,ext,path')->first(['id', 'hash', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
+
+            /* Group access */
+            $this->groupAccess($group);
+
+            return $this->apiResponse('0000', __('Success'), [
+                'group' => $group,
+                'access' => $this->_access
+            ]);
+        }catch (\Exception $e){
+            return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
 
     /** ------------------------------------------------------------------------------------------------------------ **/
     /**
@@ -153,9 +210,16 @@ class GroupsController extends Controller{
     public function search(Request $request) : JsonResponse{
         try{
             if(empty($request->name)) return $this->apiResponse('3020', __('Empty group name'));
+            $groups = Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
+
+            /* Get group access info */
+            foreach ($groups as $group) {
+                $this->groupAccess($group);
+                $group->access = $this->_access;
+            }
 
             return $this->apiResponse('0000', __('Success'),
-                Group::where('name', 'LIKE', '%' . $request->name . '%')->with('fileRel:id,file,name,ext,path')->take(10)->get(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members'])->toArray()
+                $groups->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('3001', __('Error while processing your request. Please contact an administrator'));
@@ -181,6 +245,12 @@ class GroupsController extends Controller{
 
             $groups = Group::with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            /* Get group access info */
+            foreach ($groups as $group) {
+                $this->groupAccess($group);
+                $group->access = $this->_access;
+            }
 
             return $this->apiResponse('0000', __('Success'),
                 $groups->toArray()
@@ -224,6 +294,11 @@ class GroupsController extends Controller{
 
             $groups = Group::orderBy('members', 'DESC')->with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            foreach ($groups as $group) {
+                $this->groupAccess($group);
+                $group->access = $this->_access;
+            }
 
             return $this->apiResponse('0000', __('Success'),
                 $groups->toArray()

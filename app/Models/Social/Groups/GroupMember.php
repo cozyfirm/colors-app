@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static create(array $array)
- * @method static where(string $string, mixed $id)
+ * @method static where(string $string, string $string1, $id)
  */
 class GroupMember extends Model{
     use HasFactory, SoftDeletes;

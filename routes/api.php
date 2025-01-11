@@ -11,6 +11,7 @@ use App\Http\Controllers\API\Social\Fans\FansRequestsController;
 use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
+use App\Http\Controllers\API\SystemCore\Notifications\NotificationsController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
@@ -146,6 +147,11 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
     Route::post('/update',                             [GroupsController::class, 'update'])->name('api.groups.update');
     Route::post('/update-photo',                       [GroupsController::class, 'updatePhoto'])->name('api.groups.update-photo');
 
+    /**
+     *  Get group info and posts
+     */
+    Route::post('/get-info',                           [GroupsController::class, 'getInfo'])->name('api.groups.get-info');
+
     /** Search groups by name */
     Route::post('/search',                             [GroupsController::class, 'search'])->name('api.groups.search');
 
@@ -172,6 +178,15 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
         Route::post('/allow-deny-request',                       [GroupsMembershipController::class, 'allowDenyRequest'])->name('api.groups.membership.allow-deny-request');
         /** Join if group is public */
         Route::post('/join',                                     [GroupsMembershipController::class, 'join'])->name('api.groups.membership.join');
+    });
+});
+
+Route::prefix('/system-core')->middleware('api-auth')->group(function (){
+    /**
+     *  Notifications
+     */
+    Route::prefix('/notifications')->middleware('api-auth')->group(function (){
+        Route::post('/my-notifications',                         [NotificationsController::class, 'myNotifications'])->name('api.system-core.notifications.my-notifications');
     });
 });
 
