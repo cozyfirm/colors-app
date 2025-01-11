@@ -11,22 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('posts__files', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('post_id')->nullable();
+            $table->foreign('post_id')
                 ->references('id')
-                ->on('users')
+                ->on('posts')
                 ->onDelete('cascade');
 
-            $table->text('description')->nullable();
-
-            $table->tinyInteger('public')->default(0);
-            $table->unsignedBigInteger('group_id')->nullable();
-
-            $table->integer('likes')->default(0);
-            $table->integer('comments')->default(0);
+            $table->unsignedBigInteger('file_id')->nullable();
+            $table->foreign('file_id')
+                ->references('id')
+                ->on('__files')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('posts__files');
     }
 };

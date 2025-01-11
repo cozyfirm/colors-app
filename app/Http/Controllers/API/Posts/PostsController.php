@@ -7,41 +7,55 @@ use App\Models\Core\MyFile;
 use App\Models\Posts\Post;
 use App\Models\User;
 use App\Traits\Common\FileTrait;
+use App\Traits\Common\LogTrait;
 use App\Traits\Http\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller{
-    use FileTrait, ResponseTrait;
+    use FileTrait, ResponseTrait, LogTrait;
     protected string $_file_path = 'files/posts';
 
     public function save(Request $request): JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', $request->api_token)->first();
+            $user = User::where('api_token', '=', $request->api_token)->first();
 
-            /**
-             *  Save file to __files table; return object | null in case of failure
-             */
+            /* Extract files from request */
+            $files = $request->file('files');
+
+            if(!count($files)) return $this->apiResponse('3101', __('No files selected'));
+
+            /* Make sure there is no exceptions */
+            if($request->public != 0 and $request->public != 1) $request['public'] = 0;
+            /* Set files path and add to request */
             $request['path'] = $this->_file_path;
-            $file = $this->saveFile($request, 'file');
 
-            /** @var PostContent $request->content */
-            $post = Post::create([
-                'user_id' => $user->id,
-                'content' => $request->content,
-                'file_id' => $file?->id,
-                'public' => $request->public
-            ]);
+            try{
+                /**
+                 *  Create new post
+                 */
+                $post = Post::create([
+                    'user_id' => $user->id,
+                    'description' => $request->description,
+                    'public' => $request->public
+                ]);
+            }catch (\Exception $e){
+                $this->write('API: PostsController::save() - Create new post', $e->getCode(), $e->getMessage(), $request);
+                return $this->apiResponse('3102', __('Error while creating post. Check later'));
+            }
 
-            $post->file_rel = $file;
+            /* Save file, create DB object (DB Relationship on posts__files table) */
+            foreach ($files as $file){
+                $this->savePostFile($request, $file, $post->id);
+            }
 
-            return $this->apiResponse('0000', __('Teams saved!'), [
-                'post' => $post
-            ]);
+            return $this->apiResponse('0000', __('Post saved'));
         }catch (\Exception $e){
-            return $this->apiResponse('2001', __('Error while processing your request. Please contact an administrator'));
+            $this->write('API: PostsController::save()', $e->getCode(), $e->getMessage(), $request);
+
+            return $this->apiResponse('3100', __('Error while processing your request. Please contact an administrator'));
         }
     }
     public function delete(Request $request): JsonResponse{

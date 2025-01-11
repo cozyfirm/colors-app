@@ -3,9 +3,12 @@
 namespace App\Traits\Common;
 
 use App\Models\Core\MyFile;
+use App\Models\Posts\PostFile;
 use Illuminate\Http\Request;
 
 trait FileTrait{
+    use LogTrait;
+
     /**
      * @param Request $request
      * @param $key
@@ -51,5 +54,36 @@ trait FileTrait{
             }catch (\Exception $e){ }
             $file->delete();
         }catch (\Exception $e){}
+    }
+
+    /**
+     *  Posts, including:
+     *      1. Streams
+     *      2. Groups
+     */
+    public function savePostFile(Request $request, $file, $postID): void{
+        try{
+            $ext = pathinfo($file->getClientOriginalName(),PATHINFO_EXTENSION);
+            $name = md5($file->getClientOriginalName().time()).'.'.$ext;
+
+            $file->move($request->path, $name);
+
+            if($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg') $type = 'img';
+
+            $file =  MyFile::create([
+                'file' => $file->getClientOriginalName(),
+                'name' => $name,
+                'ext' => $ext,
+                'type' => $type,
+                'path' => $request->path
+            ]);
+
+            PostFile::create([
+                'post_id' => $postID,
+                'file_id' => $file->id
+            ]);
+        }catch (\Exception $e){
+            $this->write('API: FileTrait::savePostFile()', $e->getCode(), $e->getMessage(), $request);
+        }
     }
 }
