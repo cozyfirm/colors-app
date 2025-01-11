@@ -25,6 +25,7 @@ return new class extends Migration
             $table->tinyInteger('public')->default(0);
             $table->unsignedBigInteger('group_id')->nullable();
 
+            $table->integer('views')->default(0);
             $table->integer('likes')->default(0);
             $table->integer('comments')->default(0);
 

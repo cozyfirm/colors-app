@@ -73,4 +73,29 @@ trait UserTrait{
             return $this->apiResponse($code, __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    public function getSpecificUserData($user): array|false {
+        try{
+            return [
+                'name' => $user->name,
+                'username' => $user->username,
+                'birth_date' => $user->birth_date,
+                'birth_date_f' => Carbon::parse($user->birth_date)->format('d.m.Y'),
+                'city' => $user->city,
+                'teams' => [
+                    'status' => isset($user->teamsRel),
+                    'team' => $user->teamsRel->team ?? null,
+                    'national_team' => $user->teamsRel->national_team ?? null
+                ],
+                'photoRel' => [
+                    'file' => $user->photoRel->file ?? '',
+                    'name' => $user->photoRel->name ?? '',
+                    'ext'  => $user->photoRel->ext ?? '',
+                    'path' => $user->photoRel->path ?? '',
+                ]
+            ];
+        }catch (\Exception $e){
+            return false;
+        }
+    }
 }
