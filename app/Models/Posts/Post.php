@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Post extends Model{
     use HasFactory;
+    protected int $_number_of_comments = 10;
 
     protected $guarded = ['id'];
 
@@ -24,7 +25,14 @@ class Post extends Model{
     public function fileRel(): HasOne{
         return $this->hasOne(PostFile::class, 'post_id', 'id')->orderBy('id', 'DESC');
     }
-    public function userRel(){
+    public function userRel(): HasOne{
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    /**
+     *  Comments section
+     */
+    public function commentsRel(): HasMany{
+        return $this->hasMany(PostComment::class, 'id', 'post_id')->whereNull('parent_id')->take($this->_number_of_comments);
     }
 }

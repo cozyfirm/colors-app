@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Core\MyFile;
 use App\Models\Posts\Post;
 use App\Models\Posts\PostFile;
+use App\Models\Posts\PostLike;
 use App\Models\Social\Fans\Fan;
 use App\Models\Social\Fans\FanRequest;
 use App\Models\User;
@@ -173,6 +174,12 @@ class PostsController extends Controller{
         }
     }
 
+    /**
+     * Fetch posts for specific user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function fetchUserPosts(Request $request): JsonResponse{
         try{
             if(!isset($request->user_id)) return $this->apiResponse('3110', __('User ID not found'));
@@ -198,6 +205,53 @@ class PostsController extends Controller{
             }
         }catch (\Exception $e){
             $this->write('API: PostsController::fetchUserPosts()', $e->getCode(), $e->getMessage(), $request);
+            return $this->apiResponse('2021', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
+     * Like or unlike post; If sample exists, dislike (remove posts__likes) otherwise create sample
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function like(Request $request): JsonResponse{
+        try{
+            if(!isset($request->post_id)) return $this->apiResponse('3115', __('Unknown post'));
+
+            $liked = false;
+
+            /** @var UserAPIToken $request->api_token */
+            $user = User::where('api_token', '=', $request->api_token)->first();
+
+            $like = PostLike::where('post_id', '=', $request->post_id)->where('user_id', '=', $user->id)->first();
+            if(!$like){
+                /* Create new like sample */
+                PostLike::create([
+                    'post_id' => $request->post_id,
+                    'user_id' => $user->id
+                ]);
+
+                $liked = true;
+            }else{
+                /* Remove like sample */
+                PostLike::where('post_id', '=', $request->post_id)->where('user_id', '=', $user->id)->delete();
+            }
+            /* Get total likes of comment */
+            $totalLikes = PostLike::where('post_id', '=', $request->post_id)->count();
+
+            /* Update number of likes of comment */
+            Post::where('id', '=', $request->post_id)->update([
+                'likes' => $totalLikes
+            ]);
+            /* ToDo:: Broadcast over sockets */
+
+            return $this->apiResponse('0000', __('Successfully deleted'), [
+                'liked' => $liked,
+                'totalLikes' => $totalLikes
+            ]);
+        }catch (\Exception $e){
+            $this->write('API: PostsController::like()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2021', __('Error while processing your request. Please contact an administrator'));
         }
     }

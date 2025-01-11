@@ -6,6 +6,7 @@ use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryControll
 use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
 use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
+use App\Http\Controllers\API\Posts\CommentsController as ApiCommentsController;
 use App\Http\Controllers\API\Social\Fans\FansController;
 use App\Http\Controllers\API\Social\Fans\FansRequestsController;
 use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
@@ -78,7 +79,7 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
     Route::post('/save',                                      [ApiPostsController::class, 'save'])->name('api.posts.save');
     Route::post('/delete',                                    [ApiPostsController::class, 'delete'])->name('api.posts.delete');
 
-    /*
+    /**
      *  Fetch user posts:
      *      1. Fetch my posts (by api token)
      *      2. Fetch other users posts (check if posts can be fetched)
@@ -86,6 +87,21 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
     Route::post('/fetch-my-posts',                            [ApiPostsController::class, 'fetchMyPosts'])->name('api.posts.fetch-my-posts');
     Route::post('/fetch-user-posts',                          [ApiPostsController::class, 'fetchUserPosts'])->name('api.posts.fetch-user-posts');
 
+    /* Like / unlike post */
+    Route::post('/like',                                      [ApiPostsController::class, 'like'])->name('api.posts.like');
+
+    Route::prefix('/comments')->middleware('api-auth')->group(function (){
+        Route::post('/add',                                   [ApiCommentsController::class, 'add'])->name('api.posts.comments.add');
+        /**
+         *  Fetch comments and comments of comment
+         */
+        Route::post('/fetch',                                 [ApiCommentsController::class, 'fetch'])->name('api.posts.comments.fetch');
+        Route::post('/fetch-comments-on-comment',             [ApiCommentsController::class, 'fetchCommentsOnComment'])->name('api.posts.comments.fetch-comments-on-comment');
+        /* Delete comment */
+        Route::post('/delete',                                [ApiCommentsController::class, 'delete'])->name('api.posts.comments.delete');
+        /* Like / unlike comment */
+        Route::post('/like',                                  [ApiCommentsController::class, 'like'])->name('api.posts.comments.like');
+    });
 });
 
 /**
