@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static create(array $all)
  * @method static where(string $string, string $string1, $api_token)
  * @method static inRandomOrder()
+ * @method static get()
  */
 class User extends Authenticatable{
     use HasFactory, Notifiable;
