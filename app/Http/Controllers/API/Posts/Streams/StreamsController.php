@@ -47,6 +47,25 @@ class StreamsController extends Controller{
         }
     }
 
+    public function getPostInfo(Request $request, $post): mixed{
+        $post = $post->with('filesRel.fileRel:id,file,name,ext,path')
+            ->with('filesRel:id,post_id,file_id')
+            /** Photo Relationship */
+            ->with('userRel.photoRel:id,file,name,ext,path')
+            /** Team and national-team Relationship */
+            ->with('userRel.teamsRel.teamRel:id,name,flag,code,gender')
+            ->with('userRel.teamsRel.nationalTeamRel:id,name,flag,code,gender')
+            ->with('userRel.teamsRel:id,user_id,team,national_team')
+            ->with('userRel:id,name,username,photo')
+            ->first(['id', 'user_id', 'description', 'views', 'likes', 'comments', 'created_at']);
+
+        /** Check if post is liked */
+        $post->liked = PostLike::where('post_id', '=', $post->id)
+            ->where('user_id', '=', $request->user()->id)->count();
+
+        return $post;
+    }
+
     /**
      * Fetch post info:
      *      1. Basic post info
@@ -59,31 +78,27 @@ class StreamsController extends Controller{
     public function fetch(Request $request): JsonResponse{
         try{
             if(isset($request->post_id)){
-                $post = Post::where('id', '=', $request->post_id)
-                    ->with('filesRel.fileRel:id,file,name,ext,path')
-                    ->with('filesRel:id,post_id,file_id')
-                    /** Photo Relationship */
-                    ->with('userRel.photoRel:id,file,name,ext,path')
-                    /** Team and national-team Relationship */
-                    ->with('userRel.teamsRel.teamRel:id,name,flag,code,gender')
-                    ->with('userRel.teamsRel.nationalTeamRel:id,name,flag,code,gender')
-                    ->with('userRel.teamsRel:id,user_id,team,national_team')
-                    ->with('userRel:id,name,username,photo')
-                    ->first(['id', 'user_id', 'description', 'views', 'likes', 'comments', 'created_at']);
+                $post = Post::where('id', '=', $request->post_id);
+
+                /* Fetch additional infos */
+                $post = $this->getPostInfo($request, $post);
+
+                /* Next and previous post */
+                $previous = Post::where('id', '<', $request->post_id);
+                $next     = Post::where('id', '>', $request->post_id);
 
                 /** ToDo -- Add check for post permissions */
 
-                /** Check if post is liked */
-                $post->liked = PostLike::where('post_id', '=', $request->post_id)
-                    ->where('user_id', '=', $request->user()->id)->count();
-
-                return $this->apiResponse('0000', __('Success'),
-                    $post->toArray()
-                );
+                return $this->apiResponse('0000', __('Success'), [
+                    'previous' => $this->getPostInfo($request, $previous)->toArray(),
+                    'post' => $post->toArray(),
+                    'next' => $this->getPostInfo($request, $next)->toArray()
+                ]);
             }else{
                 return $this->apiResponse('3201', __('404 - Not found'));
             }
         }catch (\Exception $e){
+            dd($e);
             $this->write('API: StreamsController::fetch()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('3200', __('Error while processing your request. Please contact an administrator'));
         }
