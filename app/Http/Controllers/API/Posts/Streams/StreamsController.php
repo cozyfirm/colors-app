@@ -98,7 +98,6 @@ class StreamsController extends Controller{
                 return $this->apiResponse('3201', __('404 - Not found'));
             }
         }catch (\Exception $e){
-            dd($e);
             $this->write('API: StreamsController::fetch()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('3200', __('Error while processing your request. Please contact an administrator'));
         }
