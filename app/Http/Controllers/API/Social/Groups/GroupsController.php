@@ -158,7 +158,13 @@ class GroupsController extends Controller{
         $membership = GroupMember::where('group_id', '=', $group->id)->where('user_id', '=', Auth::user()->id)->first();
 
         /* If there is no membership object, user do not have access */
-        if(!$membership) return;
+        if(!$membership) {
+            $this->_access['hasAccess'] = false;
+            $this->_access['role'] = 'non-member';
+            $this->_access['status'] = 'default';
+
+            return;
+        }
 
         if($group->public == 0){
             /* Private groups */
@@ -274,6 +280,12 @@ class GroupsController extends Controller{
             })->with('fileRel:id,file,name,ext,path')->select(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);;
 
             $groups = Filters::filter($groups, $this->_number_of_groups);
+
+            /* Get group access info */
+            foreach ($groups as $group) {
+                $this->groupAccess($group);
+                $group->access = $this->_access;
+            }
 
             return $this->apiResponse('0000', __('Success'),
                 $groups->toArray()

@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class CountryController extends Controller{
     use ResponseTrait;
+
+    /**
+     * Get all countries
+     *
+     * @param Request $request
+     * @return bool|string
+     */
     public function getCountries(Request $request): bool|string {
         try{
             return $this->jsonResponse('0000', 'Success: Fetch all countries',
@@ -18,6 +25,13 @@ class CountryController extends Controller{
             return $this->jsonResponse('8000', __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    /**
+     * Get country by ID
+     *
+     * @param Request $request
+     * @return bool|string
+     */
     public function getCountryByID(Request $request): bool|string {
         try{
             return $this->jsonResponse('0000', 'Success: Get Country By ID', [
@@ -27,6 +41,12 @@ class CountryController extends Controller{
             return $this->jsonResponse('8001', __('Error while processing your request. Please contact an administrator'));
         }
     }
+
+    /**
+     * Get country By Code
+     * @param Request $request
+     * @return bool|string
+     */
     public function getCountryByCode(Request $request): bool|string {
         try{
             return $this->jsonResponse('0000', 'Success: Get Country By Code', [

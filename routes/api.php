@@ -223,6 +223,9 @@ Route::prefix('/open-api')->group(function (){
      */
     Route::prefix('/teams')->group(function (){
         Route::post('/by-name',                            [OpenApiClubsController::class, 'searchByName'])->name('api.open-api.teams.by-name');
+
+        Route::post('/fetch-by-id',                        [OpenApiClubsController::class, 'fetchByID'])->name('api.open-api.teams.fetch-by-id');
+        Route::post('/fetch-by-name',                      [OpenApiClubsController::class, 'fetchByName'])->name('api.open-api.teams.fetch-by-name');
     });
 
     /**
