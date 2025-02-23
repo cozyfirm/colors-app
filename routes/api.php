@@ -7,6 +7,7 @@ use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
 use App\Http\Controllers\API\OpenApi\SplashController as OpenApiSplashController;
 use App\Http\Controllers\API\Posts\PostsController as ApiPostsController;
 use App\Http\Controllers\API\Posts\CommentsController as ApiCommentsController;
+use App\Http\Controllers\API\Posts\Streams\StreamsController as ApiStreamsController;
 use App\Http\Controllers\API\Social\Fans\FansController;
 use App\Http\Controllers\API\Social\Fans\FansRequestsController;
 use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
@@ -101,6 +102,22 @@ Route::prefix('/posts')->middleware('api-auth')->group(function (){
         Route::post('/delete',                                [ApiCommentsController::class, 'delete'])->name('api.posts.comments.delete');
         /* Like / unlike comment */
         Route::post('/like',                                  [ApiCommentsController::class, 'like'])->name('api.posts.comments.like');
+    });
+
+    /**
+     *  Streams API:
+     *      1. Search for streams
+     *      2. Preview streams
+     *      3. Preview single stream
+     */
+    Route::prefix('/streams')->middleware('api-auth')->group(function (){
+        /** Fetch home streams */
+        Route::post('/',                                      [ApiStreamsController::class, 'index'])->name('api.posts.streams');
+        /** Fetch specific stream */
+        Route::post('/fetch',                                 [ApiStreamsController::class, 'fetch'])->name('api.posts.streams.fetch');
+
+        /** Search streams|posts, users and groups */
+        Route::post('/search',                                [ApiStreamsController::class, 'search'])->name('api.posts.streams.search');
     });
 });
 
