@@ -66,7 +66,7 @@ class ClubsController extends Controller{
             ]);
 
             return redirect()->route('admin.core.clubs.preview', ['id' => $club->id]);
-        }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
+        }catch (\Exception $e){ dd($e); return back()->with('error', $e->getMessage()); }
     }
     public function preview($id):View{ return $this->getData('preview', $id); }
     public function edit($id):View{ return $this->getData('edit', $id); }

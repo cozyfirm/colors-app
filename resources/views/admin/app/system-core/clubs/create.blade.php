@@ -80,7 +80,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <b>{{ html()->label(__('Founded'))->for('founded') }}</b>
-                                {{ html()->number('founded', '', 1900, date('Y'))->class('form-control form-control-sm mt-1')->required()->value((isset($club) ? $club->founded : ''))->isReadonly(isset($preview)) }}
+                                {{ html()->number('founded', '', 1900, date('Y'))->class('form-control form-control-sm mt-1')->value((isset($club) ? $club->founded : ''))->isReadonly(isset($preview)) }}
                                 <small id="foundedHelp" class="form-text text-muted">{{ __('Year when it is founded') }}</small>
                             </div>
                         </div>
