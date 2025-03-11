@@ -23,7 +23,7 @@ class GroupsMembershipController extends Controller{
     public function allMembers(Request $request): JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', $request->api_token)->first();
+            $user = User::where('api_token', '=', $request->api_token)->first();
 
             $group = Group::where('id', '=', $request->id)->first();
             if(!$group) return $this->apiResponse('3052', __('Unknown group'));
@@ -48,7 +48,7 @@ class GroupsMembershipController extends Controller{
     public function sendRequest(Request $request) : JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', $request->api_token)->first();
+            $user = User::where('api_token', '=', $request->api_token)->first();
 
             $group = Group::where('id', $request->id)->first();
             if(!$group) return $this->apiResponse('3055', __('Unknown group'));
@@ -82,7 +82,7 @@ class GroupsMembershipController extends Controller{
     public function allowDenyRequest(Request $request) : JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', $request->api_token)->first();
+            $user = User::where('api_token', '=', $request->api_token)->first();
 
             $membership = GroupMember::where('id', $request->id)->first();
             if(!$membership) return $this->apiResponse('3059', __('Unknown membership'));
@@ -120,7 +120,7 @@ class GroupsMembershipController extends Controller{
     public function join(Request $request) : JsonResponse{
         try{
             /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', $request->api_token)->first();
+            $user = User::where('api_token', '=', $request->api_token)->first();
 
             $group = Group::where('id', '=', $request->id)->with('fileRel:id,file,name,ext,path')->first(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             if(!$group) return $this->apiResponse('3065', __('Unknown group'));
@@ -141,6 +141,25 @@ class GroupsMembershipController extends Controller{
             return $this->apiResponse('0000', __('Successfully joined'), [
                 'group' => $group
             ]);
+        }catch (\Exception $e){
+            return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
+     * Leave group (Soft delete from membership table)
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function leave(Request $request) : JsonResponse{
+        try{
+            /** @var UserAPIToken $request->api_token */
+            $user = User::where('api_token', '=', $request->api_token)->first();
+
+            $membership = GroupMember::where('group_id', '=', $request->id)
+                ->where('user_id', '=', $user->id)->delete();
+
+            return $this->apiResponse('0000', __('Successfully deleted'));
         }catch (\Exception $e){
             return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
         }

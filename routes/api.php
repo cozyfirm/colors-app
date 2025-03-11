@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Social\Fans\FansRequestsController;
 use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchController;
 use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
+use App\Http\Controllers\API\Social\Groups\PostsController as GroupsPostsController;
 use App\Http\Controllers\API\SystemCore\Notifications\NotificationsController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
@@ -211,6 +212,22 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
         Route::post('/allow-deny-request',                       [GroupsMembershipController::class, 'allowDenyRequest'])->name('api.groups.membership.allow-deny-request');
         /** Join if group is public */
         Route::post('/join',                                     [GroupsMembershipController::class, 'join'])->name('api.groups.membership.join');
+        /** Leave group */
+        Route::post('/leave',                                    [GroupsMembershipController::class, 'leave'])->name('api.groups.membership.leave');
+    });
+
+    /**
+     *  Posts by Group
+     */
+    Route::prefix('/posts')->group(function (){
+        Route::post('/save',                                     [GroupsPostsController::class, 'save'])->name('api.groups.posts.leave');
+        Route::post('/delete',                                   [GroupsPostsController::class, 'delete'])->name('api.groups.posts.delete');
+
+        /** Fetch first n posts of group */
+        Route::post('/fetch',                                    [GroupsPostsController::class, 'fetch'])->name('api.groups.posts.fetch');
+
+        /** Like post */
+        Route::post('/like',                                     [GroupsPostsController::class, 'like'])->name('api.groups.posts.like');
     });
 });
 
