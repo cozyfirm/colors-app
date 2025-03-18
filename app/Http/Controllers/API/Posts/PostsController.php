@@ -14,13 +14,14 @@ use App\Models\User;
 use App\Traits\Common\FileTrait;
 use App\Traits\Common\LogTrait;
 use App\Traits\Http\ResponseTrait;
+use App\Traits\Posts\PostTrait;
 use App\Traits\Users\UserTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller{
-    use FileTrait, ResponseTrait, LogTrait, UserTrait;
+    use FileTrait, ResponseTrait, LogTrait, UserTrait, PostTrait;
     protected string $_file_path = 'files/posts';
     protected int $_number_of_posts = 10;
 
@@ -34,39 +35,17 @@ class PostsController extends Controller{
      */
     public function save(Request $request): JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
             /* Extract files from request */
             $files = $request->file('files');
-
-            if(!count($files)) return $this->apiResponse('3101', __('No files selected'));
+            if(!isset($files)) return $this->apiResponse('3101', __('No files selected'));
 
             /* Make sure there is no exceptions */
             if($request->public != 0 and $request->public != 1) $request['public'] = 0;
-            /* Set files path and add to request */
-            $request['path'] = $this->_file_path;
 
-            try{
-                /**
-                 *  Create new post
-                 */
-                $post = Post::create([
-                    'user_id' => $user->id,
-                    'description' => $request->description,
-                    'public' => $request->public
-                ]);
-            }catch (\Exception $e){
-                $this->write('API: PostsController::save() - Create new post', $e->getCode(), $e->getMessage(), $request);
-                return $this->apiResponse('3102', __('Error while creating post. Check later'));
-            }
-
-            /* Save file, create DB object (DB Relationship on posts__files table) */
-            foreach ($files as $file){
-                $this->savePostFile($request, $file, $post->id);
-            }
-
-            return $this->apiResponse('0000', __('Post saved'));
+            /**
+             *  Save post and return saved file
+             */
+            return $this->savePost($request, $request->public);
         }catch (\Exception $e){
             $this->write('API: PostsController::save()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('3100', __('Error while processing your request. Please contact an administrator'));
@@ -87,22 +66,7 @@ class PostsController extends Controller{
             if(!$post){
                 return $this->apiResponse('3105', __('You have no privilege to delete this post!'));
             }else{
-                $postFiles = PostFile::where('post_id', '=', $post->id)->get();
-                /**
-                 *  First, remove the files and relationships
-                 */
-                foreach ($postFiles as $postFile){
-                    MyFile::where('id', '=', $postFile->file_id)->delete();
-                    /* ToDo:: Remove physical file */
-                    $postFile->delete();
-                }
-
-                /**
-                 *  Delete post | ToDo - Delete all comments and likes later !?
-                 */
-                $post->delete();
-
-                return $this->apiResponse('0000', __('Successfully deleted'));
+                return $this->deletePost($post);
             }
         }catch (\Exception $e){
             $this->write('API: PostsController::delete()', $e->getCode(), $e->getMessage(), $request);
@@ -122,6 +86,7 @@ class PostsController extends Controller{
      *
      * @param Request $request
      * @param $user
+     * @param null $public
      * @return JsonResponse
      */
     public function fetchPostsByUser(Request $request, $user, $public = null): mixed{
@@ -219,37 +184,8 @@ class PostsController extends Controller{
         try{
             if(!isset($request->post_id)) return $this->apiResponse('3115', __('Unknown post'));
 
-            $liked = false;
-
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
-            $like = PostLike::where('post_id', '=', $request->post_id)->where('user_id', '=', $user->id)->first();
-            if(!$like){
-                /* Create new like sample */
-                PostLike::create([
-                    'post_id' => $request->post_id,
-                    'user_id' => $user->id
-                ]);
-
-                $liked = true;
-            }else{
-                /* Remove like sample */
-                PostLike::where('post_id', '=', $request->post_id)->where('user_id', '=', $user->id)->delete();
-            }
-            /* Get total likes of comment */
-            $totalLikes = PostLike::where('post_id', '=', $request->post_id)->count();
-
-            /* Update number of likes of comment */
-            Post::where('id', '=', $request->post_id)->update([
-                'likes' => $totalLikes
-            ]);
-            /* ToDo:: Broadcast over sockets */
-
-            return $this->apiResponse('0000', __('Successfully deleted'), [
-                'liked' => $liked,
-                'totalLikes' => $totalLikes
-            ]);
+            /** Like or unlike post and return statistics and action */
+            return $this->likePost($request);
         }catch (\Exception $e){
             $this->write('API: PostsController::like()', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('2021', __('Error while processing your request. Please contact an administrator'));

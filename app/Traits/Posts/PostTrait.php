@@ -42,15 +42,15 @@ trait PostTrait{
     }
 
     /**
-     * Save group post, only after all checks are passed
+     * Save post, only after all checks are passed
      *
      * @param Request $request
+     * @param int $public
+     * @param null $group_id
      * @return JsonResponse
      */
-    public function saveGroupPost(Request $request): JsonResponse{
+    protected function savePost(Request $request, $public = 0, $group_id = null): JsonResponse{
         try{
-            $group = Group::where('id', '=', $request->group_id)->first();
-
             /* Extract files from request */
             $files = $request->file('files');
 
@@ -64,8 +64,8 @@ trait PostTrait{
                 $post = Post::create([
                     'user_id' => $request->user_id,
                     'description' => $request->description,
-                    'public' => $group->public,
-                    'group_id' => $group->id
+                    'public' => $public,
+                    'group_id' => $group_id
                 ]);
             }catch (\Exception $e){
                 $this->write('API: PostTrait::saveGroupPost() - Create new post', $e->getCode(), $e->getMessage(), $request);

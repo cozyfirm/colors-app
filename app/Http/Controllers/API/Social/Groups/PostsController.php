@@ -35,8 +35,10 @@ class PostsController extends Controller{
             if(!isset($request->group_id)) return $this->apiResponse('3071', __('Group not found'));
             if(!$this->userHasPermissionToGroup($request)) return $this->apiResponse('3072', __('Not allowed to post'));
 
+            $group = Group::where('id', '=', $request->group_id)->first();
+
             /** Save post and return saved post */
-            return $this->saveGroupPost($request);
+            return $this->savePost($request, $group->public, $group->id);
         }catch (\Exception $e){
             $this->write('API: GroupsPostsController::save() - Global error', $e->getCode(), $e->getMessage(), $request);
             return $this->apiResponse('3070', __('Error while processing your request. Please contact an administrator'));
@@ -128,6 +130,7 @@ class PostsController extends Controller{
             if(!isset($request->group_id)) return $this->apiResponse('3076', __('Group not found'));
             if(!$this->userHasPermissionToGroup($request)) return $this->apiResponse('3077', __('Not allowed to post'));
 
+            /** Like or unlike post and return statistics and action */
             return $this->likePost($request);
         }catch (\Exception $e){
             $this->write('API: GroupsPostsController::like()', $e->getCode(), $e->getMessage(), $request);
