@@ -53,6 +53,20 @@ class PostsController extends Controller{
     }
 
     /**
+     * Update post (allowed only to owner)
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request): JsonResponse{
+        try{
+            return $this->updatePost($request);
+        }catch (\Exception $e){
+            $this->write('API: GroupsPostsController::update()', $e->getCode(), $e->getMessage(), $request);
+            return $this->apiResponse('3100', __('Error while processing your request. Please contact an administrator'));
+        }
+    }
+
+    /**
      * Delete:
      *      1. Files (__files)
      *      2. Relationships (posts__files)

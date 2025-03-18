@@ -81,6 +81,7 @@ Route::prefix('/teams')->middleware('api-auth')->group(function (){
  */
 Route::prefix('/posts')->middleware('api-auth')->group(function (){
     Route::post('/save',                                      [ApiPostsController::class, 'save'])->name('api.posts.save');
+    Route::post('/update',                                    [ApiPostsController::class, 'update'])->name('api.posts.update');
     Route::post('/delete',                                    [ApiPostsController::class, 'delete'])->name('api.posts.delete');
 
     /**
