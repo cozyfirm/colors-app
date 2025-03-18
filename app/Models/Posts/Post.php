@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Post extends Model{
     use HasFactory;
     protected int $_number_of_comments = 10;
+    protected int $_number_of_comments_in_preview = 2;
 
     protected $guarded = ['id'];
 
@@ -34,5 +35,14 @@ class Post extends Model{
      */
     public function commentsRel(): HasMany{
         return $this->hasMany(PostComment::class, 'id', 'post_id')->whereNull('parent_id')->take($this->_number_of_comments);
+    }
+
+    /**
+     * When fetching group posts, two main comments are fetched with post
+     *
+     * @return HasMany
+     */
+    public function popularCommentsRel(): HasMany{
+        return $this->hasMany(PostComment::class, 'post_id', 'id')->whereNull('parent_id')->orderBy('likes')->take($this->_number_of_comments_in_preview);
     }
 }

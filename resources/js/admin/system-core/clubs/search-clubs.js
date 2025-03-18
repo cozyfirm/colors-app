@@ -57,7 +57,8 @@ $(document).ready(function () {
                     return {
                         results: $.map(data, function (item) {
                             return {
-                                text: item.name + ', ' + item.venue_rel.city + ' (' + item.gender + ')',
+                                // text: item.name + ', ' + item.venue_rel.city + ' (' + item.gender + ')',
+                                text: item.name,
                                 id: item.id,
                                 flag: item.flag
                             }

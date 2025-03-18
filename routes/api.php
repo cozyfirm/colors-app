@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MatchChat\MatchChatController;
 use App\Http\Controllers\API\OpenApi\ClubsController as OpenApiClubsController;
 use App\Http\Controllers\API\OpenApi\CountryController as OpenApiCountryController;
 use App\Http\Controllers\API\OpenApi\InfoController as OpenApiInfoController;
@@ -220,8 +221,9 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
     /**
      *  Posts by Group
      */
-    Route::prefix('/posts')->group(function (){
-        Route::post('/save',                                     [GroupsPostsController::class, 'save'])->name('api.groups.posts.leave');
+    Route::prefix('/posts')->middleware('api-auth')->group(function (){
+        Route::post('/save',                                     [GroupsPostsController::class, 'save'])->name('api.groups.posts.save');
+        Route::post('/update',                                   [GroupsPostsController::class, 'update'])->name('api.groups.posts.update');
         Route::post('/delete',                                   [GroupsPostsController::class, 'delete'])->name('api.groups.posts.delete');
 
         /** Fetch first n posts of group */
@@ -243,6 +245,16 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
             Route::post('/like',                                  [GroupsCommentsController::class, 'like'])->name('api.groups.posts.comments.like');
         });
     });
+});
+
+/** ---------------------------------------------------------------------------------------------------------------- **/
+/**
+ *  Match chat
+ */
+Route::prefix('/match-chat')->middleware('api-auth')->group(function (){
+    Route::post('/fetch',                              [MatchChatController::class, 'fetch'])->name('api.match-chat.fetch');
+
+    Route::post('/recommended',                        [FansSearchController::class, 'recommended'])->name('api.fans.recommended');
 });
 
 Route::prefix('/system-core')->middleware('api-auth')->group(function (){

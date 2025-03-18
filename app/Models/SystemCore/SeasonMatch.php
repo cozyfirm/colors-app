@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @method static where(string $string, mixed $id)
+ * @method static where(mixed $string, mixed $id = null)
  */
 class SeasonMatch extends Model{
     use HasFactory;
@@ -19,6 +19,9 @@ class SeasonMatch extends Model{
 
     public function date(){
         return Carbon::parse($this->date)->format('d.m.Y');
+    }
+    public function seasonRel(): HasOne{
+        return $this->hasOne(Season::class, 'id', 'season_id');
     }
     public function homeRel(): HasOne{
         return $this->hasOne(Club::class, 'id', 'home_team');
