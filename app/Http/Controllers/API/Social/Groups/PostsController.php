@@ -14,14 +14,14 @@ use App\Models\User;
 use App\Traits\Common\FileTrait;
 use App\Traits\Common\LogTrait;
 use App\Traits\Http\ResponseTrait;
-use App\Traits\Posts\PostTrait;
+use App\Traits\Posts\CommentTrait;
 use App\Traits\Users\UserTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller{
-    use FileTrait, ResponseTrait, LogTrait, UserTrait, PostTrait;
+    use FileTrait, ResponseTrait, LogTrait, UserTrait, CommentTrait;
     protected string $_file_path = 'files/posts';
     protected int $_number_of_posts = 10;
 
@@ -134,7 +134,7 @@ class PostsController extends Controller{
             }
         }catch (\Exception $e){
             $this->write('API: GroupsPostsController::delete()', $e->getCode(), $e->getMessage(), $request);
-            return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('3080', __('Error while processing your request. Please contact an administrator'));
         }
     }
 
@@ -177,7 +177,7 @@ class PostsController extends Controller{
             ]);
         }catch (\Exception $e){
             $this->write('API: GroupsPostsController::fetch()', $e->getCode(), $e->getMessage(), $request);
-            return $this->apiResponse('2011', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('3080', __('Error while processing your request. Please contact an administrator'));
         }
     }
 
@@ -220,7 +220,7 @@ class PostsController extends Controller{
             ]);
         }catch (\Exception $e){
             $this->write('API: PostsController::like()', $e->getCode(), $e->getMessage(), $request);
-            return $this->apiResponse('2021', __('Error while processing your request. Please contact an administrator'));
+            return $this->apiResponse('3080', __('Error while processing your request. Please contact an administrator'));
         }
     }
 }

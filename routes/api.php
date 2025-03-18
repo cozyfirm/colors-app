@@ -14,6 +14,7 @@ use App\Http\Controllers\API\Social\Fans\SearchController as FansSearchControlle
 use App\Http\Controllers\API\Social\Groups\GroupsController;
 use App\Http\Controllers\API\Social\Groups\GroupsMembershipController;
 use App\Http\Controllers\API\Social\Groups\PostsController as GroupsPostsController;
+use App\Http\Controllers\API\Social\Groups\CommentsController as GroupsCommentsController;
 use App\Http\Controllers\API\SystemCore\Notifications\NotificationsController;
 use App\Http\Controllers\API\TeamsController as APITeamsController;
 use App\Http\Controllers\API\UsersController;
@@ -228,6 +229,19 @@ Route::prefix('/groups')->middleware('api-auth')->group(function (){
 
         /** Like post */
         Route::post('/like',                                     [GroupsPostsController::class, 'like'])->name('api.groups.posts.like');
+
+        Route::prefix('/comments')->middleware('api-auth')->group(function (){
+            Route::post('/add',                                   [GroupsCommentsController::class, 'add'])->name('api.groups.posts.comments.add');
+            /**
+             *  Fetch comments and comments of comment
+             */
+            Route::post('/fetch',                                 [GroupsCommentsController::class, 'fetch'])->name('api.groups.posts.comments.fetch');
+            Route::post('/fetch-comments-on-comment',             [GroupsCommentsController::class, 'fetchCommentsOnComment'])->name('api.groups.posts.comments.fetch-comments-on-comment');
+            /* Delete comment */
+            Route::post('/delete',                                [GroupsCommentsController::class, 'delete'])->name('api.groups.posts.comments.delete');
+            /* Like / unlike comment */
+            Route::post('/like',                                  [GroupsCommentsController::class, 'like'])->name('api.groups.posts.comments.like');
+        });
     });
 });
 
