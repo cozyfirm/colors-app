@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\SystemCore;
 
 use App\Http\Controllers\Admin\Core\Filters;
 use App\Http\Controllers\Controller;
+use App\Models\Chat\MCChat;
 use App\Models\Core\Keyword;
 use App\Models\SystemCore\Club;
 use App\Models\SystemCore\League;
@@ -145,7 +146,7 @@ class SeasonsController extends Controller{
 
     public function deleteTeam(int $seasonID, int $teamID): RedirectResponse{
         try{
-            $team = Club::where('id', $teamID)->first();
+            $team = Club::where('id', '=', $teamID)->first();
             SeasonTeam::where('season_id', $seasonID)->where('team_id', $teamID)->delete();
 
             return back()->with('success', 'Uspješno ste obrisali ' . ($team->name ?? '') . " iz ove sezone!" );
@@ -173,7 +174,7 @@ class SeasonsController extends Controller{
             $request['date'] = Carbon::parse($request->date)->format('Y-m-d');
             if($request->home_team == $request->visiting_team) return back()->with('error', __('Odaberite različite timove!'));
 
-            $exists = SeasonMatch::where('season_id', $request->season_id)
+            $exists = SeasonMatch::where('season_id', '=', $request->season_id)
                 ->where('home_team', $request->home_team)
                 ->where('visiting_team', $request->visiting_team)
                 ->where('date', $request->date)
@@ -181,13 +182,18 @@ class SeasonsController extends Controller{
 
             if($exists) return back()->with('error', __('Utakmica već unesena!'));
 
+            $hash = "ca-mc-" . MCChat::count() . '-' . md5('matchchat' . ($request->home_team) . ($request->visiting_team) . time());
+            $chat = MCChat::create(['hash' => $hash]);
+
+            $request['chat_id'] = $chat->id;
+
             SeasonMatch::create($request->all());
             return back()->with('success', __('Utakmica uspješno unesena!'));
         }catch (\Exception $e){ dd($e); return back()->with('error', __('Desila se greška, molimo da kontaktirate administratora!')); }
     }
     public function deleteMatchSchedule($id){
         try{
-            SeasonMatch::where('id', $id)->delete();
+            SeasonMatch::where('id', '=', $id)->delete();
             return back()->with('success', __('Uspješno obrisano!'));
         }catch (\Exception $e){}
     }

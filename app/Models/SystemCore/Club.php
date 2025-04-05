@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, string $string1, int $int)
+ * @method static create(array $array)
  */
 class Club extends Model{
     use HasFactory;

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static create(array $array)
+ * @method static where(string $string, string $string1, mixed $user_id)
  */
 class UserTeams extends Model{
     use HasFactory, SoftDeletes;

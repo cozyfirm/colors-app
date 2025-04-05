@@ -39,11 +39,11 @@ class ClubsController extends Controller{
             'yesNo' => Keyword::where('type', 'da_ne')->pluck('name', 'value'),
             'countries' => Countries::where('used', 1)->pluck('name_ba', 'id'),
             'gender' => Keyword::where('type', 'gender')->pluck('name', 'value'),
-            'club' => isset($id) ? Club::where('id', $id)->first() : null
+            'club' => isset($id) ? Club::where('id', '=', $id)->first() : null
         ]);
     }
     public function create(): View{ return $this->getData('create'); }
-    public function save(Request $request){
+    public function save(Request $request): RedirectResponse{
         try{
             if(!isset($request->flag)) return back()->with('error', __('Nije odabrana niti jedna datoteka!'));
 
@@ -51,7 +51,8 @@ class ClubsController extends Controller{
             $ext  = $file->getClientOriginalExtension();
             if($ext != 'png' and $ext != 'jpg' and $ext != 'jpeg' and $ext != 'svg') return back()->with('error', __('Format slike nije podržan !'));
 
-            $fileName =  $request->code . "." . $ext;
+            // $fileName =  $request->code . "." . $ext;
+            $fileName = md5($file->getClientOriginalName().time()).'.'.$ext;
 
             $file->move(public_path($this->_destination_path), $fileName);
 
@@ -66,13 +67,13 @@ class ClubsController extends Controller{
             ]);
 
             return redirect()->route('admin.core.clubs.preview', ['id' => $club->id]);
-        }catch (\Exception $e){ dd($e); return back()->with('error', $e->getMessage()); }
+        }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
     }
     public function preview($id):View{ return $this->getData('preview', $id); }
     public function edit($id):View{ return $this->getData('edit', $id); }
-    public function update(Request $request){
+    public function update(Request $request): RedirectResponse{
         try{
-            Club::where('id', $request->id)->update([
+            Club::where('id', '=', $request->id)->update([
                 'name' => $request->name,
                 'code' => $request->code,
                 'country_id' => $request->country_id,
@@ -86,10 +87,11 @@ class ClubsController extends Controller{
                 $ext  = $file->getClientOriginalExtension();
                 if($ext != 'png' and $ext != 'jpg' and $ext != 'jpeg' and $ext != 'svg') return back()->with('error', __('Format slike nije podržan !'));
 
-                $fileName =  $request->code . "." . $ext;
+                // $fileName =  $request->code . "." . $ext;
+                $fileName = md5($file->getClientOriginalName().time()).'.'.$ext;
                 $file->move(public_path($this->_destination_path), $fileName);
 
-                Club::where('id', $request->id)->update([
+                Club::where('id', '=', $request->id)->update([
                     'flag' => $fileName
                 ]);
             }
