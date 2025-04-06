@@ -105,6 +105,14 @@ class ClubsController extends Controller{
         }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
     }
 
+    public function delete($id): RedirectResponse{
+        try{
+            Club::where('id', '=', $id)->delete();
+            return redirect()->route('admin.core.clubs');
+        }catch (\Exception $e){
+            return back();
+        }
+    }
     public function activeStatus(Request $request){
         try{
             $value = ($request->value === 'false') ? 0 : 1;
