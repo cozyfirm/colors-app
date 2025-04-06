@@ -14,3 +14,4 @@ import './layout/menu.js';
  *  System core scripts
  */
 import './system-core/clubs/search-clubs.js';
+import './system-core/clubs/active.js';

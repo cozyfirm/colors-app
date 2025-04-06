@@ -49,6 +49,10 @@
                     <td> {{ $club->founded ?? ''}} </td>
                     <td> {{ $club->nationalRel->name ?? ''}} </td>
                     <td> {{ $club->genderRel->name ?? ''}} </td>
+                    <td class="d-flex gap-3">
+                        <p class="m-0 p-0">{{ $club->activeRel->name ?? '' }}</p>
+                        <input class="form-check-input active-club-checkbox" type="checkbox" value="" id="{{ $club->id }}" @if($club->active) checked @endif itemid="{{ $club->id }}">
+                    </td>
 
                     <td class="text-center">
                         <a href="{{ route('admin.core.clubs.preview', ['id' => $club->id ]) }}" title="{{ __('More info') }}">

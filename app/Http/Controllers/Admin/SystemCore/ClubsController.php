@@ -8,11 +8,15 @@ use App\Models\Core\Countries;
 use App\Models\Core\Keyword;
 use App\Models\SystemCore\Club;
 use App\Models\SystemCore\Venue;
+use App\Traits\Http\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ClubsController extends Controller{
+    use ResponseTrait;
+
     protected string $_path = 'admin.app.system-core.clubs.';
     protected string $_destination_path = "files/core/clubs";
 
@@ -25,7 +29,8 @@ class ClubsController extends Controller{
             'countryRel.name_ba' => __('Country'),
             'founded' => __('Founded'),
             'nationalRel.name' => __('National team'),
-            'genderRel.name' => __('Gender')
+            'genderRel.name' => __('Gender'),
+            'activeRel.name' => __('Active')
         ];
 
         return view($this->_path.'index', [
@@ -98,6 +103,17 @@ class ClubsController extends Controller{
 
             return redirect()->route('admin.core.clubs.preview', ['id' => $request->id]);
         }catch (\Exception $e){ return back()->with('error', $e->getMessage()); }
+    }
+
+    public function activeStatus(Request $request){
+        try{
+            $value = ($request->value === 'false') ? 0 : 1;
+
+            Club::where('id', '=', $request->id)->update(['active' => $value]);
+            return $this->jsonResponse('0000', __('Uspješno'), []);
+        }catch (\Exception $e){
+            return $this->jsonResponse('0000', __('Greška'), []);
+        }
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */

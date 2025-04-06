@@ -19,7 +19,7 @@ class TeamsController extends Controller{
         try{
             $teams = Club::whereHas('countryRel', function ($q) use ($request){
                 $q->where('used', 1);
-            })->where('national', 1)->where('name', 'LIKE', '%'.$request->team.'%')->with('countryRel:id,name,name_ba,flag')->get(['id', 'name', 'flag', 'country_id', 'gender'])->toArray();
+            })->where('national', 1)->where('active', '=', 1)->where('name', 'LIKE', '%'.$request->team.'%')->with('countryRel:id,name,name_ba,flag')->get(['id', 'name', 'flag', 'country_id', 'gender'])->toArray();
 
             return $this->apiResponse('0000', __('Success'), $teams);
         }catch (\Exception $e){
@@ -36,7 +36,7 @@ class TeamsController extends Controller{
 
             /* Other logic */
             $teams = League::whereHas('seasonRel.teamRel.teamRel', function ($q) use ($request){
-                $q->where('name', 'LIKE', '%'.$request->team.'%');
+                $q->where('name', 'LIKE', '%'.$request->team.'%')->where('active', '=', 1);
             })->has('seasonRel.teamRel.teamRel')
                 ->with('seasonRel.teamRel.teamRel:id,name,flag,gender')
                 ->get(['id', 'name', 'logo'])->take(50)->toArray();
