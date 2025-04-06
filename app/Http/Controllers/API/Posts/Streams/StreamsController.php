@@ -93,18 +93,18 @@ class StreamsController extends Controller{
                 }
 
                 /* Next and previous post */
-                $previous = Post::where('id', '<', $request->post_id)->where('public', '=', 1);
-                $next     = Post::where('id', '>', $request->post_id)->where('public', '=', 1);
+                $previous = Post::where('id', '<', $request->post_id)->where('public', '=', 1)->orderBy('id');
+                $next     = Post::where('id', '>', $request->post_id)->where('public', '=', 1)->orderBy('id');
 
                 $previous = $this->getPostInfo($request, $previous);
                 $next     = $this->getPostInfo($request, $next);
 
                 if(!isset($previous->id)){
-                    $previous = Post::inRandomOrder()->where('id', '!=', $post->id)->where('public', '=', 1);
+                    $previous = Post::where('id', '!=', $post->id)->where('public', '=', 1)->inRandomOrder();
                     $previous = $this->getPostInfo($request, $previous);
                 }
                 if(!isset($next->id)){
-                    $next = Post::inRandomOrder()->where('id', '!=', $post->id)->where('id', '!=', $previous->id)->where('public', '=', 1);
+                    $next = Post::where('id', '!=', $post->id)->where('id', '!=', $previous->id)->where('public', '=', 1)->inRandomOrder();
                     $next     = $this->getPostInfo($request, $next);
                 }
 
