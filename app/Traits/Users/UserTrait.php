@@ -17,9 +17,9 @@ trait UserTrait{
      */
     protected function checkForAnEmail($email, $user_id = null){
         if($user_id){
-            return User::where('email', $email)->where('id', '!=', $user_id)->count();
+            return User::where('email', '=', $email)->where('id', '!=', $user_id)->count();
         }else{
-            return User::where('email', $email)->count();
+            return User::where('email', '=', $email)->count();
         }
     }
 
@@ -42,7 +42,7 @@ trait UserTrait{
         return str_replace('&', '-', $hash);
     }
 
-    /*
+    /**
      *  Get basic user data
      */
     public function getUserData($code = '2001', $message = 'User data'): JsonResponse{
@@ -56,14 +56,14 @@ trait UserTrait{
                 'city' => Auth::guard()->user()->city,
                 'teams' => [
                     'status' => isset(Auth::guard()->user()->teamsRel),
-                    'team' => Auth::guard()->user()->teamsRel->team ?? null,
-                    'national_team' => Auth::guard()->user()->teamsRel->national_team ?? null
+                    'img_path' => '/files/core/clubs/',
+                    'team' => Auth::guard()->user()->teamsRel->teamBasicRel ?? null,
+                    'national_team' => Auth::guard()->user()->teamsRel->nationalBasicTeamRel ?? null
                 ],
-                'photoRel' => [
-                    'file' => Auth::guard()->user()->photoRel->file ?? '',
-                    'name' => Auth::guard()->user()->photoRel->name ?? '',
-                    'ext' => Auth::guard()->user()->photoRel->ext ?? '',
-                    'path' => Auth::guard()->user()->photoRel->path ?? '',
+                'photo' => [
+                    'hasPhoto' => (isset(Auth::guard()->user()->photo)),
+                    'img_path' => 'files/users/profile-photo',
+                    'photo' => Auth::guard()->user()->photo ?? null
                 ],
                 's_not' => Auth::guard()->user()->s_not,
                 's_loc' => Auth::guard()->user()->s_loc,
@@ -74,6 +74,12 @@ trait UserTrait{
         }
     }
 
+    /**
+     * Get specific user basic data
+     *
+     * @param $user
+     * @return array|false
+     */
     public function getSpecificUserData($user): array|false {
         try{
             return [
@@ -84,15 +90,15 @@ trait UserTrait{
                 'city' => $user->city,
                 'teams' => [
                     'status' => isset($user->teamsRel),
-                    'team' => $user->teamsRel->team ?? null,
-                    'national_team' => $user->teamsRel->national_team ?? null
+                    'img_path' => '/files/core/clubs/',
+                    'team' => $user->teamsRel->teamBasicRel ?? null,
+                    'national_team' => $user->teamsRel->nationalBasicTeamRel ?? null
                 ],
-                'photoRel' => [
-                    'file' => $user->photoRel->file ?? '',
-                    'name' => $user->photoRel->name ?? '',
-                    'ext'  => $user->photoRel->ext ?? '',
-                    'path' => $user->photoRel->path ?? '',
-                ]
+                'photo' => [
+                    'hasPhoto' => (isset($user->photo)),
+                    'img_path' => 'files/users/profile-photo',
+                    'photo' => $user->photo ?? null
+                ],
             ];
         }catch (\Exception $e){
             return false;

@@ -24,4 +24,12 @@ class UserTeams extends Model{
     public function nationalTeamRel(): HasOne{
         return $this->hasOne(Club::class, 'id', 'national_team');
     }
+
+    /** Basic data only */
+    public function teamBasicRel(): HasOne{
+        return $this->hasOne(Club::class, 'id', 'team')->select(['id', 'name', 'flag', 'national', 'code', 'gender']);
+    }
+    public function nationalBasicTeamRel(): HasOne{
+        return $this->hasOne(Club::class, 'id', 'national_team')->select(['id', 'name', 'flag', 'national', 'code', 'gender']);
+    }
 }
