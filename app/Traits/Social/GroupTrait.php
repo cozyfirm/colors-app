@@ -24,13 +24,16 @@ trait GroupTrait{
 
             /** If group is private, check for permissions */
             if(!$group->public){
-                $membership = GroupMember::where('group_id', '=', $request->group_id)->where('user_id', '=', $request->user_id)->first();
-                if(!$membership) return false;
-                else{
-                    if($membership->status != 'accepted') return false;
-                }
-                return true;
+
             }
+
+            /** Membership must exists; For public groups, user has to click join!! */
+            $membership = GroupMember::where('group_id', '=', $request->group_id)->where('user_id', '=', $request->user_id)->first();
+            if(!$membership) return false;
+            else{
+                if($membership->status != 'accepted') return false;
+            }
+            return true;
         }catch (\Exception $e){ return false; }
     }
 }
