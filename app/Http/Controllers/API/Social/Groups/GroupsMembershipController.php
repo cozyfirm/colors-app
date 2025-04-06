@@ -52,13 +52,17 @@ class GroupsMembershipController extends Controller{
                 if($membership->status == 'pending') return $this->apiResponse('3056', __('Request already sent'));
                 else if($membership->status == 'accepted') return $this->apiResponse('3057', __('Already a member'));
                 else if($membership->status == 'denied') return $this->apiResponse('3058', __('Request denied'));
+                else return $this->apiResponse('3059', __('Unknown membership status'));
             }
+
+            $status = 'pending';
+            if($group->public != 0) $status = 'accepted';
 
             GroupMember::create([
                 'group_id' => $group->id,
                 'user_id' => $request->user_id,
                 'role' => 'member',
-                'status' => 'pending'
+                'status' => $status
             ]);
 
             return $this->apiResponse('0000', __('Request successfully sent'));
@@ -103,6 +107,8 @@ class GroupsMembershipController extends Controller{
     }
 
     /**
+     * ToDo:: Remove later; Deprecated
+     *
      * @param Request $request
      * @return JsonResponse
      *
