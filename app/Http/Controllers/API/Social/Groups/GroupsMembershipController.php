@@ -29,7 +29,7 @@ class GroupsMembershipController extends Controller{
 
             /* ToDo - Image and country */
             return $this->apiResponse('0000', __('Success'),
-                GroupMember::where('group_id', '=', $group->id)->with('userRel.photoRel:id,file,name,ext,path')->with('userRel:id,name,username,city,photo')->get(['id', 'user_id', 'status'])->toArray()
+                GroupMember::where('group_id', '=', $group->id)->with('userRel:id,name,username,city,photo')->get(['id', 'user_id', 'status'])->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));

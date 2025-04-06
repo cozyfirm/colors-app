@@ -81,7 +81,6 @@ trait CommentTrait{
 
             $comments = PostComment::where('post_id', '=', $request->post_id)
                 ->whereNull('parent_id')
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,name,username,photo')
                 ->select(['id', 'post_id', 'user_id', 'comment', 'parent_id', 'likes', 'comments'])
                 ->orderBy('id', 'DESC');
@@ -91,7 +90,6 @@ trait CommentTrait{
             foreach ($comments as $comment){
                 $comment->replies = PostComment::where('post_id', '=', $request->post_id)
                     ->where('parent_id', '=', $comment->id)
-                    ->with('userRel.photoRel:id,file,name,ext,path')
                     ->with('userRel:id,name,username,photo')
                     ->take($this->_number_of_replies)
                     ->orderBy('id', 'DESC')
@@ -120,7 +118,6 @@ trait CommentTrait{
 
             $comments = PostComment::where('post_id', '=', $request->post_id)
                 ->where('parent_id', '=', $request->comment_id)
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,name,username,photo')
                 ->select(['id', 'post_id', 'user_id', 'comment', 'parent_id', 'likes', 'created_at'])
                 ->orderBy('id', 'DESC');

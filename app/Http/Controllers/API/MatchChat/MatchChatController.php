@@ -112,7 +112,6 @@ class MatchChatController extends Controller{
             ]);
 
             $message = MCCMessage::where('id', '=', $message->id)
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,name,username,photo')
                 ->first(['id', 'user_id', 'message', 'likes']);
 
@@ -161,7 +160,6 @@ class MatchChatController extends Controller{
             ]);
 
             $message = MCCMessage::where('id', '=', $message->id)
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,name,username,photo')
                 ->with('photoRel:id,name,ext,type,path')
                 ->first(['id', 'user_id', 'message', 'file_id', 'likes']);
@@ -202,7 +200,6 @@ class MatchChatController extends Controller{
             $messages = MCCMessage::where('chat_id', '=', $request->chat_id);
 
             $messages = $messages
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,name,username,photo')
                 ->with('photoRel:id,name,ext,type,path')
                 ->select(['id', 'user_id', 'message', 'file_id', 'likes'])->orderBy('id', 'DESC');

@@ -50,8 +50,6 @@ class StreamsController extends Controller{
     public function getPostInfo(Request $request, $post): mixed{
         $post = $post->with('filesRel.fileRel:id,file,name,ext,path')
             ->with('filesRel:id,post_id,file_id')
-            /** Photo Relationship */
-            ->with('userRel.photoRel:id,file,name,ext,path')
             /** Team and national-team Relationship */
             ->with('userRel.teamsRel.teamRel:id,name,flag,code,gender')
             ->with('userRel.teamsRel.nationalTeamRel:id,name,flag,code,gender')
@@ -113,7 +111,6 @@ class StreamsController extends Controller{
      */
     public function getSearchedPosts(Request $request): array{
         return Post::where('description', 'like', '%'.$request->get('query').'%')
-            ->with('userRel.photoRel:id,file,name,ext,path')
             ->with('userRel:id,name,username,photo')
             // ->where('public', '=', 1)
             ->inRandomOrder()

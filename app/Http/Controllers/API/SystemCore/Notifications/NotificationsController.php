@@ -20,7 +20,6 @@ class NotificationsController extends Controller{
             if(isset($request->number)) $this->_number_of_notifications = $request->number;
             $notifications = Notification::where('user_id', '=', $request->user()->id)
                 /* User notifications queries */
-                ->with('fanRequestRel.userRel.photoRel:id,file,name,ext,path')
                 ->with('fanRequestRel.userRel:id,username,photo')
                 ->with('fanRequestRel:id,notification_id,from,content')
                 /* Select only necessary data */
