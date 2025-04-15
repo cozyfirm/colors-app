@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, string $string1, int $int)
+ * @method static create(array $array)
  */
 class Club extends Model{
     use HasFactory;
@@ -22,6 +23,7 @@ class Club extends Model{
 
     public function countryRel(): HasOne{ return $this->hasOne(Countries::class, 'id', 'country_id'); }
     public function nationalRel(): HasOne{ return $this->hasOne(Keyword::class, 'value', 'national')->where('type', 'da_ne'); }
+    public function activeRel(): HasOne{ return $this->hasOne(Keyword::class, 'value', 'active')->where('type', 'da_ne'); }
     public function venueRel(): HasOne{ return $this->hasOne(Venue::class, 'id', 'venue_id'); }
     public function genderRel(): HasOne{ return $this->hasOne(Keyword::class, 'value', 'gender')->where('type', 'gender'); }
 

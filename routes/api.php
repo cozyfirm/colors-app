@@ -255,6 +255,17 @@ Route::prefix('/fans')->middleware('api-auth')->group(function (){
 Route::prefix('/match-chat')->middleware('api-auth')->group(function (){
     Route::post('/fetch',                              [MatchChatController::class, 'fetch'])->name('api.match-chat.fetch');
 
+    /** Messages in MatchChat */
+    Route::prefix('/messages')->group(function (){
+        Route::post('/save-message',                       [MatchChatController::class, 'saveMessage'])->name('api.match-chat.messages.save-message');
+        Route::post('/upload-photo',                       [MatchChatController::class, 'uploadPhoto'])->name('api.match-chat.messages.upload-photo');
+
+        /** Fetch n-th messages */
+        Route::post('/fetch',                              [MatchChatController::class, 'fetchMessages'])->name('api.match-chat.messages.fetch-messages');
+
+        /** Like message */
+        Route::post('/like-message',                       [MatchChatController::class, 'likeMessage'])->name('api.match-chat.messages.like-message');
+    });
     Route::post('/recommended',                        [FansSearchController::class, 'recommended'])->name('api.fans.recommended');
 });
 

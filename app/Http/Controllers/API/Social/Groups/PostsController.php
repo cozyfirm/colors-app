@@ -106,10 +106,8 @@ class PostsController extends Controller{
             $posts = Post::where('group_id', '=', $request->group_id)
                 ->with('fileRel.fileRel:id,file,name,ext,path')
                 ->with('fileRel:id,post_id,file_id')
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,username,photo')
                 /** Two comments */
-                ->with('popularCommentsRel.userRel.photoRel:id,file,name,ext,path')
                 ->with('popularCommentsRel.userRel:id,name,username,photo')
                 ->with('popularCommentsRel:post_id,user_id,comment,likes,comments')
                 /** Select only main stuffs */

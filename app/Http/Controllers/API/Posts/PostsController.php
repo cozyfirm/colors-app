@@ -117,7 +117,6 @@ class PostsController extends Controller{
             $posts = $posts
                 ->with('fileRel.fileRel:id,file,name,ext,path')
                 ->with('fileRel:id,post_id,file_id')
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,username,photo')
                 ->select(['id', 'user_id', 'description', 'public', 'views', 'likes', 'comments'])->orderBy('id', 'DESC');
             $posts = Filters::filter($posts, $this->_number_of_posts);

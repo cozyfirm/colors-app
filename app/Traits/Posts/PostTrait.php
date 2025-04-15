@@ -27,7 +27,6 @@ trait PostTrait{
             $post = Post::where('id', '=', $postID)
                 ->with('filesRel.fileRel:id,file,name,ext,path')
                 ->with('filesRel:id,post_id,file_id')
-                ->with('userRel.photoRel:id,file,name,ext,path')
                 ->with('userRel:id,username,photo')
                 ->select(['id', 'user_id', 'description', 'public', 'group_id', 'views', 'likes', 'comments'])->orderBy('id', 'DESC')
                 ->first();

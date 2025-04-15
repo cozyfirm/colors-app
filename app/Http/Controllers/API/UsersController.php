@@ -48,19 +48,31 @@ class UsersController extends Controller{
         }
     }
 
+    /**
+     * Update profile image;
+     *      - New path added 06.04.2025 (instead of file id, now it contains img name)
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateImage(Request $request): JsonResponse{
         try{
+            // ToDO :: Check for image extensions
+
             if(!isset($request->photo)) return $this->apiResponse('2016', __('Please choose a photo'));
 
-            $request['path'] = $this->_file_path;
-            $file = $this->saveFile($request, 'photo');
+            /** Upload file to "files/users/profile-photo" */
+            $file = $request->file('photo');
+            $ext = pathinfo($file->getClientOriginalName(),PATHINFO_EXTENSION);
+            $name = md5($file->getClientOriginalName().time()).'.'.$ext;
+            $file->move($this->_file_path, $name);
 
-            /* If user do not have image, skip it */
-            if(!empty(Auth::guard()->user()->photo)) $this->removeFile(Auth::guard()->user()->photo);
+            /* Deprecated: If user do not have image, skip it */
+            // if(!empty(Auth::guard()->user()->photo)) $this->removeFile(Auth::guard()->user()->photo);
 
             /* Update user photo ID */
             Auth::guard()->user()->update([
-                'photo' => $file?->id,
+                'photo' => $name
             ]);
 
             return $this->getUserData($request);

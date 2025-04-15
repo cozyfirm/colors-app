@@ -22,17 +22,14 @@ class GroupsMembershipController extends Controller{
      */
     public function allMembers(Request $request): JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
             $group = Group::where('id', '=', $request->id)->first();
             if(!$group) return $this->apiResponse('3052', __('Unknown group'));
             if(!isset($group->adminsRel)) return $this->apiResponse('3053', __('Admin not found'));
-            if(!$group->isAdmin($user->id)) return $this->apiResponse('3054', __('No permission found'));
+            if(!$group->isAdmin($request->user_id)) return $this->apiResponse('3054', __('No permission found'));
 
             /* ToDo - Image and country */
             return $this->apiResponse('0000', __('Success'),
-                GroupMember::where('group_id', '=', $group->id)->with('userRel.photoRel:id,file,name,ext,path')->with('userRel:id,name,username,city,photo')->get(['id', 'user_id', 'status'])->toArray()
+                GroupMember::where('group_id', '=', $group->id)->with('userRel:id,name,username,city,photo')->get(['id', 'user_id', 'status'])->toArray()
             );
         }catch (\Exception $e){
             return $this->apiResponse('3051', __('Error while processing your request. Please contact an administrator'));
@@ -47,24 +44,25 @@ class GroupsMembershipController extends Controller{
      */
     public function sendRequest(Request $request) : JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
-            $group = Group::where('id', $request->id)->first();
+            $group = Group::where('id', '=', $request->id)->first();
             if(!$group) return $this->apiResponse('3055', __('Unknown group'));
 
-            $membership = GroupMember::where('user_id', $user->id)->where('group_id', $group->id)->first();
+            $membership = GroupMember::where('user_id', '=', $request->user_id)->where('group_id', $group->id)->first();
             if($membership) {
                 if($membership->status == 'pending') return $this->apiResponse('3056', __('Request already sent'));
                 else if($membership->status == 'accepted') return $this->apiResponse('3057', __('Already a member'));
                 else if($membership->status == 'denied') return $this->apiResponse('3058', __('Request denied'));
+                else return $this->apiResponse('3059', __('Unknown membership status'));
             }
+
+            $status = 'pending';
+            if($group->public != 0) $status = 'accepted';
 
             GroupMember::create([
                 'group_id' => $group->id,
-                'user_id' => $user->id,
+                'user_id' => $request->user_id,
                 'role' => 'member',
-                'status' => 'pending'
+                'status' => $status
             ]);
 
             return $this->apiResponse('0000', __('Request successfully sent'));
@@ -81,16 +79,13 @@ class GroupsMembershipController extends Controller{
      */
     public function allowDenyRequest(Request $request) : JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
-            $membership = GroupMember::where('id', $request->id)->first();
+            $membership = GroupMember::where('id', '=', $request->id)->first();
             if(!$membership) return $this->apiResponse('3059', __('Unknown membership'));
 
             $group = Group::where('id', '=', $membership->group_id)->first();
             if(!$group) return $this->apiResponse('3060', __('Unknown group'));
             if(!isset($group->adminsRel)) return $this->apiResponse('3061', __('Admin not found'));
-            if(!$group->isAdmin($user->id)) return $this->apiResponse('3062', __('No permission found'));
+            if(!$group->isAdmin($request->user_id)) return $this->apiResponse('3062', __('No permission found'));
 
             if(empty($request->status)) return $this->apiResponse('3063', __('Empty status'));
             else{
@@ -102,7 +97,7 @@ class GroupsMembershipController extends Controller{
                     return $this->apiResponse('3064', __('Unknown action'));
                 }
 
-                $group->update(['members' => GroupMember::where('group_id', $group->id)->where('status', 'accepted')->count()]);
+                $group->update(['members' => GroupMember::where('group_id', '=', $group->id)->where('status', 'accepted')->count()]);
             }
 
             return $this->apiResponse('0000', __('Success'));
@@ -112,6 +107,8 @@ class GroupsMembershipController extends Controller{
     }
 
     /**
+     * ToDo:: Remove later; Deprecated
+     *
      * @param Request $request
      * @return JsonResponse
      *
@@ -119,21 +116,18 @@ class GroupsMembershipController extends Controller{
      */
     public function join(Request $request) : JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
             $group = Group::where('id', '=', $request->id)->with('fileRel:id,file,name,ext,path')->first(['id', 'file_id', 'name', 'public', 'description', 'reactions', 'members']);
             if(!$group) return $this->apiResponse('3065', __('Unknown group'));
             if($group->public == 0) return $this->apiResponse('3066', __('You cant join private groups'));
 
-            $membership = GroupMember::where('user_id', $user->id)->where('group_id', $group->id)->first();
+            $membership = GroupMember::where('user_id', '=', $request->user_id)->where('group_id', $group->id)->first();
             if($membership) {
                 if($membership->status == 'accepted') return $this->apiResponse('3067', __('Already a member'));
             }
 
             GroupMember::create([
                 'group_id' => $group->id,
-                'user_id' => $user->id,
+                'user_id' => $request->user_id,
                 'role' => 'member',
                 'status' => 'accepted'
             ]);
@@ -153,11 +147,8 @@ class GroupsMembershipController extends Controller{
      */
     public function leave(Request $request) : JsonResponse{
         try{
-            /** @var UserAPIToken $request->api_token */
-            $user = User::where('api_token', '=', $request->api_token)->first();
-
-            $membership = GroupMember::where('group_id', '=', $request->id)
-                ->where('user_id', '=', $user->id)->delete();
+            GroupMember::where('group_id', '=', $request->id)
+                ->where('user_id', '=', $request->user_id)->delete();
 
             return $this->apiResponse('0000', __('Successfully deleted'));
         }catch (\Exception $e){
