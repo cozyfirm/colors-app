@@ -179,7 +179,7 @@ Route::prefix('/fans')->middleware('api-auth')->group(function (){
 /**
  *  Groups routes
  */
-Route::prefix('/groups')->middleware('api-auth')->group(function (){
+    Route::prefix('/groups')->middleware('api-auth')->group(function (){
     Route::post('/save',                               [GroupsController::class, 'save'])->name('api.groups.save');
     Route::post('/update',                             [GroupsController::class, 'update'])->name('api.groups.update');
     Route::post('/update-photo',                       [GroupsController::class, 'updatePhoto'])->name('api.groups.update-photo');
