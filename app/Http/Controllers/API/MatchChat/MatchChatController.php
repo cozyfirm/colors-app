@@ -202,6 +202,7 @@ class MatchChatController extends Controller{
             $messages = $messages
                 ->with('userRel:id,name,username,photo')
                 ->with('photoRel:id,name,ext,type,path')
+                ->orderBy('id', 'DESC')
                 ->select(['id', 'user_id', 'message', 'file_id', 'likes'])->orderBy('id', 'DESC');
 
             $messages = Filters::filter($messages, $this->_number_of_messages);
