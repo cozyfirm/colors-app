@@ -47,6 +47,7 @@ class User extends Authenticatable{
         'email_verified_at',
         'password',
         'api_token',
+        'fcm_token',
         'restart_pin',
         'photo',
         'birth_date',

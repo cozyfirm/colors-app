@@ -25,18 +25,26 @@ class AuthController extends Controller{
             if(!isset($request->email))    return $this->apiResponse('1102', __('Please, enter your email'));
             if(!isset($request->password)) return $this->apiResponse('1103', __('Please, enter your password'));
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', '=', $request->email)->first();
             if(!$user) return $this->apiResponse('1104', __('Unknown email'));
 
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
                 $user = Auth::user();
 
-                /** @var TYPE_NAME $user */
+                /** Update FCM token when logged */
+                User::where('email', '=', $request->email)->update(['fcm_token' => $request->fcm_token]);
+
+                /** @var UserObject $user */
                 return $this->apiResponse('0000', __('Success'), [
                     'username' => $user->username,
                     'name' => $user->name,
                     'email' => $user->email,
                     'api_token' => $user->api_token,
+                    'photo' => [
+                        'hasPhoto' => (isset($user->photo)),
+                        'img_path' => 'files/users/profile-photo',
+                        'photo' => $user->photo ?? null
+                    ],
                     'teams' => [
                         'status' => isset($user->teamsRel),
                         'team' => $user->teamsRel->team ?? null,
